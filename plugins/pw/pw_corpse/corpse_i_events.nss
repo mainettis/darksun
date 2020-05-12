@@ -61,7 +61,7 @@ void corpse_pccorpseitem();
 void corpse_OnClientEnter()
 {
     object oPC = GetEnteringObject();
-    string sUniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
+    string sUniquePCID = _GetLocalString(oPC, H2_UNIQUE_PC_ID);
     location lRessLoc = GetDatabaseLocation(sUniquePCID + H2_RESS_LOCATION);
     if (h2_GetIsLocationValid(lRessLoc))
         h2_PerformOffLineRessurectionLogin(oPC, lRessLoc);
@@ -83,7 +83,7 @@ void corpse_OnClientLeave()
     {
         if (GetTag(oItem) == H2_PC_CORPSE_ITEM)
         {
-            location lLastDrop = GetLocalLocation(oItem, H2_LAST_DROP_LOCATION);
+            location lLastDrop = _GetLocalLocation(oItem, H2_LAST_DROP_LOCATION);
             object oNewToken = CopyObject(oItem, lLastDrop);
             h2_DropPlayerCorpse(oNewToken);
         }
@@ -97,13 +97,13 @@ void corpse_OnPlayerDeath()
     object oArea = GetArea(oPC);
 
     //if some other death subsystem set the player state back to alive before this one, no need to continue
-    if (GetPlayerInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DEAD)
+    if (_GetLocalInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DEAD)
         return;
 
-    if (GetLocalInt(oArea, H2_DO_NOT_CREATE_CORPSE_IN_AREA))
+    if (_GetLocalInt(oArea, H2_DO_NOT_CREATE_CORPSE_IN_AREA))
         return;
         
-    if (!GetLocalInt(oPC, H2_LOGIN_DEATH))
+    if (!_GetLocalInt(oPC, H2_LOGIN_DEATH))
         h2_CreatePlayerCorpse(oPC);
 }
 

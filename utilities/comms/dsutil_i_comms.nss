@@ -129,7 +129,7 @@ void CriticalError(string sMessage, object oTarget = OBJECT_SELF);
 
 string GetDebugColor(int nLevel)
 {
-    string sColor = GetLocalString(GetModule(), DEBUG_COLOR + IntToString(nLevel));
+    string sColor = _GetLocalString(GetModule(), DEBUG_COLOR + IntToString(nLevel));
 
     if (sColor == "")
     {
@@ -151,17 +151,17 @@ string GetDebugColor(int nLevel)
 
 void SetDebugColor(int nLevel, string sColor = "")
 {
-    SetLocalString(GetModule(), DEBUG_COLOR + IntToString(nLevel), sColor);
+    _SetLocalString(GetModule(), DEBUG_COLOR + IntToString(nLevel), sColor);
 }
 
 int GetDebugLogging()
 {
-    return GetLocalInt(GetModule(), DEBUG_LOG);
+    return _GetLocalInt(GetModule(), DEBUG_LOG);
 }
 
 void SetDebugLogging(int nEnabled)
 {
-    SetLocalInt(GetModule(), DEBUG_LOG, nEnabled);
+    _SetLocalInt(GetModule(), DEBUG_LOG, nEnabled);
 }
 
 int IsDebugging(int nLevel, object oTarget = OBJECT_SELF)
@@ -185,7 +185,7 @@ void Debug(string sMessage, int nLevel = DEBUG_LEVEL_NOTICE, object oTarget = OB
 
         sMessage = sPrefix + sMessage;
 
-        int nLogging = GetLocalInt(GetModule(), DEBUG_LOG);
+        int nLogging = _GetLocalInt(GetModule(), DEBUG_LOG);
 
         if (nLogging & DEBUG_LOG_FILE)
             WriteTimestampedLogEntry(sMessage);

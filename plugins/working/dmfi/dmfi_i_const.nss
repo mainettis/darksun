@@ -185,7 +185,7 @@ const string DMFI_PC_WAND_INVENTORY = "playerbook," +
 const string DMFI_WAND_REMOVE =       "exploder";
 
 const string DMFI_EMOTES_MUTED = DMFI_EMOTES_MUTED;
-int DMFI_MODULE_EMOTES_MUTED = GetLocalInt(DMFI, DMFI_EMOTES_MUTED);
+int DMFI_MODULE_EMOTES_MUTED = _GetLocalInt(DMFI, DMFI_EMOTES_MUTED);
 
 string DMFI_SKILLS;
 

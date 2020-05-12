@@ -45,15 +45,15 @@ int h2_RemainingTimeForRecoveryInRest(object oPC);
 void h2_SaveLastRecoveryRestTime(object oPC)
 {
     int restTime = h2_GetSecondsSinceServerStart();
-    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
-    SetModuleInt(uniquePCID + H2_LAST_PC_REST_TIME, restTime);
+    string uniquePCID = _GetLocalString(oPC, H2_UNIQUE_PC_ID);
+    _SetLocalInt(MODULE, uniquePCID + H2_LAST_PC_REST_TIME, restTime);
 }
 
 int h2_RemainingTimeForRecoveryInRest(object oPC)
 {
     int currTime = h2_GetSecondsSinceServerStart();
-    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
-    int lastrest = GetModuleInt(uniquePCID + H2_LAST_PC_REST_TIME);
+    string uniquePCID = _GetLocalString(oPC, H2_UNIQUE_PC_ID);
+    int lastrest = _GetLocalInt(MODULE, uniquePCID + H2_LAST_PC_REST_TIME);
     int elapsedTime = currTime - lastrest;
     if (lastrest > 0 &&  elapsedTime < H2_MINIMUM_SPELL_RECOVERY_REST_TIME)
         return H2_MINIMUM_SPELL_RECOVERY_REST_TIME - elapsedTime;
@@ -89,7 +89,7 @@ void h2_UseFirewood(object oPC, object oFirewood)
         {
             int burnHours = GetLocalInt(oTarget, H2_CAMPFIRE_BURN);
             burnHours +=3;
-            SetLocalInt(oTarget, H2_CAMPFIRE_BURN, burnHours);
+            _SetLocalInt(oTarget, H2_CAMPFIRE_BURN, burnHours);
             AssignCommand(oPC, ActionPlayAnimation(ANIMATION_LOOPING_GET_LOW, 1.0, 3.0));
             DestroyObject(oFirewood);
         }
@@ -100,9 +100,9 @@ void h2_UseFirewood(object oPC, object oFirewood)
     {
         location loc = GetItemActivatedTargetLocation();
         object oCampfire = CreateObject(OBJECT_TYPE_PLACEABLE, H2_CAMPFIRE, loc);
-        SetLocalInt(oCampfire, H2_CAMPFIRE_BURN, 3);
+        _SetLocalInt(oCampfire, H2_CAMPFIRE_BURN, 3);
         int starttime = h2_GetSecondsSinceServerStart();
-        SetLocalInt(oCampfire, H2_CAMPFIRE_START_TIME, starttime);
+        _SetLocalInt(oCampfire, H2_CAMPFIRE_START_TIME, starttime);
         DelayCommand(HoursToSeconds(3), h2_CheckIfCampfireIsOut(oCampfire));
         AssignCommand(oPC, ActionPlayAnimation(ANIMATION_LOOPING_GET_LOW, 1.0, 3.0));
         DestroyObject(oFirewood);

@@ -7,6 +7,6 @@ void main()
     object oPC = GetPCSpeaker();
 
     // attach our listener event
-    SetLocalString(oListener, "dmfi_getln_mode", "desc");
+    _SetLocalString(oListener, "dmfi_getln_mode", "desc");
     DMFI_get_line(oPC, TALKVOLUME_TALK, "dmfi_univ_listen", oListener);
 }

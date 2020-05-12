@@ -37,20 +37,20 @@ void main()
     object oMount;
     object oAreaTarget = GetArea(oPC); // used for mount restriction checking
 
-    int bPHBDuration = GetLocalInt(GetModule(), "X3_HORSE_PALADIN_USE_PHB");
+    int bPHBDuration = _GetLocalInt(GetModule(), "X3_HORSE_PALADIN_USE_PHB");
     int bNoMounts = FALSE;
 
     string sSummonScript;
 
-    if (!GetLocalInt(oAreaTarget,"X3_MOUNT_OK_EXCEPTION"))
+    if (!_GetLocalInt(oAreaTarget,"X3_MOUNT_OK_EXCEPTION"))
     { // check for global restrictions
-        if (GetLocalInt(GetModule(),"X3_MOUNTS_EXTERNAL_ONLY")&&GetIsAreaInterior(oAreaTarget)) bNoMounts=TRUE;
-        else if (GetLocalInt(GetModule(),"X3_MOUNTS_NO_UNDERGROUND")&&!GetIsAreaAboveGround(oAreaTarget)) bNoMounts=TRUE;
+        if (_GetLocalInt(GetModule(),"X3_MOUNTS_EXTERNAL_ONLY")&&GetIsAreaInterior(oAreaTarget)) bNoMounts=TRUE;
+        else if (_GetLocalInt(GetModule(),"X3_MOUNTS_NO_UNDERGROUND")&&!GetIsAreaAboveGround(oAreaTarget)) bNoMounts=TRUE;
     } // check for global restrictions
 
 
     //Check to see if horses are not allowed in this area.  If so, no mount is summoned.
-    if (GetLocalInt(GetArea(oPC), "X3_NO_HORSES") || bNoMounts)
+    if (_GetLocalInt(GetArea(oPC), "X3_NO_HORSES") || bNoMounts)
     {
         DelayCommand(1.0,IncrementRemainingFeatUses(oPC,FEAT_PALADIN_SUMMON_MOUNT));
         FloatingTextStrRefOnCreature(111986, oPC, FALSE);
@@ -62,7 +62,7 @@ void main()
         //See if this guy already has a Paladin Mount, if not check to see if he's already mounted.
         oMount = HorseGetPaladinMount(oPC);
         if (!GetIsObjectValid(oMount)) 
-            oMount = GetLocalObject(oPC, "oX3PaladinMount");
+            oMount = _GetLocalObject(oPC, "oX3PaladinMount");
         
         if (GetIsObjectValid(oMount))
         {
@@ -75,10 +75,10 @@ void main()
             return;
         }
 
-        sSummonScript=GetLocalString(GetModule(),"X3_PALMOUNT_SUMMONOVR");
+        sSummonScript=_GetLocalString(GetModule(),"X3_PALMOUNT_SUMMONOVR");
 
-        if (GetStringLength(GetLocalString(oPC, "X3_PALMOUNT_SUMMONOVR")) > 0) 
-            sSummonScript = GetLocalString(oPC,"X3_PALMOUNT_SUMMONOVR");
+        if (GetStringLength(_GetLocalString(oPC, "X3_PALMOUNT_SUMMONOVR")) > 0) 
+            sSummonScript = _GetLocalString(oPC,"X3_PALMOUNT_SUMMONOVR");
 
         if (GetStringLength(sSummonScript) < 1)
         {

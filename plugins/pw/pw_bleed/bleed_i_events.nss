@@ -74,9 +74,9 @@ void bleed_OnClientEnter()
 void bleed_OnPlayerRestStarted()
 {
     object oPC = GetLastPCRested();
-    if (GetLocalInt(oPC, H2_LONG_TERM_CARE) && h2_GetPostRestHealAmount(oPC) > 0)
+    if (_GetLocalInt(oPC, H2_LONG_TERM_CARE) && h2_GetPostRestHealAmount(oPC) > 0)
     {
-        DeleteLocalInt(oPC, H2_LONG_TERM_CARE);
+        _DeleteLocalInt(oPC, H2_LONG_TERM_CARE);
         int postRestHealAmt = h2_GetPostRestHealAmount(oPC) * 2;
         h2_SetPostRestHealAmount(oPC, postRestHealAmt);
     }
@@ -85,7 +85,7 @@ void bleed_OnPlayerRestStarted()
 void bleed_OnPlayerDying()
 {
     object oPC = GetLastPlayerDying();
-    if (GetPlayerInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DYING)
+    if (_GetLocalInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DYING)
         h2_BeginPlayerBleeding(oPC);
 }
 
@@ -111,13 +111,13 @@ void bleed_healwidget()
 void bleed_OnTimerExpire()
 {
     object oPC = OBJECT_SELF;
-    int nPlayerState = GetPlayerInt(oPC, H2_PLAYER_STATE);
+    int nPlayerState = _GetLocalInt(oPC, H2_PLAYER_STATE);
     if (nPlayerState != H2_PLAYER_STATE_DYING && nPlayerState != H2_PLAYER_STATE_STABLE &&
         nPlayerState != H2_PLAYER_STATE_RECOVERING)
     {
-        int nTimerID = GetLocalInt(oPC, H2_BLEED_TIMER_ID);
-        DeleteLocalInt(oPC, H2_BLEED_TIMER_ID);
-        DeleteLocalInt(oPC, H2_TIME_OF_LAST_BLEED_CHECK);
+        int nTimerID = _GetLocalInt(oPC, H2_BLEED_TIMER_ID);
+        _DeleteLocalInt(oPC, H2_BLEED_TIMER_ID);
+        _DeleteLocalInt(oPC, H2_TIME_OF_LAST_BLEED_CHECK);
         KillTimer(nTimerID);
         //h2_KillTimer(nTimerID);
     }
@@ -129,7 +129,7 @@ void bleed_OnTimerExpire()
             h2_MakePlayerFullyRecovered(oPC);
             return;
         }
-        int nLastHitPoints = GetLocalInt(oPC, H2_LAST_HIT_POINTS);
+        int nLastHitPoints = _GetLocalInt(oPC, H2_LAST_HIT_POINTS);
         if (nCurrHitPoints > nLastHitPoints)
         {
             h2_StabilizePlayer(oPC);
@@ -141,7 +141,7 @@ void bleed_OnTimerExpire()
         }
         else
         {
-            SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_DEAD);
+            _SetLocalInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_DEAD);
             ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), oPC);
         }
     }

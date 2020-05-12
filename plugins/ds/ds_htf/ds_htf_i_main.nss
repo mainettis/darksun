@@ -84,7 +84,7 @@ void ds_htf_AddAssociate();
 //  call from outside of this include file.
 float _calculateTravelCostUnit(object oCreature)
 {
-    int nAreaType = GetLocalInt(GetArea(oCreature), DS_HTF_VARIABLE_AREATYPE);
+    int nAreaType = _GetLocalInt(GetArea(oCreature), DS_HTF_VARIABLE_AREATYPE);
     int nCost = ds_GetAreaTravelCost(nAreaType);
 
     return IntToFloat(nCost)/100.0;
@@ -94,22 +94,22 @@ void ds_CreateAreaTravelTimer(object oPC)
 {
     int timerID = CreateTimer(oPC, DS_HTF_AREA_ON_TIMER_EXPIRE, DS_HTF_AREATRAVELCOST_DELAY, 1, 0);
     //int timerID = h2_CreateTimer(oPC, DS_HTF_AREATIMER_SCRIPT, DS_HTF_AREATRAVELCOST_DELAY, FALSE, 1);
-    SetLocalInt(oPC, DS_HTF_VARIABLE_AREATIMER, timerID);
+    _SetLocalInt(oPC, DS_HTF_VARIABLE_AREATIMER, timerID);
     StartTimer(timerID, FALSE);
     //h2_StartTimer(timerID);
 }
 
 void ds_DestroyAreaTravelTimer(object oPC)
 {
-    int timerID = GetLocalInt(oPC, DS_HTF_VARIABLE_AREATIMER);
-    DeleteLocalInt(oPC, DS_HTF_VARIABLE_AREATIMER);
+    int timerID = _GetLocalInt(oPC, DS_HTF_VARIABLE_AREATIMER);
+    _DeleteLocalInt(oPC, DS_HTF_VARIABLE_AREATIMER);
     KillTimer(timerID);
     //h2_KillTimer(timerID);
 }
 
 float ds_ModifyFatigueDecrementUnit(object oCreature, float fDecrement)
 {
-    if (GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE) {
+    if (_GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE) {
         fDecrement = _calculateTravelCostUnit(oCreature);
         return fDecrement;
     }
@@ -121,12 +121,12 @@ float ds_ModifyFatigueDecrementUnit(object oCreature, float fDecrement)
 
 float ds_ModifyThirstDecrementUnit(object oCreature, float fDecrement)
 {
-    if (GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE)
+    if (_GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE)
         return _calculateTravelCostUnit(oCreature);
 
     if ((GetTimeHour() >= DS_HOUR_START_HEAT) &&
         (GetTimeHour() <  DS_HOUR_STOP_HEAT)  &&
-        (GetLocalInt(GetArea(oCreature), DS_HTF_VARIABLE_AREATYPE) > 0))
+        (_GetLocalInt(GetArea(oCreature), DS_HTF_VARIABLE_AREATYPE) > 0))
             fDecrement *= DS_THIRST_MULTIPLIER_HEAT;
 
     if (GetRacialType(oCreature) == DS_RACIAL_TYPE_HALFGIANT)
@@ -137,7 +137,7 @@ float ds_ModifyThirstDecrementUnit(object oCreature, float fDecrement)
 
 float ds_ModifyHungerDecrementUnit(object oCreature, float fDecrement)
 {
-    if (GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE)
+    if (_GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE)
         return _calculateTravelCostUnit(oCreature);
 
     if (GetRacialType(oCreature) == DS_RACIAL_TYPE_HALFGIANT) 
@@ -337,9 +337,9 @@ string ds_GetAreaTravelMessage(int iAreaType)
 void ds_SaveLastFindWaterTime(object oPC)
 {
     int findWaterTime = h2_GetSecondsSinceServerStart();
-    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
-    SetModuleInt(uniquePCID + DS_HTF_VARIABLE_LAST_PC_FINDWATER_TIME, findWaterTime);
-}
+    string uniquePCID = _GetLocalString(oPC, H2_UNIQUE_PC_ID);
+    _SetLocalInt(MODULE, uniquePCID + DS_HTF_VARIABLE_LAST_PC_FINDWATER_TIME, findWaterTime);
+} \
 
 void ds_SearchForWater(object oPC, int iAreaType)
 {/*
@@ -374,7 +374,7 @@ void ds_SearchForWater(object oPC, int iAreaType)
                 // multiple canteens and no one at Bioware or Beamdog has been thoughtful enough
                 // to help us grab the Nth instance of an item in a player's pack
                 object oCanteen = GetFirstItemInInventory(oPC);
-                int iCanteenSpace = GetLocalInt(oCanteen, H2_HT_MAX_CHARGES) - GetLocalInt(oCanteen, H2_HT_CURR_CHARGES);
+                int iCanteenSpace = _GetLocalInt(oCanteen, H2_HT_MAX_CHARGES) - _GetLocalInt(oCanteen, H2_HT_CURR_CHARGES);
                 int iCanteenFound = FALSE;
 
                 while ((oCanteen != OBJECT_INVALID) && (iWaterFound != 0))
@@ -385,18 +385,18 @@ void ds_SearchForWater(object oPC, int iAreaType)
 
                         if (iWaterFound > iCanteenSpace)
                         {
-                            SetLocalInt(oCanteen, H2_HT_CURR_CHARGES, iCanteenSpace);
+                            _SetLocalInt(oCanteen, H2_HT_CURR_CHARGES, iCanteenSpace);
                             iWaterFound = iWaterFound - iCanteenSpace;
                         }
                         else
                         {
-                            SetLocalInt(oCanteen, H2_HT_CURR_CHARGES, iWaterFound);
+                            _SetLocalInt(oCanteen, H2_HT_CURR_CHARGES, iWaterFound);
                             iWaterFound = 0;
                         }
                     }
 
                     GetNextItemInInventory(oPC);
-                    iCanteenSpace = GetLocalInt(oCanteen, H2_HT_MAX_CHARGES) - GetLocalInt(oCanteen, H2_HT_CURR_CHARGES);
+                    iCanteenSpace = _GetLocalInt(oCanteen, H2_HT_MAX_CHARGES) - _GetLocalInt(oCanteen, H2_HT_CURR_CHARGES);
                 }
                 // If the PC has canteens but not enough space for all the water, fill them, and tell the PC how much water they are wasting
                 if ((iWaterFound > 0) && (iCanteenFound = TRUE))
@@ -429,9 +429,9 @@ void _initAssociate(object oAssociate)
         h2_InitFatigueCheck(oAssociate);
         h2_InitHungerThirstCheck(oAssociate);
 
-        float fThirst = GetLocalFloat(oAssociate, H2_HT_CURR_THIRST) * 100.0;
-        float fHunger = GetLocalFloat(oAssociate, H2_HT_CURR_HUNGER) * 100.0;
-        float fFatigue = GetLocalFloat(oAssociate, H2_CURR_FATIGUE) * 100.0;
+        float fThirst = _GetLocalFloat(oAssociate, H2_HT_CURR_THIRST) * 100.0;
+        float fHunger = _GetLocalFloat(oAssociate, H2_HT_CURR_HUNGER) * 100.0;
+        float fFatigue = _GetLocalFloat(oAssociate, H2_CURR_FATIGUE) * 100.0;
 
         ds_DisplayAssociateHTFValues(oAssociate, fThirst, fHunger, fFatigue);
     }

@@ -268,7 +268,7 @@ void AnvilDialog()
             {
                 int nNode = GetDialogNode();
                 string sData = GetDialogData(ANVIL_PAGE_ITEM, nNode);
-                object oItem = GetLocalObject(DLG_SELF, ANVIL_ITEM);
+                object oItem = _GetLocalObject(DLG_SELF, ANVIL_ITEM);
                 CacheDialogToken("Action", sData);
 
                 if (sData == "Copy")

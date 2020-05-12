@@ -34,31 +34,31 @@ void dmw_CleanUp(object oMySpeaker)
 {
     int nCount;
     int nCache;
-    //DeleteLocalObject(oMySpeaker, "dmfi_univ_target");
-    DeleteLocalLocation(oMySpeaker, "dmfi_univ_location");
-    DeleteLocalObject(oMySpeaker, "dmw_item");
-    DeleteLocalString(oMySpeaker, "dmw_repamt");
-    DeleteLocalString(oMySpeaker, "dmw_repargs");
-    nCache = GetLocalInt(oMySpeaker, "dmw_playercache");
+    //_DeleteLocalObject(oMySpeaker, "dmfi_univ_target");
+    _DeleteLocalLocation(oMySpeaker, "dmfi_univ_location");
+    _DeleteLocalObject(oMySpeaker, "dmw_item");
+    _DeleteLocalString(oMySpeaker, "dmw_repamt");
+    _DeleteLocalString(oMySpeaker, "dmw_repargs");
+    nCache = _GetLocalInt(oMySpeaker, "dmw_playercache");
     for (nCount = 1; nCount <= nCache; nCount++)
     {
-        DeleteLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCount));
+        _DeleteLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCount));
     }
-    DeleteLocalInt(oMySpeaker, "dmw_playercache");
-    nCache = GetLocalInt(oMySpeaker, "dmw_itemcache");
+    _DeleteLocalInt(oMySpeaker, "dmw_playercache");
+    nCache = _GetLocalInt(oMySpeaker, "dmw_itemcache");
     for (nCount = 1; nCount <= nCache; nCount++)
     {
-        DeleteLocalObject(oMySpeaker, "dmw_itemcache" + IntToString(nCount));
+        _DeleteLocalObject(oMySpeaker, "dmw_itemcache" + IntToString(nCount));
     }
-    DeleteLocalInt(oMySpeaker, "dmw_itemcache");
+    _DeleteLocalInt(oMySpeaker, "dmw_itemcache");
     for (nCount = 1; nCount <= 10; nCount++)
     {
-        DeleteLocalString(oMySpeaker, "dmw_dialog" + IntToString(nCount));
-        DeleteLocalString(oMySpeaker, "dmw_function" + IntToString(nCount));
-        DeleteLocalString(oMySpeaker, "dmw_params" + IntToString(nCount));
+        _DeleteLocalString(oMySpeaker, "dmw_dialog" + IntToString(nCount));
+        _DeleteLocalString(oMySpeaker, "dmw_function" + IntToString(nCount));
+        _DeleteLocalString(oMySpeaker, "dmw_params" + IntToString(nCount));
     }
-    DeleteLocalString(oMySpeaker, "dmw_playerfunc");
-    DeleteLocalInt(oMySpeaker, "dmw_started");
+    _DeleteLocalString(oMySpeaker, "dmw_playerfunc");
+    _DeleteLocalInt(oMySpeaker, "dmw_started");
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -302,7 +302,7 @@ void ParseCommand(object oActionTarget, object oPC, string sArguments)
         //  it to the installed language list.
         //Should be using _LOADED here because we're assigning a language to speak,
         //  not just awarding a language.
-        if(!GetLocalInt(DMFI, DMFI_LANGUAGE_INITIALIZED))
+        if(!_GetLocalInt(DMFI, DMFI_LANGUAGE_INITIALIZED))
             dmfi_InitializeLanguages();
 
         if (HasListItem(DMFI_LANGUAGE_LOADED_CSV, sArgument))
@@ -315,17 +315,17 @@ void ParseCommand(object oActionTarget, object oPC, string sArguments)
                 {
                     int nLanguageIndex;
                     oLanguageItem = GetListObject(DMFI, i, DMFI_LANGUAGE_OBJECT)
-                    sLanguageAbbreviation = GetLocalString(oLanguageItem, DMFI_LANGUAGE_ABBREVIATION);
+                    sLanguageAbbreviation = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_ABBREVIATION);
                     if (sArgument == sLanguageAbbreviation)
                     {
-                        sLanguage = GetLocalString(oLanguageItem, DMFI_LANGUAGE_NAME);
+                        sLanguage = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_NAME);
                         break;
                     }
-                    else if (nLanguageIndex = GetLocalString(oLanguageItem, DMFI_LANGUAGE_INDEX))
+                    else if (nLanguageIndex = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_INDEX))
                     {
-                        if (nLanguageIndex == GetLocalInt(oLanguageItem, DMFI_LANGUAGE_INDEX))
+                        if (nLanguageIndex == _GetLocalInt(oLanguageItem, DMFI_LANGUAGE_INDEX))
                         {
-                            sLanguage = GetLocalString(oLanguageItem, DMFI_LANGUAGE_NAME);
+                            sLanguage = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_NAME);
                             break;
                         }    
                         
@@ -422,16 +422,16 @@ void ParseCommand(object oActionTarget, object oPC, string sArguments)
     if (iOffset)
     {
         if (FindSubString(sCom, "all") != -1 || FindSubString(sArgs, "all") != -1)
-            SetLocalInt(oCommander, "dmfi_univ_int", iOffset+40);
+            _SetLocalInt(oCommander, "dmfi_univ_int", iOffset+40);
         else
-            SetLocalInt(oCommander, "dmfi_univ_int", iOffset);
+            _SetLocalInt(oCommander, "dmfi_univ_int", iOffset);
 
-        SetLocalString(oCommander, "dmfi_univ_conv", "dicebag");
+        _SetLocalString(oCommander, "dmfi_univ_conv", "dicebag");
         if (GetIsObjectValid(oTarget))
         {
-            if (oTarget != GetLocalObject(oCommander, "dmfi_univ_target"))
+            if (oTarget != _GetLocalObject(oCommander, "dmfi_univ_target"))
             {
-                SetLocalObject(oCommander, "dmfi_univ_target", oTarget);
+                _SetLocalObject(oCommander, "dmfi_univ_target", oTarget);
                 FloatingTextStringOnCreature("DMFI Target set to "+GetName(oTarget), oCommander);
             }
             ExecuteScript("dmfi_execute", oCommander);
@@ -466,8 +466,8 @@ void ParseCommand(object oActionTarget, object oPC, string sArguments)
         {
             if (FindSubString(GetName(oGet), sArgs) != -1)
             {
-                // SetLocalObject(oCommander, "dmfi_VoiceTarget", oGet);
-                SetLocalObject(oCommander, "dmfi_univ_target", oGet);
+                // _SetLocalObject(oCommander, "dmfi_VoiceTarget", oGet);
+                _SetLocalObject(oCommander, "dmfi_univ_target", oGet);
                 FloatingTextStringOnCreature("You have targeted " + GetName(oGet) + " with the DMFI Targeting Widget", oCommander, FALSE);
                 return;
             }
@@ -483,7 +483,7 @@ void ParseCommand(object oActionTarget, object oPC, string sArguments)
         {
             if (FindSubString(GetName(oGet), sArgs) != -1)
             {
-                SetLocalObject(oCommander, "dmfi_VoiceTarget", oGet);
+                _SetLocalObject(oCommander, "dmfi_VoiceTarget", oGet);
                 FloatingTextStringOnCreature("You have targeted " + GetName(oGet) + " with the Voice Widget", oCommander, FALSE);
                 return;
             }
@@ -520,29 +520,29 @@ int RelayTextToEavesdropper(object oShouter, int nVolume, string sSaid)
         while (1)
         {
             siHook = IntToString(iHook);
-            iHookType = GetLocalInt(oMod, sHookTypeVarname+siHook);
+            iHookType = _GetLocalInt(oMod, sHookTypeVarname+siHook);
             if (iHookType == 0) break; // end of list
 
             // check channel
-            channels = GetLocalInt(oMod, sHookChannelsVarname+siHook);
+            channels = _GetLocalInt(oMod, sHookChannelsVarname+siHook);
             if (((1 << nVolume) & channels) != 0)
             {
                 string sVol = (nVolume == TALKVOLUME_WHISPER ? "whispers" : "says");
-                object oOwner = GetLocalObject(oMod, sHookOwnerVarname+siHook);
+                object oOwner = _GetLocalObject(oMod, sHookOwnerVarname+siHook);
                 if (GetIsObjectValid(oOwner))
                 {
                     // it's a channel for us to listen on, process
-                    int bcast = GetLocalInt(oMod, sHookBcastDMsVarname+siHook);
+                    int bcast = _GetLocalInt(oMod, sHookBcastDMsVarname+siHook);
                     // for type 1, see if speaker is the one we want (pc or party)
                     // for type 2, see if speaker says his stuff within ("earshot" / area / module) of listener's location
                     if (iHookType == 1) // listen to what a PC hears
                     {
                         object oListener;
                         location locShouter, locListener;
-                        object oTargeted = GetLocalObject(oMod, sHookCreatureVarname+siHook);
+                        object oTargeted = _GetLocalObject(oMod, sHookCreatureVarname+siHook);
                         if (GetIsObjectValid(oTargeted))
                         {
-                            rangemode = GetLocalInt(oMod, sHookRangeModeVarname+siHook);
+                            rangemode = _GetLocalInt(oMod, sHookRangeModeVarname+siHook);
                             if (rangemode) oListener = GetFirstFactionMember(oTargeted, FALSE); // everyone in party are our listeners
                             else oListener = oTargeted; // only selected PC is our listener
                             while (GetIsObjectValid(oListener))
@@ -587,17 +587,17 @@ int RelayTextToEavesdropper(object oShouter, int nVolume, string sSaid)
                     else if (iHookType == 2) // listen at location
                     {
                         location locShouter, locListener;
-                        object oListener = GetLocalObject(oMod, sHookCreatureVarname+siHook);
+                        object oListener = _GetLocalObject(oMod, sHookCreatureVarname+siHook);
                         if (oListener != OBJECT_INVALID)
                         {
                             locListener = GetLocation(oListener);
                         }
                         else
                         {
-                            locListener = GetLocalLocation(oMod, sHookLocationVarname+siHook);
+                            locListener = _GetLocalLocation(oMod, sHookLocationVarname+siHook);
                         }
                         locShouter = GetLocation(oShouter);
-                        rangemode = GetLocalInt(oMod, sHookRangeModeVarname+siHook);
+                        rangemode = _GetLocalInt(oMod, sHookRangeModeVarname+siHook);
                         int bInRange = FALSE;
                         if (rangemode == 0)
                         {

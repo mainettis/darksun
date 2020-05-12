@@ -22,9 +22,9 @@ void main()
     if (GetStringLeft(GetTag(oItem), 5) == "dmfi_" ||
     GetStringLeft(GetTag(oItem), 8) == "hlslang_")
     {
-        SetLocalObject(OBJECT_SELF, "dmfi_item", oItem);
-        SetLocalObject(OBJECT_SELF, "dmfi_target", oTarget);
-        SetLocalLocation(OBJECT_SELF, "dmfi_location", lLocal);
+        _SetLocalObject(OBJECT_SELF, "dmfi_item", oItem);
+        _SetLocalObject(OBJECT_SELF, "dmfi_target", oTarget);
+        _SetLocalLocation(OBJECT_SELF, "dmfi_location", lLocal);
         ExecuteScript("dmfi_activate", OBJECT_SELF);
         return;
     }

@@ -36,10 +36,10 @@ int dmfi_InitializeSystem(string INIT_LIST, string LOADED_LIST, string ITEM_PREF
     object oItem;
     string sItem, sItems;
 
-    if (GetLocalInt(DMFI, INIT_FLAG) && !bForce)
+    if (_GetLocalInt(DMFI, INIT_FLAG) && !bForce)
         return TRUE;
 
-    DeleteLocalString(DMFI, LOADED_LIST);
+    _DeleteLocalString(DMFI, LOADED_LIST);
     if (!nCount)
         return FALSE;
 
@@ -74,8 +74,8 @@ int dmfi_InitializeSystem(string INIT_LIST, string LOADED_LIST, string ITEM_PREF
         (iItemCount == nCount ? "\n  All items on the install list have been loaded." :
         "\n  Unable to find valid items for " + nCount - iItemCount " languages."*/
 
-    SetLocalString(DMFI, LOADED_LIST, sItems);
-    SetLocalInt(DMFI, INIT_FLAG, TRUE);
+    _SetLocalString(DMFI, LOADED_LIST, sItems);
+    _SetLocalInt(DMFI, INIT_FLAG, TRUE);
 
     return iItemCount;
 }
@@ -84,7 +84,7 @@ int dmfi_InitializeSystem(string INIT_LIST, string LOADED_LIST, string ITEM_PREF
 // Returns the default setting for the passed sSetting given the object oPC.
 string dmfi_GetDefaultSetting(object oPC, string sSetting)
 {
-    if(!GetLocalInt(oPC, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oPC, DMFI_INITIALIZED))
         return "";
 
     Debug("DMFI :: Setting Default " + sSetting + " value for " + GetName(oPC));
@@ -104,10 +104,10 @@ string dmfi_GetDefaultSetting(object oPC, string sSetting)
 //  from the variable in the user's PC object.
 void dmfi_PushSettings(object oPC)
 {
-    if(!GetLocalInt(oUser, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oUser, DMFI_INITIALIZED))
         return;
 
-    string sSettings = GetLocalString(oUser, DMFI_USER_SETTINGS);
+    string sSettings = _GetLocalString(oUser, DMFI_USER_SETTINGS);
     SetDatabaseString(DMFI_USER_SETTINGS, sSettings, oPC);
 }
 
@@ -131,13 +131,13 @@ string dmfi_PullSettings(object oPC)
 //  the database and user variable.
 int dmfi_SetSetting(object oPC, string sSetting, string sValue, int bForce)
 {
-    if(!GetLocalInt(oPC, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oPC, DMFI_INITIALIZED))
         return FALSE;
 
     Debug("DMFI :: Setting " + (bForce ? "persistent " : "") + sSetting +
             " for " + GetName(oPC));
 
-    string sUserSettings = GetLocalString(oPC, DMFI_USER_SETTINGS);
+    string sUserSettings = _GetLocalString(oPC, DMFI_USER_SETTINGS);
     string sNewSetting = sSetting + ":" + sValue;
 
     if(bForce)
@@ -149,7 +149,7 @@ int dmfi_SetSetting(object oPC, string sSetting, string sValue, int bForce)
         Debug("DMFI :: Unable to set " + (bForce ? "persistent " : "") +
             sSetting + ".  Key:Value Pair does not exist.");
 
-    SetLocalString(oPC, DMFI_USER_SETTINGS, sUserSettings);
+    _SetLocalString(oPC, DMFI_USER_SETTINGS, sUserSettings);
 
     if(bForce)
         SetDatabaseString(DMFI_USER_SETTINGS, sUserSettings, oPC);
@@ -188,13 +188,13 @@ int dmfi_SetSettingFloat(object oPC, string sSetting, float fValue, int bForce =
 //      will be set to the object's setting variable and to the database.
 string dmfi_DeleteSetting(object oPC, string sSetting, int bUseDefault = TRUE, int bForce = FALSE)
 {
-    if(!GetLocalInt(oPC, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oPC, DMFI_INITIALIZED))
         return "";
 
     /*Debug("DMFI :: Deleting " + (bForce ? "persistent " : ""() + sSetting) +
         " for " + GetName(oPC) + (bUseDefault ? " and replacing with default." : "."));*/
 
-    string sValue, sUserSettings = GetLocalString(oPC, DMFI_USER_SETTINGS);
+    string sValue, sUserSettings = _GetLocalString(oPC, DMFI_USER_SETTINGS);
     if (bForce)
         sUserSettings = GetDatabaseString(DMFI_USER_SETTINGS, oPC);
 
@@ -213,7 +213,7 @@ string dmfi_DeleteSetting(object oPC, string sSetting, int bUseDefault = TRUE, i
                 Warning("DMFI :: Default setting " + sSetting + " does not exist.");
         }
 
-        SetLocalString(oPC, DMFI_USER_SETTINGS, sUserSettings);
+        _SetLocalString(oPC, DMFI_USER_SETTINGS, sUserSettings);
         if (bForce)
             SetDatabaseString(DMFI_USER_SETTINGS, sUserSettings, oPC);
     }
@@ -229,10 +229,10 @@ string dmfi_DeleteSetting(object oPC, string sSetting, int bUseDefault = TRUE, i
 //  settings variable.
 string dmfi_GetSetting(object oPC, string sSetting, int bForce)
 {
-    if(!GetLocalInt(oPC, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oPC, DMFI_INITIALIZED))
         return "";
 
-    string sCurrentSetting, sUserSettings = GetLocalString(oPC, DMFI_USER_SETTINGS);
+    string sCurrentSetting, sUserSettings = _GetLocalString(oPC, DMFI_USER_SETTINGS);
 
     if(!bForce)
         sUserSettings = GetDatabaseString(DMFI_USER_SETTINGS, oPC);
@@ -305,7 +305,7 @@ void dmfi_SetDefaultSettings(object oPC, int bForce = FALSE)
     if (_GetIsDM(oPC))
         sSettings = DMFI_DEFAULT_DM_SETTINGS;
 
-    SetLocalString(oPC, DMFI_USER_SETTINGS, sSettings);
+    _SetLocalString(oPC, DMFI_USER_SETTINGS, sSettings);
 
     if (bForce)
         SetDatabaseString(DMFI_USER_SETTINGS, sSettings, oPC);
@@ -431,11 +431,11 @@ struct DMFI_LANGUAGE_ITEM dmfi_GetLanguage(int nIndex)
     struct DMFI_LANGUAGE_ITEM li;
     object oLanguageItem = GetListObject(DMFI, nIndex, DMFI_LANGUAGE_ITEMS_OBJECT_LIST);
 
-    li.nMode = GetLocalInt(oLanguageItem, DMFI_LANGUAGE_ITEM_TRANSLATION_MODE);
-    li.sName = GetLocalString(oLanguageItem, DMFI_LANGUAGE_ITEM_NAME);
-    li.sAbbreviation = GetLocalString(oLanguageItem, DMIF_LANGUAGE_ITEM_ABBREVIATION);
-    li.sAlphabet = GetLocalString(oLanguageItem, DMFI_LANGUAGE_ITEM_ALPHABET);
-    li.nActive = GetLocalString(oLanguageItem, DMFI_LANGUAGE_ITEM_ACTIVE);
+    li.nMode = _GetLocalInt(oLanguageItem, DMFI_LANGUAGE_ITEM_TRANSLATION_MODE);
+    li.sName = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_ITEM_NAME);
+    li.sAbbreviation = _GetLocalString(oLanguageItem, DMIF_LANGUAGE_ITEM_ABBREVIATION);
+    li.sAlphabet = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_ITEM_ALPHABET);
+    li.nActive = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_ITEM_ACTIVE);
 
     return li;
 }
@@ -474,7 +474,7 @@ int dmfi_GetWordCount(string sPhrase)
 //  database.
 int dmfi_AssignKnownLanguages(object oActionTarget, string sLanguage, int bForce = FALSE)
 {
-    if(!GetLocalInt(oActionTarget, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oActionTarget, DMFI_INITIALIZED))
         return FALSE;
     
     if (!_GetIsPC(oActionTarget))
@@ -483,14 +483,14 @@ int dmfi_AssignKnownLanguages(object oActionTarget, string sLanguage, int bForce
     if (bForce)
         sList = GetDatabaseString(DMFI_LANGUAGE_KNOWN, oActionTarget);
     else
-        string sList = GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN);
+        string sList = _GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN);
 
     if (!CountList(sList))
         sList = DMFI_LANGUAGE_ITEM_COMMON;
     else
         sList = AddListItem(sList, sLanguage, TRUE);
 
-    SetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN, sList);
+    _SetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN, sList);
     if (bForce)
         SetDatabaseString(DMFI_LANGUAGE_KNOWN, sList, oActionTarget);
 
@@ -509,7 +509,7 @@ string dmfi_PullKnownLanguages(oActionTarget)
 // Sets known languages in the database
 void dmfi_PushKnownLanguages(oActionTarget)
 {
-    string sLanguages = GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN);
+    string sLanguages = _GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN);
     SetDatabaseString(DMFI_LANGUAGE_KNOWN, sLanguages, oActionTarget);
 }
 
@@ -517,14 +517,14 @@ void dmfi_PushKnownLanguages(oActionTarget)
 // Removes all known languages from a PC, leaving only common.
 void dmfi_ResetKnownLanguages(object oActionTarget, int bForce = FALSE);
 {
-    if(!GetLocalInt(oActionTarget, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oActionTarget, DMFI_INITIALIZED))
         return FALSE;
 
     if (!_GetIsPC(oActionTarget))
         return FALSE;
 
     string sLanguages = DMFI_LANGUAGE_ITEM_COMMON;
-    SetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN, sLanguages);
+    _SetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN, sLanguages);
     dmfi_AssignCurrentLanguage(oActionTarget, DMFI_LANGUAGE_ITEM_COMMON);
 
     if (bForce)
@@ -538,20 +538,20 @@ void dmfi_ResetKnownLanguages(object oActionTarget, int bForce = FALSE);
 //  otherwise.  Common cannot be removed from a PC's known language list.
 int dmfi_RemoveKnownLanguage(object oActionTarget, string sLanguage)
 {
-    if(!GetLocalInt(oActionTarget, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oActionTarget, DMFI_INITIALIZED))
         return FALSE; 
 
     if(sLanguage == DMFI_LANGUAGE_ITEM_COMMON)
         return FALSE;
 
-    string sLanguages = GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN);
+    string sLanguages = _GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN);
 
     if (_GetIsPC(oActionTarget))
     {
         if (HasListItem(sLanguages, sLanguage))
         {
             sLanguages = RemoveListItem(sLanguages, sLanguage);
-            SetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN);
+            _SetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN);
             return TRUE;
         }
     }
@@ -567,16 +567,16 @@ int dmfi_RemoveKnownLanguage(object oActionTarget, string sLanguage)
 //  language can only be set to a language on the PC's known language list.
 int dmfi_AssignCurrentLanguage(object oActionTarget, string sLanguage)
 {
-    if(!GetLocalInt(oActionTarget, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oActionTarget, DMFI_INITIALIZED))
         return FALSE;
 
     if(_GetIsPC(oActionTarget))
     {
-        string sLanguages = GetLocalString(oActionTarget, DMFI_LANGUAGE_CURRENT);
+        string sLanguages = _GetLocalString(oActionTarget, DMFI_LANGUAGE_CURRENT);
 
         if (HasListItem(sLanguages, sLanguage) || sLanguage == DMFI_LANGUAGE_ITEM_COMMON)
         {
-            SetLocalString(oActionTarget, DMFI_LANGUAGE_CURRENT, sLanguage);
+            _SetLocalString(oActionTarget, DMFI_LANGUAGE_CURRENT, sLanguage);
             return TRUE;
         }
     }

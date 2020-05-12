@@ -40,7 +40,7 @@ void main()
     //     ExecuteScript("dmfi_voice_exe", OBJECT_SELF);
     //     }
 
-    if (nMatch == -1 && GetIsPC(oShouter) &&(GetLocalInt(GetModule(), "dmfi_AllMute") || GetLocalInt(OBJECT_SELF, "dmfi_Mute")))
+    if (nMatch == -1 && GetIsPC(oShouter) &&(_GetLocalInt(GetModule(), "dmfi_AllMute") || _GetLocalInt(OBJECT_SELF, "dmfi_Mute")))
     {
         SendMessageToAllDMs(GetName(oShouter) + " is trying to speak to a muted NPC, " + GetName(OBJECT_SELF) + ", in area " + GetName(GetArea(OBJECT_SELF)));
         SendMessageToPC(oShouter, "This NPC is muted. A DM will be here shortly.");
@@ -78,7 +78,7 @@ void main()
         // Determine the intruder if any
         if(nMatch == 4)
         {
-            oIntruder = GetLocalObject(oShouter, "NW_BLOCKER_INTRUDER");
+            oIntruder = _GetLocalObject(oShouter, "NW_BLOCKER_INTRUDER");
         }
         else if (nMatch == 5)
         {

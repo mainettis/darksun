@@ -86,7 +86,7 @@ const string DMFI = "DMFI Data";
 object DMFI_DATA = GetDatapoint(DMFI);
 const string DMFI_INITIALIZED = "DMFI_INITIALIZED";
 const string DMFI_EMOTES_MUTED = "DMFI_EMOTES_MUTED";
-int DMFI_MODULE_EMOTES_MUTED = GetLocalInt(DMFI, DMFI_EMOTES_MUTED);
+int DMFI_MODULE_EMOTES_MUTED = _GetLocalInt(DMFI, DMFI_EMOTES_MUTED);
 
 // --- Player Variables
 const string DMFI_USER_SETTINGS = "DMFI_USER_SETTINGS";

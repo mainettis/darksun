@@ -65,15 +65,16 @@ Here are the basic functions it provides:
 * `_GetIsDM()` - a replacement for nwscript's `GetIsDM()`.  Our version determines whether the passes character object is a DM or a DM possessing an NPC.
 * `_GetIsPartyMember()` - will return whether the first passed object is a party member of the second passed object.
 
-#### Variable Handling
+* `[_Get, _Set, _Delete]Local*` - module-specific replacements for `[get,set,delete]Local*`.  For now, these are just wrappers, however, they will be used later for object/variable inheritance and other functions, so best to start using them now.  To set a variable on the module, the object `MODULE` should be passed:  `_SetLocalInt(MODULE, sVarName, nValue)`.  Also allows us to delete the HCR2 methodology of using separate functions to set module variables and player-persistent variables.  Just call out version and it'll figure it our for you.  If none of the special conditions are met (i.e. for PCs, inheritance, etc.) it just processes the variable on the passed object as the normal Bioware function would.
 
-Dark Sun is not using the standard Bioware variable handling functions.  In `dsutil_i_data`, there are similar functions to handle all variables in a similar manner, but allow us to change how variable are set in the future without modifying large amounts of code to change function names.  Any code that uses Bioware's variable handling procedures will either be changed or rejected.  Here's how the custom functions work:
 
-* For PCs, pass the PC object as the first parameter and the functions will get/set/delete the variables off of the PC's item DATAPOINT per the normal methodology for HCR2 variable handling.
-* For the module, pass the `MODULE` object (literally -> `GetLocalInt(MODULE, ...);`).  The MODULE object is a module-wide pointer to the MODULE datapoint we're using to store module variables.  We are not storing module variables directly on the module object normally obtained by `GetModule()`.
-* For all other objects, just pass the arguments normally and the functions will handle the variables just as if they were using the standard Bioware functions
+* In work, module-private replacements to allow inheritance.
+* ~~`[Get, Set, Delete]Module*` - alias functions for `[Set, Get, Delete]Local*`.  These are equivalent to `SetLocalInt(GetModule(), sVarName, nValue)`, except our version sets the variables on a MODULE datapoint instead of the module object itself.  This help to keep the module object from being overloaded with variables and allows them to be accessed more quickly.~~
+* ~~`[Get, Set, Delete]Player*` - alias functions for [Set, Get, Delete]Local*.  These are equivalent to `SetLocalInt(oPC, sVarName, nValue)`, except our version sets the variables on a player-held, non-droppable, player data item.  This allows us to keep the player object from being overused and to allow persistence in player-assigned variables without using the database.~~
 
 To learn more and understand exactly how the functions work, open up [`dsutil_i_data`](../utilities/dsutil_i_data.nss) and take a look!
+
+*Acknowledgement:  As acknowledged in our [acknowledgements document](acknowledgements.md/#hcr2), many of these functions are taken directly from Edward Beck's HCR2 system and modified for our use.*
 
 ## Framework System
 

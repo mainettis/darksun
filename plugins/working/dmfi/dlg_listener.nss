@@ -14,24 +14,24 @@ void main()
 
 // SendMessageToPC(GetFirstPC(), "ENTER dmfi_univ_listen: speaker=" + GetName(oShouter) + ", channel=" + IntToString(nVolume) + ", said=" + sSaid);
     // first, lets deal with a getln event
-    string getln_mode = GetLocalString(OBJECT_SELF, "dmfi_getln_mode");
+    string getln_mode = _GetLocalString(OBJECT_SELF, "dmfi_getln_mode");
     if (getln_mode == "name")
     {
         if (sSaid != ".")
         {
-            object oTarget = GetLocalObject(oShouter, "dmfi_univ_target");
+            object oTarget = _GetLocalObject(oShouter, "dmfi_univ_target");
             SetName(oTarget, sSaid);
         }
-        DeleteLocalString(OBJECT_SELF, "dmfi_getln_mode");
+        _DeleteLocalString(OBJECT_SELF, "dmfi_getln_mode");
     }
     else if (getln_mode == "desc")
     {
         if (sSaid != ".")
         {
-            object oTarget = GetLocalObject(oShouter, "dmfi_univ_target");
+            object oTarget = _GetLocalObject(oShouter, "dmfi_univ_target");
             SetDescription(oTarget, sSaid);
         }
-        DeleteLocalString(OBJECT_SELF, "dmfi_getln_mode");
+        _DeleteLocalString(OBJECT_SELF, "dmfi_getln_mode");
     }
     else
     {
@@ -42,42 +42,42 @@ void main()
             // put your code here to process the input line (in sSaid)
 
             if (_GetIsDM(oShouter))
-                SetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter), 1);
+                _SetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter), 1);
             if (GetIsDMPossessed(oShouter)) 
-                SetLocalObject(GetMaster(oShouter), "dmfi_familiar", oShouter);
+                _SetLocalObject(GetMaster(oShouter), "dmfi_familiar", oShouter);
 
-            object oTarget = GetLocalObject(oShouter, "dmfi_VoiceTarget");
+            object oTarget = _GetLocalObject(oShouter, "dmfi_VoiceTarget");
             object oMaster = OBJECT_INVALID;
             if (GetIsObjectValid(oTarget)) oMaster = oShouter;
 
-            int iPhrase = GetLocalInt(oShouter, "hls_EditPhrase");
+            int iPhrase = _GetLocalInt(oShouter, "hls_EditPhrase");
 
             object oSummon;
 
             if (GetIsObjectValid(oShouter) && _GetIsDM(oShouter))
             {
-                if (GetTag(OBJECT_SELF) == "dmfi_setting" && GetLocalString(oShouter, "EffectSetting") != "")
+                if (GetTag(OBJECT_SELF) == "dmfi_setting" && _GetLocalString(oShouter, "EffectSetting") != "")
                 {
-                    string sPhrase = GetLocalString(oShouter, "EffectSetting");
-                    SetLocalFloat(oShouter, sPhrase, StringToFloat(sSaid));
+                    string sPhrase = _GetLocalString(oShouter, "EffectSetting");
+                    _SetLocalFloat(oShouter, sPhrase, StringToFloat(sSaid));
                     SetDMFIPersistentFloat("dmfi", sPhrase, StringToFloat(sSaid), oShouter);
-                    DeleteLocalString(oShouter, "EffectSetting");
-                    DelayCommand(0.5, ActionSpeakString("The setting " + sPhrase + " has been changed to " + FloatToString(GetLocalFloat(oShouter, sPhrase))));
+                    _DeleteLocalString(oShouter, "EffectSetting");
+                    DelayCommand(0.5, ActionSpeakString("The setting " + sPhrase + " has been changed to " + FloatToString(_GetLocalFloat(oShouter, sPhrase))));
                     DelayCommand(1.5, DestroyObject(OBJECT_SELF));
                 }
             }
 
             if (GetIsObjectValid(oShouter) && _GetIsPC(oShouter))
             {
-                if (sSaid != GetLocalString(GetModule(), "hls_voicebuffer"))
+                if (sSaid != _GetLocalString(GetModule(), "hls_voicebuffer"))
                 {
-                    SetLocalString(GetModule(), "hls_voicebuffer", sSaid);
+                    _SetLocalString(GetModule(), "hls_voicebuffer", sSaid);
 
                     // PrintString("<Conv>"+GetName(GetArea(oShouter))+ " " + GetName(oShouter) + ": " + sSaid + " </Conv>");
 
                     // if the phrase begins with .MyName, reparse the string as a voice throw
                     if (GetStringLeft(sSaid, GetStringLength("." + GetName(OBJECT_SELF))) == "." + GetName(OBJECT_SELF) &&
-                        (GetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter)) ||
+                        (_GetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter)) ||
                         _GetIsDM(oShouter)))
                     {
                         oTarget = OBJECT_SELF;
@@ -101,7 +101,7 @@ void main()
                         {
 
                         }
-                        DeleteLocalInt(oShouter, "hls_EditPhrase");
+                        _DeleteLocalInt(oShouter, "hls_EditPhrase");
                     }
                 }
             }

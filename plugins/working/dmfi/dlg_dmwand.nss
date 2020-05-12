@@ -3,8 +3,8 @@ int DMW_START_CUSTOM_TOKEN = 8000;
 
 //Retrieve targetting information
 object oMySpeaker = GetLastSpeaker();
-object oMyTarget = GetLocalObject(oMySpeaker, "dmfi_univ_target");
-location lMyLoc = GetLocalLocation(oMySpeaker, "dmfi_univ_location");
+object oMyTarget = _GetLocalObject(oMySpeaker, "dmfi_univ_target");
+location lMyLoc = _GetLocalLocation(oMySpeaker, "dmfi_univ_location");
 
 int dmwand_isnearbydestroyable()
 {
@@ -169,9 +169,9 @@ int dmw_conv_Start(int nCurrent, int nChoice, string sParams = "")
          break;
    }
 
-   SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), sText);
-   SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), sCall);
-   SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), sCallParams);
+   _SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), sText);
+   _SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), sCall);
+   _SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), sCallParams);
 
    return nCurrent;
 }
@@ -196,13 +196,13 @@ void dmwand_BuildConversation(string sConversation, string sParams)
    if(TestStringAgainstPattern(sParams, "prev"))
    {
       //Get the number choice to start with
-      nCurrent = GetLocalInt(oMySpeaker, "dmw_dialogprev");
+      nCurrent = _GetLocalInt(oMySpeaker, "dmw_dialogprev");
 
       //Since we're going to the previous page, there will be a next
-      SetLocalString(oMySpeaker, "dmw_dialog9", "Next ->");
-      SetLocalString(oMySpeaker, "dmw_function9", "conv_" + sConversation);
-      SetLocalString(oMySpeaker, "dmw_params9", "next");
-      SetLocalInt(oMySpeaker, "dmw_dialognext", nCurrent);
+      _SetLocalString(oMySpeaker, "dmw_dialog9", "Next ->");
+      _SetLocalString(oMySpeaker, "dmw_function9", "conv_" + sConversation);
+      _SetLocalString(oMySpeaker, "dmw_params9", "next");
+      _SetLocalInt(oMySpeaker, "dmw_dialognext", nCurrent);
 
       nChoice = 8;
       for(;nChoice >= 0; nChoice--)
@@ -219,9 +219,9 @@ void dmwand_BuildConversation(string sConversation, string sParams)
          if(nTemp2 <= 0)
          {
             //we went back too far for some reason, so make this choice blank
-            SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), "");
-            SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), "");
-            SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), "");
+            _SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), "");
+            _SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), "");
+            _SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), "");
          }
          nLast = nTemp;
          nTemp = nTemp1;
@@ -231,10 +231,10 @@ void dmwand_BuildConversation(string sConversation, string sParams)
 
       if(nMatch > 0)
       {
-         SetLocalString(oMySpeaker, "dmw_dialog1", "<- previous");
-         SetLocalString(oMySpeaker, "dmw_function1", "conv_" + sConversation);
-         SetLocalString(oMySpeaker, "dmw_params1", "prev");
-         SetLocalInt(oMySpeaker, "dmw_dialogprev", nLast);
+         _SetLocalString(oMySpeaker, "dmw_dialog1", "<- previous");
+         _SetLocalString(oMySpeaker, "dmw_function1", "conv_" + sConversation);
+         _SetLocalString(oMySpeaker, "dmw_params1", "prev");
+         _SetLocalInt(oMySpeaker, "dmw_dialogprev", nLast);
       }
 
       //fill the NPC's dialog spot
@@ -257,16 +257,16 @@ void dmwand_BuildConversation(string sConversation, string sParams)
       if(TestStringAgainstPattern(sParams, "next"))
       {
          //get the number choice to start with
-         nCurrent = GetLocalInt(oMySpeaker, "dmw_dialognext");
+         nCurrent = _GetLocalInt(oMySpeaker, "dmw_dialognext");
 
          //set this as the number for the "previous" choice to use
-         SetLocalInt(oMySpeaker, "dmw_dialogprev", nCurrent);
+         _SetLocalInt(oMySpeaker, "dmw_dialogprev", nCurrent);
 
          //Set the first dialog choice to be "previous"
          nChoice = 2;
-         SetLocalString(oMySpeaker, "dmw_dialog1", "<- Previous");
-         SetLocalString(oMySpeaker, "dmw_function1", "conv_" + sConversation);
-         SetLocalString(oMySpeaker, "dmw_params1", "prev");
+         _SetLocalString(oMySpeaker, "dmw_dialog1", "<- Previous");
+         _SetLocalString(oMySpeaker, "dmw_function1", "conv_" + sConversation);
+         _SetLocalString(oMySpeaker, "dmw_params1", "prev");
       }
 
       //Loop through to build the dialog list
@@ -284,10 +284,10 @@ void dmwand_BuildConversation(string sConversation, string sParams)
       //If there were enough choices to fill 10 spots, make spot 9 a "next"
       if(nLast > 0)
       {
-         SetLocalString(oMySpeaker, "dmw_dialog9", "Next ->");
-         SetLocalString(oMySpeaker, "dmw_function9", "conv_" + sConversation);
-         SetLocalString(oMySpeaker, "dmw_params9", "next");
-         SetLocalInt(oMySpeaker, "dmw_dialognext", nLast);
+         _SetLocalString(oMySpeaker, "dmw_dialog9", "Next ->");
+         _SetLocalString(oMySpeaker, "dmw_function9", "conv_" + sConversation);
+         _SetLocalString(oMySpeaker, "dmw_params9", "next");
+         _SetLocalInt(oMySpeaker, "dmw_dialognext", nLast);
       }
    }
 }
@@ -307,24 +307,24 @@ int StartingConditional()
    object oPC = GetPCSpeaker();
    int nMyNum = 0;
 
-   DeleteLocalInt(oPC, "Tens");
-   DeleteLocalInt(oPC, "dmfi_univ_offset");
-   SetLocalInt(OBJECT_SELF, "dmfi_dmwOffset", 1);
+   _DeleteLocalInt(oPC, "Tens");
+   _DeleteLocalInt(oPC, "dmfi_univ_offset");
+   _SetLocalInt(OBJECT_SELF, "dmfi_dmwOffset", 1);
    //Check whether this conversation has been started already, start it if not.
-   int nStarted = GetLocalInt(oMySpeaker, "dmw_started");
+   int nStarted = _GetLocalInt(oMySpeaker, "dmw_started");
    if(! nStarted)
    {
-      SetLocalInt(oMySpeaker, "dmw_started", 1);
+      _SetLocalInt(oMySpeaker, "dmw_started", 1);
       dmwand_StartConversation();
    }
 
-   string sMyString = GetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nMyNum));
+   string sMyString = _GetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nMyNum));
 
    if(sMyString == "")
    {
       return FALSE;
    }
-   else if (GetLocalString(oPC, "dmfi_univ_conv") == "server")
+   else if (_GetLocalString(oPC, "dmfi_univ_conv") == "server")
    {
       SetCustomToken(DMW_START_CUSTOM_TOKEN + nMyNum, sMyString);
       return TRUE;

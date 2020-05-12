@@ -48,8 +48,8 @@ void fugue_OnPlayerExit();
 void fugue_OnClientEnter()
 {/*     TODO
     object oPC = GetEnteringObject();
-    int playerstate = GetPlayerInt(oPC, H2_PLAYER_STATE);
-    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
+    int playerstate = _GetLocalInt(oPC, H2_PLAYER_STATE);
+    string uniquePCID = _GetLocalString(oPC, H2_UNIQUE_PC_ID);
     location ressLoc = GetDatabaseLocation(uniquePCID + H2_RESS_LOCATION);
     if (GetTag(GetArea(oPC)) != H2_FUGUE_PLANE && playerstate == H2_PLAYER_STATE_DEAD && !h2_GetIsLocationValid(ressLoc))
     {
@@ -62,7 +62,7 @@ void fugue_OnPlayerDeath()
     object oPC = GetLastPlayerDied();
 
     //if some other death subsystem set the player state back to alive before this one, no need to continue
-    if (GetPlayerInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DEAD)
+    if (_GetLocalInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DEAD)
         return;  //<-- Use core-framework cancellation function?
 
     if (GetTag(GetArea(oPC)) == H2_FUGUE_PLANE)
@@ -92,6 +92,6 @@ void fugue_OnPlayerDying()
 void fugue_OnPlayerExit()
 {
     object oPC = GetExitingObject();
-    DeleteLocalInt(oPC, H2_LOGIN_DEATH);
-    SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
+    _DeleteLocalInt(oPC, H2_LOGIN_DEATH);
+    _SetLocalInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
 }

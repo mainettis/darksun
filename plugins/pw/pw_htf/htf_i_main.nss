@@ -47,8 +47,8 @@ void h2_DisplayHTInfoBars(object oPC)
 {
     if (!_GetIsPC(oPC) || _GetIsDM(oPC)) return;
 
-    int thirstCount = FloatToInt(GetLocalFloat(oPC, H2_HT_CURR_THIRST) * 100.0);
-    int hungerCount = FloatToInt(GetLocalFloat(oPC, H2_HT_CURR_HUNGER) * 100.0);
+    int thirstCount = FloatToInt(_GetLocalFloat(oPC, H2_HT_CURR_THIRST) * 100.0);
+    int hungerCount = FloatToInt(_GetLocalFloat(oPC, H2_HT_CURR_HUNGER) * 100.0);
     
     string greenBar = StringToRGBString(GetSubString(H2_HT_INFO_BAR, 0, hungerCount), H2_HT_COLOR_GREEN);
     string redBar = StringToRGBString(GetSubString(H2_HT_INFO_BAR, hungerCount, 100 -  hungerCount), H2_HT_COLOR_RED);
@@ -61,10 +61,10 @@ void h2_DisplayHTInfoBars(object oPC)
 
 void h2_InitHungerThirstCheck(object oPC)
 {
-    if (!GetLocalInt(oPC, H2_HT_IS_DEHYDRATED) && GetLocalFloat(oPC, H2_HT_CURR_THIRST) == 0.0)
-        SetLocalFloat(oPC, H2_HT_CURR_THIRST, 1.0);
-    if (!GetLocalInt(oPC, H2_HT_IS_STARVING) && GetLocalFloat(oPC, H2_HT_CURR_HUNGER) == 0.0)
-        SetLocalFloat(oPC, H2_HT_CURR_HUNGER, 1.0);
+    if (!_GetLocalInt(oPC, H2_HT_IS_DEHYDRATED) && _GetLocalFloat(oPC, H2_HT_CURR_THIRST) == 0.0)
+        _SetLocalFloat(oPC, H2_HT_CURR_THIRST, 1.0);
+    if (!_GetLocalInt(oPC, H2_HT_IS_STARVING) && _GetLocalFloat(oPC, H2_HT_CURR_HUNGER) == 0.0)
+        _SetLocalFloat(oPC, H2_HT_CURR_HUNGER, 1.0);
 
     int timerID = CreateTimer(oPC, H2_HT_ON_TIMER_EXPIRE, 120.0, 0, 0);
     //int timerID = h2_CreateTimer(oPC, H2_HT_TIMER_SCRIPT, HoursToSeconds(1), FALSE);
@@ -103,55 +103,55 @@ void h2_RemoveHTFatigue(object oPC)
 
 void h2_DoThirstFortitudeCheck(object oPC)
 {
-    SetLocalInt(oPC, H2_HT_IS_DEHYDRATED, TRUE);
-    int thirstSaveCount = GetLocalInt(oPC, H2_HT_THIRST_SAVE_COUNT);
+    _SetLocalInt(oPC, H2_HT_IS_DEHYDRATED, TRUE);
+    int thirstSaveCount = _GetLocalInt(oPC, H2_HT_THIRST_SAVE_COUNT);
     SendMessageToPC(oPC, H2_TEXT_DEHYDRATION_SAVE);
     if (!FortitudeSave(oPC, thirstSaveCount + 10))
     {
-        int nonlethaldamage = GetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE);
-        if (nonlethaldamage == 0 && GetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE) == 0)
+        int nonlethaldamage = _GetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE);
+        if (nonlethaldamage == 0 && _GetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE) == 0)
             h2_ApplyHTFatigue(oPC);
         nonlethaldamage += d6();
-        SetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE, nonlethaldamage);
+        _SetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE, nonlethaldamage);
         if (nonlethaldamage > GetMaxHitPoints(oPC))
             ExecuteScript(H2_HT_DAMAGE_SCRIPT, oPC);
     }
-    SetLocalInt(oPC, H2_HT_THIRST_SAVE_COUNT, thirstSaveCount + 1);
+    _SetLocalInt(oPC, H2_HT_THIRST_SAVE_COUNT, thirstSaveCount + 1);
 }
 
 void h2_DoHungerFortitudeCheck(object oPC)
 {
-    SetLocalInt(oPC, H2_HT_IS_STARVING, TRUE);
-    int hourCount = GetLocalInt(oPC, H2_HT_HUNGER_HOUR_COUNT);
+    _SetLocalInt(oPC, H2_HT_IS_STARVING, TRUE);
+    int hourCount = _GetLocalInt(oPC, H2_HT_HUNGER_HOUR_COUNT);
     if (hourCount == 24)
         hourCount = 0;
-    SetLocalInt(oPC, H2_HT_HUNGER_HOUR_COUNT, hourCount + 1);
+    _SetLocalInt(oPC, H2_HT_HUNGER_HOUR_COUNT, hourCount + 1);
     if (hourCount != 0)
         return;
-    int hungerSaveCount = GetLocalInt(oPC, H2_HT_HUNGER_SAVE_COUNT);
+    int hungerSaveCount = _GetLocalInt(oPC, H2_HT_HUNGER_SAVE_COUNT);
     SendMessageToPC(oPC, H2_TEXT_STARVATION_SAVE);
     if (!FortitudeSave(oPC, hungerSaveCount + 10))
     {
-        int nonlethaldamage = GetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE);
-        if (nonlethaldamage == 0 && GetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE) == 0)
+        int nonlethaldamage = _GetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE);
+        if (nonlethaldamage == 0 && _GetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE) == 0)
             h2_ApplyHTFatigue(oPC);
         nonlethaldamage +=  d6();
-        SetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE, nonlethaldamage);
+        _SetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE, nonlethaldamage);
         if (nonlethaldamage > GetMaxHitPoints(oPC))
             ExecuteScript(H2_HT_DAMAGE_SCRIPT, oPC);
     }
-    SetLocalInt(oPC, H2_HT_HUNGER_SAVE_COUNT, hungerSaveCount + 1);
+    _SetLocalInt(oPC, H2_HT_HUNGER_SAVE_COUNT, hungerSaveCount + 1);
 }
 
 void h2_PerformHungerThirstCheck(object oPC, float fCustomThirstDecrement = -1.0, float fCustomHungerDecrement = -1.0)
 {
-    if (GetPlayerInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DEAD)
+    if (_GetLocalInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DEAD)
     {
-        DeleteLocalFloat(oPC, H2_HT_CURR_ALCOHOL);
-        int timerID = GetLocalInt(oPC, H2_HT_DRUNK_TIMERID);
+        _DeleteLocalFloat(oPC, H2_HT_CURR_ALCOHOL);
+        int timerID = _GetLocalInt(oPC, H2_HT_DRUNK_TIMERID);
         KillTimer(timerID);
         //h2_KillTimer(timerID);
-        DeleteLocalInt(oPC, H2_HT_DRUNK_TIMERID);
+        _DeleteLocalInt(oPC, H2_HT_DRUNK_TIMERID);
         return;
     }
     int conScore = GetAbilityScore(oPC, ABILITY_CONSTITUTION, TRUE);
@@ -165,31 +165,31 @@ void h2_PerformHungerThirstCheck(object oPC, float fCustomThirstDecrement = -1.0
     ad = (ad <= 0 ? 1 : ad);
     float alcoholDrop = 2.0 / ad;
 
-    float currThirst = GetLocalFloat(oPC, H2_HT_CURR_THIRST);
+    float currThirst = _GetLocalFloat(oPC, H2_HT_CURR_THIRST);
     if (currThirst > 0.0)
         currThirst = currThirst - thirstDrop;
     if (currThirst < 0.0)
         currThirst = 0.0;
-    float currHunger = GetLocalFloat(oPC, H2_HT_CURR_HUNGER);
+    float currHunger = _GetLocalFloat(oPC, H2_HT_CURR_HUNGER);
     if (currHunger > 0.0)
         currHunger = currHunger - hungerDrop;
     if (currHunger < 0.0)
         currHunger = 0.0;
-    float currAlcohol = GetLocalFloat(oPC, H2_HT_CURR_ALCOHOL);
+    float currAlcohol = _GetLocalFloat(oPC, H2_HT_CURR_ALCOHOL);
     if (currAlcohol > 0.0)
         currAlcohol = currAlcohol - alcoholDrop;
     if (currAlcohol < 0.0)
         currAlcohol = 0.0;
     if (currAlcohol < 0.4)
     {
-        int timerID = GetLocalInt(oPC, H2_HT_DRUNK_TIMERID);
+        int timerID = _GetLocalInt(oPC, H2_HT_DRUNK_TIMERID);
         KillTimer(timerID);
         //h2_KillTimer(timerID);
-        DeleteLocalInt(oPC, H2_HT_DRUNK_TIMERID);
+        _DeleteLocalInt(oPC, H2_HT_DRUNK_TIMERID);
     }
-    SetLocalFloat(oPC, H2_HT_CURR_THIRST, currThirst);
-    SetLocalFloat(oPC, H2_HT_CURR_HUNGER, currHunger);
-    SetLocalFloat(oPC, H2_HT_CURR_ALCOHOL, currAlcohol);
+    _SetLocalFloat(oPC, H2_HT_CURR_THIRST, currThirst);
+    _SetLocalFloat(oPC, H2_HT_CURR_HUNGER, currHunger);
+    _SetLocalFloat(oPC, H2_HT_CURR_ALCOHOL, currAlcohol);
 
     if (H2_HT_DISPLAY_INFO_BARS)
         h2_DisplayHTInfoBars(oPC);
@@ -197,30 +197,30 @@ void h2_PerformHungerThirstCheck(object oPC, float fCustomThirstDecrement = -1.0
     if (currThirst == 0.0)
         h2_DoThirstFortitudeCheck(oPC);
     else
-        DeleteLocalInt(oPC, H2_HT_THIRST_SAVE_COUNT);
+        _DeleteLocalInt(oPC, H2_HT_THIRST_SAVE_COUNT);
     if (currHunger == 0.0)
         h2_DoHungerFortitudeCheck(oPC);
     else
     {
-        DeleteLocalInt(oPC, H2_HT_HUNGER_HOUR_COUNT);
-        DeleteLocalInt(oPC, H2_HT_HUNGER_SAVE_COUNT);
+        _DeleteLocalInt(oPC, H2_HT_HUNGER_HOUR_COUNT);
+        _DeleteLocalInt(oPC, H2_HT_HUNGER_SAVE_COUNT);
     }
 }
 
 void h2_ApplyAlchoholEffects(object oPC, object oItem)
 {
-    float alcoholValue = GetLocalFloat(oItem, H2_HT_ALCOHOL_VALUE) / 200.0;
+    float alcoholValue = _GetLocalFloat(oItem, H2_HT_ALCOHOL_VALUE) / 200.0;
     if (alcoholValue > 0.0)
     {
-        float currAlcohol = GetLocalFloat(oPC, H2_HT_CURR_ALCOHOL) + alcoholValue;
+        float currAlcohol = _GetLocalFloat(oPC, H2_HT_CURR_ALCOHOL) + alcoholValue;
         if (currAlcohol > 1.0)
             currAlcohol = 1.0;
-        SetLocalFloat(oPC, H2_HT_CURR_ALCOHOL, currAlcohol);
-        if (GetLocalInt(oPC, H2_HT_DRUNK_TIMERID) == 0 && currAlcohol >= 0.4)
+        _SetLocalFloat(oPC, H2_HT_CURR_ALCOHOL, currAlcohol);
+        if (_GetLocalInt(oPC, H2_HT_DRUNK_TIMERID) == 0 && currAlcohol >= 0.4)
         {
             int timerID = CreateTimer(oPC, H2_HT_DRUNK_ON_TIMER_EXPIRE, 150.0, 0, 30);
             //int timerID = h2_CreateTimer(oPC, H2_HT_DRUNK_TIMER_SCRIPT, 150.0);
-            SetLocalInt(oPC, H2_HT_DRUNK_TIMERID, timerID);
+            _SetLocalInt(oPC, H2_HT_DRUNK_TIMERID, timerID);
             StartTimer(timerID, TRUE);
             //h2_StartTimer(timerID);
         }
@@ -281,62 +281,62 @@ void h2_ApplyAlchoholEffects(object oPC, object oItem)
 
 void h2_ApplyHungerBonus(object oPC, object oItem)
 {
-    float hungerValue = GetLocalFloat(oItem, H2_HT_HUNGER_VALUE) / 300.0;
+    float hungerValue = _GetLocalFloat(oItem, H2_HT_HUNGER_VALUE) / 300.0;
     if (hungerValue > 0.0)
     {
-        float currHunger = GetLocalFloat(oPC, H2_HT_CURR_HUNGER) + hungerValue;
+        float currHunger = _GetLocalFloat(oPC, H2_HT_CURR_HUNGER) + hungerValue;
         if (currHunger > 1.0)
         {
             currHunger = 1.0;
             SendMessageToPC(oPC, H2_TEXT_NOT_HUNGRY);
         }
-        SetLocalFloat(oPC, H2_HT_CURR_HUNGER, currHunger);
-        if (GetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE) && !GetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE))
+        _SetLocalFloat(oPC, H2_HT_CURR_HUNGER, currHunger);
+        if (_GetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE) && !_GetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE))
             h2_RemoveHTFatigue(oPC);
-        DeleteLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE);
-        DeleteLocalInt(oPC, H2_HT_IS_STARVING);
+        _DeleteLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE);
+        _DeleteLocalInt(oPC, H2_HT_IS_STARVING);
     }
 }
 
 void h2_ApplyThirstBonus(object oPC, object oItem)
 {
-    float thirstValue = GetLocalFloat(oItem, H2_HT_THIRST_VALUE) / 100.0;
+    float thirstValue = _GetLocalFloat(oItem, H2_HT_THIRST_VALUE) / 100.0;
     if (thirstValue > 0.0)
     {
-        float currThirst = GetLocalFloat(oPC, H2_HT_CURR_THIRST) + thirstValue;
+        float currThirst = _GetLocalFloat(oPC, H2_HT_CURR_THIRST) + thirstValue;
         if (currThirst > 1.0)
         {
             currThirst = 1.0;
             SendMessageToPC(oPC, H2_TEXT_NOT_THIRSTY);
         }
-        SetLocalFloat(oPC, H2_HT_CURR_THIRST, currThirst);
-        if (GetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE) && !GetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE))
+        _SetLocalFloat(oPC, H2_HT_CURR_THIRST, currThirst);
+        if (_GetLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE) && !_GetLocalInt(oPC, H2_HT_HUNGER_NONLETHAL_DAMAGE))
             h2_RemoveHTFatigue(oPC);
-        DeleteLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE);
-        DeleteLocalInt(oPC, H2_HT_IS_DEHYDRATED);
+        _DeleteLocalInt(oPC, H2_HT_THIRST_NONLETHAL_DAMAGE);
+        _DeleteLocalInt(oPC, H2_HT_IS_DEHYDRATED);
         AssignCommand(oPC, ActionPlayAnimation(ANIMATION_FIREFORGET_DRINK));
     }
 }
 
 void h2_ApplyOtherFoodEffects(object oPC, object oItem)
 {
-    float delay = GetLocalFloat(oItem, H2_HT_DELAY);
-    string feedback = GetLocalString(oItem, H2_HT_FEEDBACK);
+    float delay = _GetLocalFloat(oItem, H2_HT_DELAY);
+    string feedback = _GetLocalString(oItem, H2_HT_FEEDBACK);
     if (feedback != "")
         DelayCommand(delay, SendMessageToPC(oPC, feedback));
 
-    int poison = GetLocalInt(oItem, H2_HT_POISON);
+    int poison = _GetLocalInt(oItem, H2_HT_POISON);
     if (poison)
         DelayCommand(delay, ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectPoison(poison), oPC));
 
-    int disease = GetLocalInt(oItem, H2_HT_DISEASE);
+    int disease = _GetLocalInt(oItem, H2_HT_DISEASE);
     if (disease)
         DelayCommand(delay, ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectDisease(disease), oPC));
 
-    if (GetLocalInt(oItem, H2_HT_SLEEP))
+    if (_GetLocalInt(oItem, H2_HT_SLEEP))
         DelayCommand(delay, ApplyEffectToObject(DURATION_TYPE_TEMPORARY, EffectSleep(), oPC,  HoursToSeconds(1) / 4));
 
-    int HPbonus = GetLocalInt(oItem, H2_HT_HPBONUS);
+    int HPbonus = _GetLocalInt(oItem, H2_HT_HPBONUS);
     if (HPbonus && GetCurrentHitPoints(oPC) == GetMaxHitPoints(oPC))
         ApplyEffectToObject(DURATION_TYPE_TEMPORARY, EffectTemporaryHitpoints(HPbonus), oPC, HoursToSeconds(1) / 2);
     else if (HPbonus)
@@ -383,20 +383,20 @@ void h2_DoDrunkenAntics(object oPC)
 
 void h2_FillCanteen(object oPC, object oCanteen, object oSource)
 {
-    if (GetLocalFloat(oSource, H2_HT_THIRST_VALUE) == 0.0)
+    if (_GetLocalFloat(oSource, H2_HT_THIRST_VALUE) == 0.0)
     {
         SendMessageToPC(oPC, H2_TEXT_CANNOT_USE_ON_TARGET);
         return;
     }
-    SetLocalObject(oCanteen, H2_HT_CANTEEN_SOURCE, oSource);
-    SetLocalInt(oCanteen, H2_HT_CURR_CHARGES, GetLocalInt(oCanteen, H2_HT_MAX_CHARGES));
+    _SetLocalObject(oCanteen, H2_HT_CANTEEN_SOURCE, oSource);
+    _SetLocalInt(oCanteen, H2_HT_CURR_CHARGES, _GetLocalInt(oCanteen, H2_HT_MAX_CHARGES));
     SendMessageToPC(oPC, H2_TEXT_FILL_CANTEEN + GetName(oCanteen));
 }
 
 void h2_EmptyCanteen(object oCanteen)
 {
-    DeleteLocalObject(oCanteen, H2_HT_CANTEEN_SOURCE);
-    DeleteLocalInt(oCanteen, H2_HT_CURR_CHARGES);
+    _DeleteLocalObject(oCanteen, H2_HT_CANTEEN_SOURCE);
+    _DeleteLocalInt(oCanteen, H2_HT_CURR_CHARGES);
 }
 
 void h2_UseCanteen(object oPC, object oCanteen)
@@ -405,8 +405,8 @@ void h2_UseCanteen(object oPC, object oCanteen)
     location lTarget = GetItemActivatedTargetLocation();
     if (oPC == oTarget)
     {
-        int currCharges = GetLocalInt(oCanteen, H2_HT_CURR_CHARGES);
-        object oSource = GetLocalObject(oCanteen, H2_HT_CANTEEN_SOURCE);
+        int currCharges = _GetLocalInt(oCanteen, H2_HT_CURR_CHARGES);
+        object oSource = _GetLocalObject(oCanteen, H2_HT_CANTEEN_SOURCE);
         if (currCharges == 0 || !GetIsObjectValid(oSource))
         {   //self-fix the canteen if its contents source is invalid.
             SendMessageToPC(oPC, H2_TEXT_CANTEEN_EMPTY);
@@ -415,7 +415,7 @@ void h2_UseCanteen(object oPC, object oCanteen)
         else
         {
             currCharges--;
-            SetLocalInt(oCanteen, H2_HT_CURR_CHARGES, currCharges);
+            _SetLocalInt(oCanteen, H2_HT_CURR_CHARGES, currCharges);
             SendMessageToPC(oPC, H2_TEXT_TAKE_A_DRINK);
             AssignCommand(oPC, ActionPlayAnimation(ANIMATION_FIREFORGET_DRINK));
             h2_ConsumeFoodItem(oPC, oSource);
@@ -442,7 +442,7 @@ void h2_UseCanteen(object oPC, object oCanteen)
         return;
     }
 
-    oTarget = GetLocalObject(oPC, H2_HT_TRIGGER);
+    oTarget = _GetLocalObject(oPC, H2_HT_TRIGGER);
     if (!GetIsObjectValid(oTarget))
         SendMessageToPC(oPC, H2_TEXT_NO_PLACE_TO_FILL);
     else
@@ -461,7 +461,7 @@ void h2_DisplayFatigueInfoBar(object oPC)
 {
     if(_GetIsDM(oPC)) return;
 
-    int fatigueCount = FloatToInt(GetLocalFloat(oPC, H2_CURR_FATIGUE) * 100.0);
+    int fatigueCount = FloatToInt(_GetLocalFloat(oPC, H2_CURR_FATIGUE) * 100.0);
     string greenBar = h2_ColorText(GetSubString(H2_FATIGUE_INFO_BAR, 0, fatigueCount), H2_COLOR_GREEN);
     string redBar = h2_ColorText(GetSubString(H2_FATIGUE_INFO_BAR, fatigueCount, 100 - fatigueCount), H2_COLOR_RED);
     SendMessageToPC(oPC, H2_TEXT_FATIGUE + greenBar + redBar);
@@ -469,8 +469,8 @@ void h2_DisplayFatigueInfoBar(object oPC)
 
 void h2_InitFatigueCheck(object oPC)
 {
-    if (!GetLocalInt(oPC, H2_IS_FATIGUED) && GetLocalFloat(oPC, H2_CURR_FATIGUE) == 0.0)
-        SetLocalFloat(oPC, H2_CURR_FATIGUE, 1.0);
+    if (!_GetLocalInt(oPC, H2_IS_FATIGUED) && _GetLocalFloat(oPC, H2_CURR_FATIGUE) == 0.0)
+        _SetLocalFloat(oPC, H2_CURR_FATIGUE, 1.0);
 
     int timerID = CreateTimer(oPC, H2_FATIGUE_ON_TIMER_EXPIRE, 120.0, 0, 0);
     //int timerID = h2_CreateTimer(oPC, H2_FATIGUE_TIMER_SCRIPT, HoursToSeconds(1), FALSE);
@@ -484,8 +484,8 @@ void h2_InitFatigueCheck(object oPC)
 
 void h2_DoFatigueFortitudeCheck(object oPC)
 {
-    SetLocalInt(oPC, H2_IS_FATIGUED, TRUE);
-    int saveCount = GetLocalInt(oPC, H2_FATIGUE_SAVE_COUNT);
+    _SetLocalInt(oPC, H2_IS_FATIGUED, TRUE);
+    int saveCount = _GetLocalInt(oPC, H2_FATIGUE_SAVE_COUNT);
     if(_GetIsPC(oPC)) 
     {
         SendMessageToPC(oPC, H2_TEXT_NEAR_COLLAPSE);
@@ -513,10 +513,10 @@ void h2_DoFatigueFortitudeCheck(object oPC)
             }
             if(_GetIsPC(oPC)) AssignCommand(oPC, SpeakString(H2_TEXT_COLLAPSE));
             ApplyEffectToObject(DURATION_TYPE_TEMPORARY, ExtraordinaryEffect(EffectBlindness()), oPC, 180.0);
-            SetLocalFloat(oPC, H2_CURR_FATIGUE, 0.33);
+            _SetLocalFloat(oPC, H2_CURR_FATIGUE, 0.33);
         }
     }
-    SetLocalInt(oPC, H2_FATIGUE_SAVE_COUNT, saveCount + 1);
+    _SetLocalInt(oPC, H2_FATIGUE_SAVE_COUNT, saveCount + 1);
 }
 
 void h2_PerformFatigueCheck(object oPC, float fCustomFatigueDecrement = -1.0)
@@ -525,17 +525,17 @@ void h2_PerformFatigueCheck(object oPC, float fCustomFatigueDecrement = -1.0)
         return;
 
     if(_GetIsPC(oPC))
-        if (GetPlayerInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DEAD)
+        if (_GetLocalInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DEAD)
             return;
 
     float fatigueDrop = (fCustomFatigueDecrement >= 0.0) ? fCustomFatigueDecrement : h2_GetFatigueDecrement();
 
-    float currFatigue = GetLocalFloat(oPC, H2_CURR_FATIGUE);
+    float currFatigue = _GetLocalFloat(oPC, H2_CURR_FATIGUE);
     if (currFatigue > 0.0)
         currFatigue = currFatigue - fatigueDrop;
     if (currFatigue < 0.0)
         currFatigue = 0.0;
-    SetLocalFloat(oPC, H2_CURR_FATIGUE, currFatigue);
+    _SetLocalFloat(oPC, H2_CURR_FATIGUE, currFatigue);
     
     if(_GetIsPC(oPC))
     {
@@ -553,5 +553,5 @@ void h2_PerformFatigueCheck(object oPC, float fCustomFatigueDecrement = -1.0)
     if (currFatigue == 0.0)
         h2_DoFatigueFortitudeCheck(oPC);
     else
-        DeleteLocalInt(oPC, H2_FATIGUE_SAVE_COUNT);
+        _DeleteLocalInt(oPC, H2_FATIGUE_SAVE_COUNT);
 }

@@ -1,14 +1,14 @@
 
 int StartingConditional()
 {
-   int nMyNum = GetLocalInt(OBJECT_SELF, "dmfi_dmwOffset");
-   SetLocalInt(OBJECT_SELF, "dmfi_dmwOffset", nMyNum+1);
+   int nMyNum = _GetLocalInt(OBJECT_SELF, "dmfi_dmwOffset");
+   _SetLocalInt(OBJECT_SELF, "dmfi_dmwOffset", nMyNum+1);
 
    object oMySpeaker = GetPCSpeaker();
-   object oMyTarget = GetLocalObject(oMySpeaker, "dmfi_univ_target");
-   location lMyLoc = GetLocalLocation(oMySpeaker, "dmfi_univ_location");
+   object oMyTarget = _GetLocalObject(oMySpeaker, "dmfi_univ_target");
+   location lMyLoc = _GetLocalLocation(oMySpeaker, "dmfi_univ_location");
 
-   string sMyString = GetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nMyNum));
+   string sMyString = _GetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nMyNum));
 
    if(sMyString == "")
    {

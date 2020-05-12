@@ -20,17 +20,17 @@ void main()
     object oShouter = GetLastSpeaker();
 
     if (_GetIsDM(oShouter))
-        SetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter), 1);
+        _SetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter), 1);
 
     if (GetIsDMPossessed(oShouter))
-        SetLocalObject(GetMaster(oShouter), "dmfi_familiar", oShouter);
+        _SetLocalObject(GetMaster(oShouter), "dmfi_familiar", oShouter);
 
-    object oTarget = GetLocalObject(oShouter, "dmfi_VoiceTarget");
+    object oTarget = _GetLocalObject(oShouter, "dmfi_VoiceTarget");
     object oMaster = OBJECT_INVALID;
     if (GetIsObjectValid(oTarget))
         oMaster = oShouter;
 
-    int iPhrase = GetLocalInt(oShouter, "hls_EditPhrase");
+    int iPhrase = _GetLocalInt(oShouter, "hls_EditPhrase");
 
     //*object oSummon;
 
@@ -38,13 +38,13 @@ void main()
     {
         string sSaid = GetMatchedSubstring(0);
 
-        if (GetTag(OBJECT_SELF) == "dmfi_setting" && GetLocalString(oShouter, "EffectSetting") != "")
+        if (GetTag(OBJECT_SELF) == "dmfi_setting" && _GetLocalString(oShouter, "EffectSetting") != "")
         {
-            string sPhrase = GetLocalString(oShouter, "EffectSetting");
-            SetLocalFloat(oShouter, sPhrase, StringToFloat(sSaid));
+            string sPhrase = _GetLocalString(oShouter, "EffectSetting");
+            _SetLocalFloat(oShouter, sPhrase, StringToFloat(sSaid));
             SetDMFIPersistentFloat("dmfi", sPhrase, StringToFloat(sSaid), oShouter);
-            DeleteLocalString(oShouter, "EffectSetting");
-            DelayCommand(0.5, ActionSpeakString("The setting " + sPhrase + " has been changed to " + FloatToString(GetLocalFloat(oShouter, sPhrase))));
+            _DeleteLocalString(oShouter, "EffectSetting");
+            DelayCommand(0.5, ActionSpeakString("The setting " + sPhrase + " has been changed to " + FloatToString(_GetLocalFloat(oShouter, sPhrase))));
             DelayCommand(1.5, DestroyObject(OBJECT_SELF));
             //maybe add a return here
         }

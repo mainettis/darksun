@@ -25,8 +25,8 @@ int DMW_START_CUSTOM_TOKEN = 8000;
 
 //Retrieve targetting information
 object oMySpeaker = GetLastSpeaker();
-object oMyTarget = GetLocalObject(oMySpeaker, "dmfi_univ_target");
-location lMyLoc = GetLocalLocation(oMySpeaker, "dmfi_univ_location");
+object oMyTarget = _GetLocalObject(oMySpeaker, "dmfi_univ_target");
+location lMyLoc = _GetLocalLocation(oMySpeaker, "dmfi_univ_location");
 
 // checks if a nearby object is destroyable
 int dmwand_isnearbydestroyable();
@@ -243,16 +243,16 @@ int dmw_conv_Start(int nCurrent, int nChoice, string sParams = "")
          break;
    }
 
-   SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), sText);
-   SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), sCall);
-   SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), sCallParams);
+   _SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), sText);
+   _SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), sCall);
+   _SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), sCallParams);
 
    return nCurrent;
 }
 
 void DMFI_untoad(object oTarget, object oUser)
 {
-    if (GetLocalInt(oTarget, "toaded")==1)
+    if (_GetLocalInt(oTarget, "toaded")==1)
     {
         effect eMyEffect = GetFirstEffect(oTarget);
         while(GetIsEffectValid(eMyEffect))
@@ -272,7 +272,7 @@ void DMFI_untoad(object oTarget, object oUser)
 void DMFI_toad(object oTarget, object oUser)
 {
     //This function now toggles the toad status   hahnsoo: DMFI 1.08
-    if (GetLocalInt(oTarget, "toaded") == 1)
+    if (_GetLocalInt(oTarget, "toaded") == 1)
     {
         effect eMyEffect = GetFirstEffect(oTarget);
         while(GetIsEffectValid(eMyEffect))
@@ -283,7 +283,7 @@ void DMFI_toad(object oTarget, object oUser)
             eMyEffect = GetNextEffect(oTarget);
         }
         FloatingTextStringOnCreature("Removed Penguin status from " + GetName(oTarget), oUser, FALSE);
-        SetLocalInt(oTarget, "toaded", 0);
+        _SetLocalInt(oTarget, "toaded", 0);
     }
     else
     {
@@ -291,7 +291,7 @@ void DMFI_toad(object oTarget, object oUser)
         effect eParalyze = EffectCutsceneParalyze();
         AssignCommand(oTarget, ApplyEffectToObject(DURATION_TYPE_PERMANENT, ePenguin, oTarget));
         AssignCommand(oTarget, ApplyEffectToObject(DURATION_TYPE_PERMANENT, eParalyze, oTarget));
-        SetLocalInt(oTarget, "toaded", 1);
+        _SetLocalInt(oTarget, "toaded", 1);
         FloatingTextStringOnCreature("Added Penguin status to " + GetName(oTarget), oUser, FALSE);
     }
 }
@@ -372,9 +372,9 @@ void dmwand_PlayerListConv(string sParams)
    int nCache;
    int nCount;
 
-   object oPlayer = GetLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nPlayer));
+   object oPlayer = _GetLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nPlayer));
    oMyTarget = oPlayer;
-   SetLocalObject(oMySpeaker, "dmfi_univ_target", oMyTarget);
+   _SetLocalObject(oMySpeaker, "dmfi_univ_target", oMyTarget);
 
    //Go back to the first conversation level
    dmwand_BuildConversation("Start", "");
@@ -413,13 +413,13 @@ void dmwand_BuildConversation(string sConversation, string sParams)
    if(TestStringAgainstPattern(sParams, "prev"))
    {
       //Get the number choice to start with
-      nCurrent = GetLocalInt(oMySpeaker, "dmw_dialogprev");
+      nCurrent = _GetLocalInt(oMySpeaker, "dmw_dialogprev");
 
       //Since we're going to the previous page, there will be a next
-      SetLocalString(oMySpeaker, "dmw_dialog9", "Next ->");
-      SetLocalString(oMySpeaker, "dmw_function9", "conv_" + sConversation);
-      SetLocalString(oMySpeaker, "dmw_params9", "next");
-      SetLocalInt(oMySpeaker, "dmw_dialognext", nCurrent);
+      _SetLocalString(oMySpeaker, "dmw_dialog9", "Next ->");
+      _SetLocalString(oMySpeaker, "dmw_function9", "conv_" + sConversation);
+      _SetLocalString(oMySpeaker, "dmw_params9", "next");
+      _SetLocalInt(oMySpeaker, "dmw_dialognext", nCurrent);
 
       nChoice = 8;
       for(;nChoice >= 0; nChoice--)
@@ -436,9 +436,9 @@ void dmwand_BuildConversation(string sConversation, string sParams)
          if(nTemp2 <= 0)
          {
             //we went back too far for some reason, so make this choice blank
-            SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), "");
-            SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), "");
-            SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), "");
+            _SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), "");
+            _SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), "");
+            _SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), "");
          }
          nLast = nTemp;
          nTemp = nTemp1;
@@ -448,10 +448,10 @@ void dmwand_BuildConversation(string sConversation, string sParams)
 
       if(nMatch > 0)
       {
-         SetLocalString(oMySpeaker, "dmw_dialog1", "<- previous");
-         SetLocalString(oMySpeaker, "dmw_function1", "conv_" + sConversation);
-         SetLocalString(oMySpeaker, "dmw_params1", "prev");
-         SetLocalInt(oMySpeaker, "dmw_dialogprev", nLast);
+         _SetLocalString(oMySpeaker, "dmw_dialog1", "<- previous");
+         _SetLocalString(oMySpeaker, "dmw_function1", "conv_" + sConversation);
+         _SetLocalString(oMySpeaker, "dmw_params1", "prev");
+         _SetLocalInt(oMySpeaker, "dmw_dialogprev", nLast);
       }
 
       //fill the NPC's dialog spot
@@ -474,16 +474,16 @@ void dmwand_BuildConversation(string sConversation, string sParams)
       if(TestStringAgainstPattern(sParams, "next"))
       {
          //get the number choice to start with
-         nCurrent = GetLocalInt(oMySpeaker, "dmw_dialognext");
+         nCurrent = _GetLocalInt(oMySpeaker, "dmw_dialognext");
 
          //set this as the number for the "previous" choice to use
-         SetLocalInt(oMySpeaker, "dmw_dialogprev", nCurrent);
+         _SetLocalInt(oMySpeaker, "dmw_dialogprev", nCurrent);
 
          //Set the first dialog choice to be "previous"
          nChoice = 2;
-         SetLocalString(oMySpeaker, "dmw_dialog1", "<- Previous");
-         SetLocalString(oMySpeaker, "dmw_function1", "conv_" + sConversation);
-         SetLocalString(oMySpeaker, "dmw_params1", "prev");
+         _SetLocalString(oMySpeaker, "dmw_dialog1", "<- Previous");
+         _SetLocalString(oMySpeaker, "dmw_function1", "conv_" + sConversation);
+         _SetLocalString(oMySpeaker, "dmw_params1", "prev");
       }
 
       //Loop through to build the dialog list
@@ -501,10 +501,10 @@ void dmwand_BuildConversation(string sConversation, string sParams)
       //If there were enough choices to fill 10 spots, make spot 9 a "next"
       if(nLast > 0)
       {
-         SetLocalString(oMySpeaker, "dmw_dialog9", "Next ->");
-         SetLocalString(oMySpeaker, "dmw_function9", "conv_" + sConversation);
-         SetLocalString(oMySpeaker, "dmw_params9", "next");
-         SetLocalInt(oMySpeaker, "dmw_dialognext", nLast);
+         _SetLocalString(oMySpeaker, "dmw_dialog9", "Next ->");
+         _SetLocalString(oMySpeaker, "dmw_function9", "conv_" + sConversation);
+         _SetLocalString(oMySpeaker, "dmw_params9", "next");
+         _SetLocalInt(oMySpeaker, "dmw_dialognext", nLast);
       }
    }
 }
@@ -522,21 +522,21 @@ int dmw_conv_ListPlayers(int nCurrent, int nChoice, string sParams = "")
       //This is the first time running this function, so cache the objects
       // of all players... we don't want our list swapping itself around every
       // time you change a page
-      SetLocalString(oMySpeaker, "dmw_playerfunc", sParams);
+      _SetLocalString(oMySpeaker, "dmw_playerfunc", sParams);
       int nCount = 1;
       oPlayer = GetFirstPC();
       while(GetIsObjectValid(oPlayer))
       {
-         SetLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCount), oPlayer);
+         _SetLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCount), oPlayer);
          oPlayer = GetNextPC();
          nCount++;
       }
       nCount--;
-      SetLocalInt(oMySpeaker, "dmw_playercache", nCount);
+      _SetLocalInt(oMySpeaker, "dmw_playercache", nCount);
    }
 
-   string sFunc = GetLocalString(oMySpeaker, "dmw_playerfunc");
-   nCache = GetLocalInt(oMySpeaker, "dmw_playercache");
+   string sFunc = _GetLocalString(oMySpeaker, "dmw_playerfunc");
+   nCache = _GetLocalInt(oMySpeaker, "dmw_playercache");
 
    switch(nCurrent)
    {
@@ -548,11 +548,11 @@ int dmw_conv_ListPlayers(int nCurrent, int nChoice, string sParams = "")
          break;
       default:
          //Find the next player in the cache who is valid
-         oPlayer = GetLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCurrent));
+         oPlayer = _GetLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCurrent));
          while((! GetIsObjectValid(oPlayer)) && (nCurrent <= nCache))
          {
             nCurrent++;
-            oPlayer = GetLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCurrent));
+            oPlayer = _GetLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCurrent));
          }
 
          if(nCurrent > nCache)
@@ -574,17 +574,17 @@ int dmw_conv_ListPlayers(int nCurrent, int nChoice, string sParams = "")
          break;
    }
 
-   SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), sText);
-   SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), sCall);
-   SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), sCallParams);
+   _SetLocalString(oMySpeaker, "dmw_dialog" + IntToString(nChoice), sText);
+   _SetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice), sCall);
+   _SetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice), sCallParams);
 
    return nCurrent;
 }
 
 void dmwand_DoDialogChoice(int nChoice)
 {
-   string sCallFunction = GetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice));
-   string sCallParams = GetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice));
+   string sCallFunction = _GetLocalString(oMySpeaker, "dmw_function" + IntToString(nChoice));
+   string sCallParams = _GetLocalString(oMySpeaker, "dmw_params" + IntToString(nChoice));
    string sNav = "";
 
    string sStart = GetStringLeft(sCallFunction, 5);

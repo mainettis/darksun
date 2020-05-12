@@ -74,16 +74,16 @@ void rest_OnPlayerRestStarted()
 {
     object oPC = GetLastPCRested();
     int nRemainingTime = h2_RemainingTimeForRecoveryInRest(oPC);
-    int skipDialog = GetLocalInt(oPC, H2_SKIP_REST_DIALOG);
+    int skipDialog = _GetLocalInt(oPC, H2_SKIP_REST_DIALOG);
     if (H2_REQUIRE_REST_TRIGGER_OR_CAMPFIRE)
     {
-        object oRestTrigger = GetLocalObject(oPC, H2_REST_TRIGGER);
+        object oRestTrigger = _GetLocalObject(oPC, H2_REST_TRIGGER);
         object oCampfire = GetNearestObjectByTag(H2_CAMPFIRE, oPC);
         if (GetIsObjectValid(oRestTrigger))
         {
-            if (GetLocalInt(oRestTrigger, H2_IGNORE_MINIMUM_REST_TIME))
+            if (_GetLocalInt(oRestTrigger, H2_IGNORE_MINIMUM_REST_TIME))
                 nRemainingTime = 0;
-            string feedback = GetLocalString(oRestTrigger, H2_REST_FEEDBACK);
+            string feedback = _GetLocalString(oRestTrigger, H2_REST_FEEDBACK);
             if (feedback != "" && skipDialog)
                 SendMessageToPC(oPC, feedback);
         }
@@ -161,11 +161,11 @@ void rest_firewood()
 void rest_OnTriggerEnter()
 {
     object oPC = GetEnteringObject();
-    SetLocalObject(oPC, H2_REST_TRIGGER, OBJECT_SELF);
+    _SetLocalObject(oPC, H2_REST_TRIGGER, OBJECT_SELF);
 }
 
 void rest_OnTriggerExit()
 {
     object oPC = GetExitingObject();
-    DeleteLocalObject(oPC, H2_REST_TRIGGER);
+    _DeleteLocalObject(oPC, H2_REST_TRIGGER);
 }

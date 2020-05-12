@@ -15,7 +15,7 @@
 void SetRestTokens(object oPC)
 {
     object oArea = GetArea(oPC);
-    int iSettings = GetLocalInt(oPC, "dmfi_r_settings");
+    int iSettings = _GetLocalInt(oPC, "dmfi_r_settings");
     int iMinutesPerHour = FloatToInt(HoursToSeconds(1))/60;
     SetCustomToken(20792, IntToString(iMinutesPerHour));
     SetCustomToken(20793, IntToString(iMinutesPerHour * 2));
@@ -133,7 +133,7 @@ void SetRestTokens(object oPC)
         if (iSettings & 0x00000004 && iSettings & 0x00000001)
         {
             int iTime = GetTimeHour() + GetCalendarDay() * 24 + GetCalendarMonth() * 24 * 28 + GetCalendarYear() * 24 * 28 * 12;
-            int iNext = GetLocalInt(oPC, "dmfi_r_nextrest");
+            int iNext = _GetLocalInt(oPC, "dmfi_r_nextrest");
             if (iNext > iTime)
                 sRest = sRest + "\nYou may rest again in " + IntToString(iNext - iTime) + " hours";
         }
@@ -210,10 +210,10 @@ void SetRestTokens(object oPC)
 int StartingConditional()
 {
     object oPC = GetPCSpeaker();
-    DeleteLocalInt(oPC, "Tens");
-    int iOffset = GetLocalInt(oPC, "dmfi_univ_offset")+1;
-    string sOffset = GetLocalString(oPC, "dmfi_univ_conv");
-    SetLocalInt(oPC, "dmfi_univ_offset", iOffset);
+    _DeleteLocalInt(oPC, "Tens");
+    int iOffset = _GetLocalInt(oPC, "dmfi_univ_offset")+1;
+    string sOffset = _GetLocalString(oPC, "dmfi_univ_conv");
+    _SetLocalInt(oPC, "dmfi_univ_offset", iOffset);
 
     if (sOffset == "afflict" && iOffset==1)
         return TRUE;
@@ -235,72 +235,72 @@ int StartingConditional()
         return TRUE;
     else if (sOffset == "pc_dicebag" && iOffset==9)
     {
-        SetLocalInt(oPC, "dmfi_univ_offset", 8);
+        _SetLocalInt(oPC, "dmfi_univ_offset", 8);
 
-        if (GetLocalInt(oPC, "dmfi_dicebag")==0)
+        if (_GetLocalInt(oPC, "dmfi_dicebag")==0)
                 SetCustomToken(20681, "Private");
-        else  if (GetLocalInt(oPC, "dmfi_dicebag")==1)
+        else  if (_GetLocalInt(oPC, "dmfi_dicebag")==1)
                 SetCustomToken(20681, "Global");
-        else if (GetLocalInt(oPC, "dmfi_dicebag")==2)
+        else if (_GetLocalInt(oPC, "dmfi_dicebag")==2)
                 SetCustomToken(20681, "Local");
-        else if (GetLocalInt(oPC, "dmfi_dicebag")==3)
+        else if (_GetLocalInt(oPC, "dmfi_dicebag")==3)
                 SetCustomToken(20681, "DM Only");
 
         return TRUE;
     }
     else if (sOffset == "dicebag" && iOffset==10)
     {
-        SetLocalInt(oPC, "dmfi_univ_offset", 9);
+        _SetLocalInt(oPC, "dmfi_univ_offset", 9);
 
-        if (GetLocalInt(oPC, "dmfi_dicebag")==0)
+        if (_GetLocalInt(oPC, "dmfi_dicebag")==0)
                 SetCustomToken(20681, "Private");
-        else  if (GetLocalInt(oPC, "dmfi_dicebag")==1)
+        else  if (_GetLocalInt(oPC, "dmfi_dicebag")==1)
                 SetCustomToken(20681, "Global");
-        else if (GetLocalInt(oPC, "dmfi_dicebag")==2)
+        else if (_GetLocalInt(oPC, "dmfi_dicebag")==2)
                 SetCustomToken(20681, "Local");
-        else if (GetLocalInt(oPC, "dmfi_dicebag")==3)
+        else if (_GetLocalInt(oPC, "dmfi_dicebag")==3)
                 SetCustomToken(20681, "DM Only");
 
-        string sName = GetName(GetLocalObject(oPC, "dmfi_univ_target"));
+        string sName = GetName(_GetLocalObject(oPC, "dmfi_univ_target"));
         SetCustomToken(20680, sName);
 
         return TRUE;
     }
     else if (sOffset == "voice" &&
-        GetIsObjectValid(GetLocalObject(oPC, "dmfi_univ_target")) &&
-        oPC != GetLocalObject(oPC, "dmfi_univ_target") &&
+        GetIsObjectValid(_GetLocalObject(oPC, "dmfi_univ_target")) &&
+        oPC != _GetLocalObject(oPC, "dmfi_univ_target") &&
         iOffset==11)
     {
-        string sName = GetName(GetLocalObject(oPC, "dmfi_univ_target"));
+        string sName = GetName(_GetLocalObject(oPC, "dmfi_univ_target"));
         SetCustomToken(20680, sName);
         // pc range single/party
-        int hookparty = GetLocalInt(oPC, "dmfi_MyListenerPartyMode");
+        int hookparty = _GetLocalInt(oPC, "dmfi_MyListenerPartyMode");
         if (hookparty == 0) SetCustomToken(20681, "*Single* / Party");
         else SetCustomToken(20681, "Single / *Party*");
         return TRUE;
     }
     else if (sOffset == "voice" &&
-        !GetIsObjectValid(GetLocalObject(oPC, "dmfi_univ_target")) &&
+        !GetIsObjectValid(_GetLocalObject(oPC, "dmfi_univ_target")) &&
         iOffset==12)
     {
-        string sName = GetName(GetLocalObject(oPC, "dmfi_univ_target"));
+        string sName = GetName(_GetLocalObject(oPC, "dmfi_univ_target"));
         SetCustomToken(20680, sName);
         // loc range earshot/area/module
-        int hookparty = GetLocalInt(oPC, "dmfi_MyListenerPartyMode");
+        int hookparty = _GetLocalInt(oPC, "dmfi_MyListenerPartyMode");
         if (hookparty == 0) SetCustomToken(20681, "*Earshot* / Area / Module");
         else if (hookparty == 1) SetCustomToken(20681, "Earshot / *Area* / Module");
         else SetCustomToken(20681, "Earshot / Area / *Module*");
         return TRUE;
     }
     else if (sOffset == "voice" &&
-        GetIsObjectValid(GetLocalObject(oPC, "dmfi_univ_target")) &&
-        oPC == GetLocalObject(oPC, "dmfi_univ_target") &&
+        GetIsObjectValid(_GetLocalObject(oPC, "dmfi_univ_target")) &&
+        oPC == _GetLocalObject(oPC, "dmfi_univ_target") &&
         iOffset==13)
     {
-        string sName = GetName(GetLocalObject(oPC, "dmfi_univ_target"));
+        string sName = GetName(_GetLocalObject(oPC, "dmfi_univ_target"));
         SetCustomToken(20680, sName);
         // self bcast one dm/all dm
-        int hookbcast = GetLocalInt(oPC, "dmfi_MyListenerBcastMode");
+        int hookbcast = _GetLocalInt(oPC, "dmfi_MyListenerBcastMode");
         if (hookbcast == 0) SetCustomToken(20681, "*Self* / All DMs");
         else SetCustomToken(20681, "Self / *All DMs*");
         return TRUE;
@@ -312,38 +312,38 @@ int StartingConditional()
         object sFaction;
         while (iLoop < 10)
         {
-            sFaction = GetLocalObject(oPC, "dmfi_customfaction" + IntToString(iLoop));
+            sFaction = _GetLocalObject(oPC, "dmfi_customfaction" + IntToString(iLoop));
             sName = GetName(sFaction);
             SetCustomToken(20690 + iLoop, sName + "'s Faction ");
             iLoop++;
         }
 
-        SetCustomToken(20690, GetName(GetLocalObject(oPC, "dmfi_henchman")));
-        SetCustomToken(20784, FloatToString(GetLocalFloat(oPC, "dmfi_reputation")));
-        sName = GetName(GetLocalObject(oPC, "dmfi_univ_target"));
+        SetCustomToken(20690, GetName(_GetLocalObject(oPC, "dmfi_henchman")));
+        SetCustomToken(20784, FloatToString(_GetLocalFloat(oPC, "dmfi_reputation")));
+        sName = GetName(_GetLocalObject(oPC, "dmfi_univ_target"));
         SetCustomToken(20680, sName);
         return TRUE;
     }
     else if (sOffset == "dmw" && iOffset ==15)
     {
-        SetCustomToken(20781, IntToString(GetLocalInt(oPC, "dmfi_alignshift")));
+        SetCustomToken(20781, IntToString(_GetLocalInt(oPC, "dmfi_alignshift")));
         return TRUE;
     }
     else if (sOffset == "buff" && iOffset ==16)
     {
-        if (GetLocalInt(oPC, "dmfi_buff_party")==0)
+        if (_GetLocalInt(oPC, "dmfi_buff_party")==0)
             SetCustomToken(20783, "Single Target");
         else
             SetCustomToken(20783, "Party");
-        SetCustomToken(20782, GetLocalString(oPC, "dmfi_buff_level"));
+        SetCustomToken(20782, _GetLocalString(oPC, "dmfi_buff_level"));
         return TRUE;
     }
-    else if (sOffset == "rest" && iOffset == 17 && !_GetIsDM(oPC) && GetLocalInt(oPC, "dmfi_norest")) //This is the case of a No-Rest situation
+    else if (sOffset == "rest" && iOffset == 17 && !_GetIsDM(oPC) && _GetLocalInt(oPC, "dmfi_norest")) //This is the case of a No-Rest situation
     {
         SetRestTokens(oPC);
         return TRUE;
     }
-    else if (sOffset == "rest" && iOffset == 18 && !_GetIsDM(oPC) && !GetLocalInt(oPC, "dmfi_norest")) //This is the case of a Rest situation
+    else if (sOffset == "rest" && iOffset == 18 && !_GetIsDM(oPC) && !_GetLocalInt(oPC, "dmfi_norest")) //This is the case of a Rest situation
     {
         SetRestTokens(oPC);
         return TRUE;
@@ -355,7 +355,7 @@ int StartingConditional()
     }
     else if (sOffset == "naming" && iOffset==20)
     {
-        string sName = GetName(GetLocalObject(oPC, "dmfi_univ_target"));
+        string sName = GetName(_GetLocalObject(oPC, "dmfi_univ_target"));
         SetCustomToken(20680, sName);
         return TRUE;
     }

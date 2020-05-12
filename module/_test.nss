@@ -86,7 +86,7 @@ void other2()
     
     if (bGoing)
     { 
-        SetLocalLocation(oPC, "ls_stored_loc", GetLocation(oPC));
+        _SetLocalLocation(oPC, "ls_stored_loc", GetLocation(oPC));
         oArea = GetArea(oPC);
         oPartyMember = GetFirstFactionMember(oPC, FALSE);
 
@@ -126,7 +126,7 @@ void main()
             oTarget = GetWaypointByTag("DS_DESENC_1");
 
             // Save the PC's current location for the return trip.
-            SetLocalLocation(oPC, "ls_stored_loc", GetLocation(oPC));
+            _SetLocalLocation(oPC, "ls_stored_loc", GetLocation(oPC));
 
             // Teleport the PC's party (only those in the same area, though).
             oArea = GetArea(oPC);
@@ -154,7 +154,7 @@ void main()
                     // Find the location to which to teleport.
 
                     // Save the PC's current location for the return trip.
-                    SetLocalLocation(oPC, "ls_stored_loc", GetLocation(oPC));
+                    _SetLocalLocation(oPC, "ls_stored_loc", GetLocation(oPC));
 
                     // Teleport the PC's party (only those in the same area, though).
                     // Loop through the PC's party.

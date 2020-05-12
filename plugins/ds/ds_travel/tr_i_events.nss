@@ -46,23 +46,26 @@ void tr_OnAreaEnter()
     if (!_GetIsPC(oPC))
         return;
 
-    int nTimerID, nReturning = GetPlayerInt(oPC, TRAVEL_ENCOUNTER_ID);
+    if (!_GetLocalInt(OBJECT_SELF, TRAVEL_ENCOUNTER_AREA))
+        return;
+
+    int nTimerID, nReturning = _GetLocalInt(oPC, TRAVEL_ENCOUNTER_ID);
 
     if (!nReturning)    //Entering area from another area, not from an encounter
     {
-        SetPlayerInt(oPC, TRAVEL_MAX_ENCOUNTERS, Random(TRAVEL_ENCOUNTER_LIMIT) + Random(TRAVEL_ENCOUNTER_LIMIT_JITTER));
-        SetPlayerInt(oPC, TRAVEL_CURRENT_ENCOUNTERS, 0);
+        _SetLocalInt(oPC, TRAVEL_MAX_ENCOUNTERS, Random(TRAVEL_ENCOUNTER_LIMIT) + Random(TRAVEL_ENCOUNTER_LIMIT_JITTER));
+        _SetLocalInt(oPC, TRAVEL_CURRENT_ENCOUNTERS, 0);
 
-        Debug("Maximum encounters for this PC is " + IntToString(GetPlayerInt(oPC, TRAVEL_MAX_ENCOUNTERS)));
+        Debug("Maximum encounters for this PC is " + IntToString(_GetLocalInt(oPC, TRAVEL_MAX_ENCOUNTERS)));
 
         nTimerID = CreateTimer(oPC, TRAVEL_ENCOUNTER_ON_TIMER_EXPIRE, TRAVEL_ENCOUNTER_TIMER_INTERVAL, 0, TRAVEL_ENCOUNTER_TIMER_JITTER);
-        SetPlayerInt(oPC, TRAVEL_ENCOUNTER_TIMER, nTimerID);
+        _SetLocalInt(oPC, TRAVEL_ENCOUNTER_TIMER, nTimerID);
         StartTimer(nTimerID, FALSE);
     }
     else
     {
-        DeletePlayerInt(oPC, TRAVEL_ENCOUNTER_ID);
-        nTimerID = GetPlayerInt(oPC, TRAVEL_ENCOUNTER_TIMER);
+        _DeleteLocalInt(oPC, TRAVEL_ENCOUNTER_ID);
+        nTimerID = _GetLocalInt(oPC, TRAVEL_ENCOUNTER_TIMER);
         StartTimer(nTimerID, FALSE);
     }
 
@@ -76,17 +79,17 @@ void tr_OnAreaExit()
     if (!_GetIsPC(oPC))
         return;
 
-    int nEncounter = GetPlayerInt(oPC, TRAVEL_ENCOUNTER_ID);
-    int nTimerID = GetPlayerInt(oPC, TRAVEL_ENCOUNTER_TIMER);
+    int nEncounter = _GetLocalInt(oPC, TRAVEL_ENCOUNTER_ID);
+    int nTimerID = _GetLocalInt(oPC, TRAVEL_ENCOUNTER_TIMER);
 
     SetObjectVisualTransform(oPC, OBJECT_VISUAL_TRANSFORM_SCALE, 1.0f);
 
     if (!nEncounter)
     {
-        DeletePlayerInt(oPC, TRAVEL_ENCOUNTER_ID);
-        DeletePlayerInt(oPC, TRAVEL_MAX_ENCOUNTERS);
-        DeletePlayerInt(oPC, TRAVEL_CURRENT_ENCOUNTERS);
-        DeletePlayerLocation(oPC, TRAVEL_SOURCE_LOCATION);
+        _DeleteLocalInt(oPC, TRAVEL_ENCOUNTER_ID);
+        _DeleteLocalInt(oPC, TRAVEL_MAX_ENCOUNTERS);
+        _DeleteLocalInt(oPC, TRAVEL_CURRENT_ENCOUNTERS);
+        _DeleteLocalLocation(oPC, TRAVEL_SOURCE_LOCATION);
 
         KillTimer(nTimerID);
     }

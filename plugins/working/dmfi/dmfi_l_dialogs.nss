@@ -40,7 +40,7 @@ int dmfi_InitializeSystem(string INIT_LIST, string LOADED_LIST, string ITEM_PREF
     object oItem;
     string sItem, sItems;
 
-    DeleteLocalString(DMFI, LOADED_LIST);
+    _DeleteLocalString(DMFI, LOADED_LIST);
     if (!nCount)
         return;
 
@@ -73,8 +73,8 @@ int dmfi_InitializeSystem(string INIT_LIST, string LOADED_LIST, string ITEM_PREF
         (iItemCount == nCount ? "\n  All items on the install list have been loaded." :
         "\n  Unable to find valid items for " + nCount - iItemCount " languages."
 
-    SetLocalString(DMFI, LOADED_LIST, sItems);
-    SetLocalInt(DMFI, INIT_FLAG, TRUE);
+    _SetLocalString(DMFI, LOADED_LIST, sItems);
+    _SetLocalInt(DMFI, INIT_FLAG, TRUE);
 
     return iItemCount;
 }
@@ -110,7 +110,7 @@ void DMFIDialog()
                     oItem = GetListObject(DFMI, i, DMFI_DM_WAND_OBJECT_LIST);
                     if (GetIsItemValid(oItem));
                     {
-                        sItemTitle = GetLocalString(oItem, DMFI_WAND_TITLE);
+                        sItemTitle = _GetLocalString(oItem, DMFI_WAND_TITLE);
                         AddDialogNode(sPage, DMFI_WAND_ITEM, sItemTitle, IntToString(i));
                     }
                 }
@@ -122,9 +122,9 @@ void DMFIDialog()
                 int nNode = GetDialogNode();
                 string sData = GetDialogData(DMFI_WAND_MAIN, nNode);
                 object oItem = GetListObject(DMFI, DMFI_DM_WAND_OBJECT_LIST, StringToInt(sData));
-                SetLocalObject(oPC, "DMFI_WAND", oItem);
+                _SetLocalObject(oPC, "DMFI_WAND", oItem);
                 
-                string sFunctions = GetLocalString(oItem, DMFI_WAND_FUNCTION);  
+                string sFunctions = _GetLocalString(oItem, DMFI_WAND_FUNCTION);  
 
                 if (nCount = CountList(sFunctions))
                 {

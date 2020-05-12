@@ -57,10 +57,10 @@ void dmfi_OnModuleLoad()
 {    
     //TODO Voice tokens?  Otherwise, this function is pretty useless, just a switch flipper.
     // void initVoiceTokens in original dmfi_init_inc
-    SetLocalInt(DMFI_DATA, DMFI_INITIALIZED, TRUE);
+    _SetLocalInt(DMFI_DATA, DMFI_INITIALIZED, TRUE);
     Debug("DMFI :: Initialized for the module.");
 
-    SetLocalInt(DMFI, DMFI_MODULE_LOCKED, FALSE);
+    _SetLocalInt(DMFI, DMFI_MODULE_LOCKED, FALSE);
 
     //TODO, load all command objects and language objects?
     //Let's initialize all the command items
@@ -75,9 +75,9 @@ void dmfi_OnClientEnter()
     if (!_GetIsPC(oPC))
         return;
  
-    SetLocalObject(oPC, DMFI_TARGET_VOICE, OBJECT_INVALID);
-    SetLocalObject(oPC, DMFI_TARGET_COMMAND, oPC);
-    SetLocalInt(oPC, DMFI_INITIALIZED, TRUE);
+    _SetLocalObject(oPC, DMFI_TARGET_VOICE, OBJECT_INVALID);
+    _SetLocalObject(oPC, DMFI_TARGET_COMMAND, oPC);
+    _SetLocalInt(oPC, DMFI_INITIALIZED, TRUE);
 
     string sUserSettings = dmfi_PullSettings(oPC);
     
@@ -90,7 +90,7 @@ void dmfi_OnClientEnter()
     else
     {
         Debug("DMFI :: Loading custom settings for " + GetName(oPC));
-        SetLocalString(oPC, DMFI_USER_SETTINGS, sUserSettings);
+        _SetLocalString(oPC, DMFI_USER_SETTINGS, sUserSettings);
     }
 
     //Set languages on PC
@@ -104,7 +104,7 @@ void dmfi_OnClientEnter()
     else
     {
         Debug("");
-        SetLocalString(oPC, DMFI_LANGUAGE_KNOWN, sLanguages);
+        _SetLocalString(oPC, DMFI_LANGUAGE_KNOWN, sLanguages);
         dmfi_AssignCurrentLanguage(oPC, DMFI_LANGUAGE_ITEM_COMMON);
     }
 
@@ -208,9 +208,9 @@ struct DMFI_COMMAND_VARIABLES dmfi_SetCommandVariables()
     struct DMFI_COMMAND_VARIABLES cv;
 
     cv.oSpeaker = OBJECT_SELF;
-    cv.oTarget = GetLocalObject(oSpeaker, TODO);
-    cv.sArguments = GetLocalObject(oSpeaker, TODO);
-    cv.sModifiedMessge = GetLocalString(oSpeaker, TODO);
+    cv.oTarget = _GetLocalObject(oSpeaker, TODO);
+    cv.sArguments = _GetLocalObject(oSpeaker, TODO);
+    cv.sModifiedMessge = _GetLocalString(oSpeaker, TODO);
 
     return cv;
 } 
@@ -220,7 +220,7 @@ void dmfi_c_target()
     struct DMFI_COMMAND_VARIABLES cv = dmfi_SetCommandVariables();
 
     string sName, sType = GetListItem(cv.sArguments, 0);
-    object oTarget = GetLocalObject(cv.oSpeak, DMFI_TARGET_XXX_TODO);
+    object oTarget = _GetLocalObject(cv.oSpeak, DMFI_TARGET_XXX_TODO);
 
     //TODO modify this to use the target created by using the wand.
     //  when used, the wand should save the target to the ospeaker,
@@ -234,7 +234,7 @@ void dmfi_c_target()
     {
         if (GetIsObjectValid(oTarget))
         {
-            SetLocalObject(cv.oSpeaker, DMFI_UNIV_TARGET_XXX_TODO)
+            _SetLocalObject(cv.oSpeaker, DMFI_UNIV_TARGET_XXX_TODO)
         }
     }
     //TODO lots of work here to figure out what they're trying to accomplish
@@ -303,7 +303,7 @@ void dmfi_c_get()
     string sCharacter = GetListItem(cv.Arguments, 1);
     object oNPC;
 
-    oNPC = GetLocalObject(cv.oSpeaker, DMFI_COMMAND_SET + sCharacter);
+    oNPC = _GetLocalObject(cv.oSpeaker, DMFI_COMMAND_SET + sCharacter);
     if (GetIsObjectValid(oNPC))
     {
         if (sAction == "get")
@@ -332,7 +332,7 @@ void dmfi_c_set()
         return;
     }
     
-    SetLocalObject(cv.oSpeaker, DMFI_COMMAND_SET + sCharacter, cv.oTarget);
+    _SetLocalObject(cv.oSpeaker, DMFI_COMMAND_SET + sCharacter, cv.oTarget);
     // TODO Message
 }
 
@@ -342,24 +342,24 @@ void dmfi_c_dmtool()
 
     if (HasListItem(cv.sArguments, "lock"))
     {
-        SetLocalInt(DMFI), DMFI_MODULE_LOCKED, TRUE)
+        _SetLocalInt(DMFI), DMFI_MODULE_LOCKED, TRUE)
         return;
     }
 
     if (HasListItem(cv.sArguments, "unlock"))
-        SetLocalInt(DMFI), DMFI_MODULE_LOCKED, FALSE)
+        _SetLocalInt(DMFI), DMFI_MODULE_LOCKED, FALSE)
 }
 
 void dmfi_c_mute()
 {   //.mut, .unm
     struct DMFI_COMMAND_VARIABLES cv = dmfi_SetCommandVariables();
 
-    int nMuted = GetLocalString(cv.oTarget, DMFI_MUTED);
+    int nMuted = _GetLocalString(cv.oTarget, DMFI_MUTED);
 
     if (nMuted)
-        DeleteLocalInt(cv.oTarget, DMFI_MUTED, FALSE);
+        _DeleteLocalInt(cv.oTarget, DMFI_MUTED, FALSE);
     else
-        SetLocalInt(cv.oTarget, DMFI_MUTED, TRUE);
+        _SetLocalInt(cv.oTarget, DMFI_MUTED, TRUE);
 }
 
 void dmfi_c_freeze()
@@ -472,7 +472,7 @@ void dmfi_c_setname()
 
     string sName;
 
-        // object oTgt = GetLocalObject(oCommander, "dmfi_univ_target");
+        // object oTgt = _GetLocalObject(oCommander, "dmfi_univ_target");
     if (GetIsObjectValid(cv.oTarget))
     {
         if (HasListItem(cv.sArguments, "."))
@@ -718,7 +718,7 @@ void dmfi_c_buff()
 
 string dmfi_TranslatePhrase(string sLanguage, string sPhrase))
 {
-    if(!GetLocalInt(DMFI, DMFI_LANGUAGE_INITIALIZED))
+    if(!_GetLocalInt(DMFI, DMFI_LANGUAGE_INITIALIZED))
         dmfi_InitializeLanguages();
     
     int i, nIndex, nCount;
@@ -814,11 +814,11 @@ void ParseEmote(string sEmote, object sSpeaker)
     //Check for muted emotes.
     //TODO check this before calling this procedure
 
-    if (GetLocalInt(MODULE, "DMFI_SUPPRESS_EMOTES") ||
-        GetLocalInt(oPC, "hls_emotemute"))
+    if (_GetLocalInt(MODULE, "DMFI_SUPPRESS_EMOTES") ||
+        _GetLocalInt(oPC, "hls_emotemute"))
         return;
 
-    DeleteLocalInt(oPC, "dmfi_univ_int");
+    _DeleteLocalInt(oPC, "dmfi_univ_int");
     
     object oRightHand = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND,oPC);
     object oLeftHand =  GetItemInSlot(INVENTORY_SLOT_LEFTHAND,oPC);
@@ -838,17 +838,17 @@ void ParseEmote(string sEmote, object sSpeaker)
     {
         if (FindSubString(sLCEmote, GetListItem(DMFI_PC_CHECKS, i)) != 1)
         {
-            SetLocalInt(oPC, "dmfi_univ_int", 60 + i + (i/10));
+            _SetLocalInt(oPC, "dmfi_univ_int", 60 + i + (i/10));
             break;
         }
         
         if ((FindSubString(sLCEmote, "ride") != -1))
-            SetLocalInt(oPC, "dmfi_univ_int", 90);
+            _SetLocalInt(oPC, "dmfi_univ_int", 90);
     }
     
-    if (GetLocalInt(oPC, "dmfi_univ_int"))
+    if (_GetLocalInt(oPC, "dmfi_univ_int"))
     {
-        SetLocalString(oPC, "dmfi_univ_conv", "pc_dicebag");
+        _SetLocalString(oPC, "dmfi_univ_conv", "pc_dicebag");
         ExecuteScript("dmfi_execute", oPC);
         return;
     }*/
@@ -1164,16 +1164,16 @@ void ParseCommand(object oTarget, object oSpeaker, string sModifiedMessage, stri
         sScript = GetListString(DMFI, nIndex, CHAT_SCRIPT_LIST);
 
         //set up variables
-        SetLocalString(oSpeaker, TODO, sArguments);
-        SetLocalString(oSpeaker, TODO, GetStringLowerCase(sModifiedMessage));
-        SetLocalObject(oSpeaker, TODO, oTarget);
+        _SetLocalString(oSpeaker, TODO, sArguments);
+        _SetLocalString(oSpeaker, TODO, GetStringLowerCase(sModifiedMessage));
+        _SetLocalObject(oSpeaker, TODO, oTarget);
 
         ExecuteScript(sScript, oSpeaker);
 
         // Cleanup
-        DeleteLocalString(oSpeaker, TODO);
-        DeleteLocalString(oSpeaker, TODO);
-        DeleteLocalObject(oSpeaker, TODO);
+        _DeleteLocalString(oSpeaker, TODO);
+        _DeleteLocalString(oSpeaker, TODO);
+        _DeleteLocalObject(oSpeaker, TODO);
     }
 
     //That's it for this portion.  Inidividual item scripts and functions should check
@@ -1197,8 +1197,8 @@ void ParseCommand(object oTarget, object oSpeaker, string sModifiedMessage, stri
         {
             if (FindSubString(GetName(oGet), sArgs) != -1)
             {
-                // SetLocalObject(oCommander, "dmfi_VoiceTarget", oGet);
-                SetLocalObject(oCommander, "dmfi_univ_target", oGet);
+                // _SetLocalObject(oCommander, "dmfi_VoiceTarget", oGet);
+                _SetLocalObject(oCommander, "dmfi_univ_target", oGet);
                 FloatingTextStringOnCreature("You have targeted " + GetName(oGet) + " with the DMFI Targeting Widget", oCommander, FALSE);
                 return;
             }
@@ -1217,7 +1217,7 @@ void ParseCommand(object oTarget, object oSpeaker, string sModifiedMessage, stri
         {
             if (FindSubString(GetName(oGet), sArgs) != -1)
             {
-                SetLocalObject(oCommander, "dmfi_VoiceTarget", oGet);
+                _SetLocalObject(oCommander, "dmfi_VoiceTarget", oGet);
                 FloatingTextStringOnCreature("You have targeted " + GetName(oGet) + " with the Voice Widget", oCommander, FALSE);
                 return;
             }
@@ -1231,7 +1231,7 @@ void ParseCommand(object oTarget, object oSpeaker, string sModifiedMessage, stri
 void dmfi_OnPlayerChat()
 {
     object oVoiceTarget, oActionTarget, oTarget, oSpeaker = GetPCChatSpeaker();
-    string sCommand, sVoiceCommand, sActionCommand, sSpeakerHooks = GetLocalString(oSpeaker, DMFI_HOOK);
+    string sCommand, sVoiceCommand, sActionCommand, sSpeakerHooks = _GetLocalString(oSpeaker, DMFI_HOOK);
     string sArguments, sModifiedMessage, sOriginalMessage = GetPCChatMessage();
     int i, nCount, nArguments, nHandle, nChannel = GetPCChatVolume();
     float fDistance;
@@ -1332,7 +1332,7 @@ void dmfi_OnPlayerChat()
         int i = ASSOCIATE_TYPE_HENCHMAN;
         
         if (sVoiceCommand == ":")  //TODO is this a DM only command?
-            oVoiceTarget = _GetIsDM(oSpeaker) ? GetLocalObject(oSpeaker, DMFI_TARGET_VOICE) : oSpeaker;
+            oVoiceTarget = _GetIsDM(oSpeaker) ? _GetLocalObject(oSpeaker, DMFI_TARGET_VOICE) : oSpeaker;
 
         if (sVoiceCommand == ";")
         {
@@ -1447,42 +1447,42 @@ void dmw_CleanUp(object oMySpeaker)
 {
    int nCount;
    int nCache;
-   DeleteLocalObject(oMySpeaker, "dmfi_univ_target");
-   DeleteLocalLocation(oMySpeaker, "dmfi_univ_location");
-   DeleteLocalObject(oMySpeaker, "dmw_item");
-   DeleteLocalString(oMySpeaker, "dmw_repamt");
-   DeleteLocalString(oMySpeaker, "dmw_repargs");
-   nCache = GetLocalInt(oMySpeaker, "dmw_playercache");
+   _DeleteLocalObject(oMySpeaker, "dmfi_univ_target");
+   _DeleteLocalLocation(oMySpeaker, "dmfi_univ_location");
+   _DeleteLocalObject(oMySpeaker, "dmw_item");
+   _DeleteLocalString(oMySpeaker, "dmw_repamt");
+   _DeleteLocalString(oMySpeaker, "dmw_repargs");
+   nCache = _GetLocalInt(oMySpeaker, "dmw_playercache");
    
    for(nCount = 1; nCount <= nCache; nCount++)
    {
-      DeleteLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCount));
+      _DeleteLocalObject(oMySpeaker, "dmw_playercache" + IntToString(nCount));
    }
-   DeleteLocalInt(oMySpeaker, "dmw_playercache");
+   _DeleteLocalInt(oMySpeaker, "dmw_playercache");
    
-   nCache = GetLocalInt(oMySpeaker, "dmw_itemcache");
+   nCache = _GetLocalInt(oMySpeaker, "dmw_itemcache");
    for(nCount = 1; nCount <= nCache; nCount++)
    {
-      DeleteLocalObject(oMySpeaker, "dmw_itemcache" + IntToString(nCount));
+      _DeleteLocalObject(oMySpeaker, "dmw_itemcache" + IntToString(nCount));
    }
-   DeleteLocalInt(oMySpeaker, "dmw_itemcache");
+   _DeleteLocalInt(oMySpeaker, "dmw_itemcache");
    
    for(nCount = 1; nCount <= 10; nCount++)
    {
-      DeleteLocalString(oMySpeaker, "dmw_dialog" + IntToString(nCount));
-      DeleteLocalString(oMySpeaker, "dmw_function" + IntToString(nCount));
-      DeleteLocalString(oMySpeaker, "dmw_params" + IntToString(nCount));
+      _DeleteLocalString(oMySpeaker, "dmw_dialog" + IntToString(nCount));
+      _DeleteLocalString(oMySpeaker, "dmw_function" + IntToString(nCount));
+      _DeleteLocalString(oMySpeaker, "dmw_params" + IntToString(nCount));
    }
-   DeleteLocalString(oMySpeaker, "dmw_playerfunc");
-   DeleteLocalInt(oMySpeaker, "dmw_started");
+   _DeleteLocalString(oMySpeaker, "dmw_playerfunc");
+   _DeleteLocalInt(oMySpeaker, "dmw_started");
 }
 
 void main()
 {
     object oUser = OBJECT_SELF;
-    object oItem = GetLocalObject(oUser, "dmfi_item");
-    object oOther = GetLocalObject(oUser, "dmfi_target");
-    location lLocation = GetLocalLocation(oUser, "dmfi_location");
+    object oItem = _GetLocalObject(oUser, "dmfi_item");
+    object oOther = _GetLocalObject(oUser, "dmfi_target");
+    location lLocation = _GetLocalLocation(oUser, "dmfi_location");
     string sItemTag = GetTag(oItem);
 
     //This is done OML and OCE, why call this again here?
@@ -1494,8 +1494,8 @@ void main()
     {
         // Remove voice stuff
         string ssLanguage = GetStringRight(sItemTag, GetStringLength(sItemTag) - 8);
-        SetLocalInt(oUser, "hls_MyLanguage", StringToInt(ssLanguage));
-        SetLocalString(oUser, "hls_MyLanguageName", GetName(oItem));
+        _SetLocalInt(oUser, "hls_MyLanguage", StringToInt(ssLanguage));
+        _SetLocalString(oUser, "hls_MyLanguageName", GetName(oItem));
         DelayCommand(1.0f, FloatingTextStringOnCreature("You are speaking " + GetName(oItem) + ". Type [(what you want to say in brackets)]", oUser, FALSE));
         return;
     }
@@ -1583,13 +1583,13 @@ void dmfi_wand_voice()
     if (GetIsObjectValid(oOther)) // do we have a valid target creature?
     {
         // 2008.05.29 tsunami282 - we don't use creature listen stuff anymore
-        SetLocalObject(oUser, "dmfi_VoiceTarget", oOther);
+        _SetLocalObject(oUser, "dmfi_VoiceTarget", oOther);
 
         FloatingTextStringOnCreature("You have targeted " + GetName(oOther) + " with the Voice Widget", oUser, FALSE);
 
-        if (GetLocalInt(GetModule(), "dmfi_voice_initial")!=1)
+        if (_GetLocalInt(GetModule(), "dmfi_voice_initial")!=1)
         {
-            SetLocalInt(GetModule(), "dmfi_voice_initial", 1);
+            _SetLocalInt(GetModule(), "dmfi_voice_initial", 1);
             SendMessageToAllDMs("Listening Initialized:  .commands, .skill checks, and much more now available.");
             DelayCommand(4.0, FloatingTextStringOnCreature("Listening Initialized:  .commands, .skill checks, and more available", oUser));
         }
@@ -1598,15 +1598,15 @@ void dmfi_wand_voice()
     else // no valid target of voice wand
     {
         //Jump any existing Voice attached to the user
-        if (GetIsObjectValid(GetLocalObject(oUser, "dmfi_StaticVoice")))
+        if (GetIsObjectValid(_GetLocalObject(oUser, "dmfi_StaticVoice")))
         {
-            DestroyObject(GetLocalObject(oUser, "dmfi_StaticVoice"));
+            DestroyObject(_GetLocalObject(oUser, "dmfi_StaticVoice"));
         }
         //Create the StationaryVoice
         object oStaticVoice = CreateObject(OBJECT_TYPE_CREATURE, "dmfi_voice", GetLocation(oUser));
         //Set Ownership of the Voice to the User
-        SetLocalObject(oUser, "dmfi_StaticVoice", oVoice);
-        SetLocalObject(oUser, "dmfi_VoiceTarget", oStaticVoice);
+        _SetLocalObject(oUser, "dmfi_StaticVoice", oVoice);
+        _SetLocalObject(oUser, "dmfi_VoiceTarget", oStaticVoice);
         DelayCommand(1.0f, FloatingTextStringOnCreature("A Stationary Voice has been created.", oUser, FALSE));
         return;
     }
@@ -1615,26 +1615,26 @@ void dmfi_wand_voice()
 
 void dmfi_wand_mute()
 {
-    SetLocalObject(oUser, "dmfi_univ_target", oUser);
-    SetLocalString(oUser, "dmfi_univ_conv", "voice");
-    SetLocalInt(oUser, "dmfi_univ_int", 8);
+    _SetLocalObject(oUser, "dmfi_univ_target", oUser);
+    _SetLocalString(oUser, "dmfi_univ_conv", "voice");
+    _SetLocalInt(oUser, "dmfi_univ_int", 8);
     ExecuteScript("dmfi_execute", oUser);
     return;
 }
 
 void dmfi_wand_encounter_ditto()
 {
-    SetLocalObject(oUser, "dmfi_univ_target", oOther);
-    SetLocalLocation(oUser, "dmfi_univ_location", lLocation);
-    SetLocalString(oUser, "dmfi_univ_conv", "encounter");
-    SetLocalInt(oUser, "dmfi_univ_int", GetLocalInt(oUser, "EncounterType"));
+    _SetLocalObject(oUser, "dmfi_univ_target", oOther);
+    _SetLocalLocation(oUser, "dmfi_univ_location", lLocation);
+    _SetLocalString(oUser, "dmfi_univ_conv", "encounter");
+    _SetLocalInt(oUser, "dmfi_univ_int", _GetLocalInt(oUser, "EncounterType"));
     ExecuteScript("dmfi_execute", oUser);
     return;
 }
 
 void dmfi_wand_target()
 {
-    SetLocalObject(oUser, "dmfi_univ_target", oOther);
+    _SetLocalObject(oUser, "dmfi_univ_target", oOther);
     FloatingTextStringOnCreature("DMFI Target set to " + GetName(oOther),oUser);
 }
 
@@ -1670,10 +1670,10 @@ void dmfi_wand_remove()
 
 void dmfi_wand_500xp()
 {
-    SetLocalObject(oUser, "dmfi_univ_target", oOther);
-    SetLocalLocation(oUser, "dmfi_univ_location", lLocation);
-    SetLocalString(oUser, "dmfi_univ_conv", "xp");
-    SetLocalInt(oUser, "dmfi_univ_int", 53);
+    _SetLocalObject(oUser, "dmfi_univ_target", oOther);
+    _SetLocalLocation(oUser, "dmfi_univ_location", lLocation);
+    _SetLocalString(oUser, "dmfi_univ_conv", "xp");
+    _SetLocalInt(oUser, "dmfi_univ_int", 53);
     ExecuteScript("dmfi_execute", oUser);
     return;
 }
@@ -1737,14 +1737,14 @@ void dmfi_wand_afflict()
 {
     int nDNum;
 
-    nDNum = GetLocalInt(oUser, "dmfi_damagemodifier");
+    nDNum = _GetLocalInt(oUser, "dmfi_damagemodifier");
     SetCustomToken(20780, IntToString(nDNum));
 }
 
 /*
-SetLocalObject(oUser, "dmfi_univ_target", oOther);
-SetLocalLocation(oUser, "dmfi_univ_location", lLocation);
-SetLocalString(oUser, "dmfi_univ_conv", GetStringRight(sItemTag, GetStringLength(sItemTag) - 5));
+_SetLocalObject(oUser, "dmfi_univ_target", oOther);
+_SetLocalLocation(oUser, "dmfi_univ_location", lLocation);
+_SetLocalString(oUser, "dmfi_univ_conv", GetStringRight(sItemTag, GetStringLength(sItemTag) - 5));
 AssignCommand(oUser, ClearAllActions());
 AssignCommand(oUser, ActionStartConversation(OBJECT_SELF, "dmfi_universal", TRUE, FALSE));
 }*/

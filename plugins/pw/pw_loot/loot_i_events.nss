@@ -44,7 +44,7 @@ void loot_OnPlayerDying()
 {
     object oPC = GetLastPlayerDying();
     //if some other dying subsystem set the player state to something else before this one, no need to continue
-    if (GetPlayerInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DYING)
+    if (_GetLocalInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DYING)
         return;
     object oLootBag = h2_CreateLootBag(oPC);
     h2_MovePossessorInventory(oPC, TRUE, oLootBag);
@@ -53,11 +53,11 @@ void loot_OnPlayerDying()
 void loot_OnPlayerDeath()
 {
     object oPC = GetLastPlayerDied();
-    if (GetLocalInt(oPC, H2_LOGIN_DEATH))
+    if (_GetLocalInt(oPC, H2_LOGIN_DEATH))
         return;
 
     //if some other death subsystem set the player state back to alive before this one, no need to continue
-    if (GetPlayerInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DEAD)
+    if (_GetLocalInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DEAD)
         return;
 
     object oLootBag = h2_CreateLootBag(oPC);

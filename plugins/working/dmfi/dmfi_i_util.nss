@@ -27,7 +27,7 @@
 // Returns the default setting for the passed sSetting given the object oUser.
 string dmfi_GetDefaultSetting(object oUser, string sSetting)
 {
-    if(!GetLocalInt(oUser, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oUser, DMFI_INITIALIZED))
         return;
     
     Debug("DMFI :: Setting Default " + sSetting + " value for " + GetName(oUser);
@@ -47,10 +47,10 @@ string dmfi_GetDefaultSetting(object oUser, string sSetting)
 //  from the variable in the user's PC object.
 void dmfi_PushSettings(object oUser)
 {
-    if(!GetLocalInt(oUser, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oUser, DMFI_INITIALIZED))
         return;
 
-    string sSettings = GetLocalInt(oUser, DMFI_USER_SETTINGS);
+    string sSettings = _GetLocalInt(oUser, DMFI_USER_SETTINGS);
     SetDatabaseString(DMFI_USER_SETTINGS, sSettings, oUser);
 }
 
@@ -74,13 +74,13 @@ string dmfi_PullSettings(object oPC)
 //  the database and user variable.
 int dmfi_SetSetting(object oUser, string sSetting, string sValue, int bForce)
 {
-    if(!GetLocalInt(oUser, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oUser, DMFI_INITIALIZED))
         return FALSE;
     
     Debug("DMFI :: Setting " + (bForce ? "persistent " : "") + sSetting + 
             " for " + GetName(oUser));
     
-    string sUserSettings = GetLocalString(oUser, DMFI_USER_SETTINGS);
+    string sUserSettings = _GetLocalString(oUser, DMFI_USER_SETTINGS);
     string sNewSetting = sSetting + ":" + sValue;
     
     if(bForce)
@@ -92,7 +92,7 @@ int dmfi_SetSetting(object oUser, string sSetting, string sValue, int bForce)
         Debug("DMFI :: Unable to set " + (bForce ? "persistent " : "") +
             sSetting + ".  Key:Value Pair does not exist.");
 
-    SetLocalString(oUser, DMFI_USER_SETTINGS, sUserSettings);
+    _SetLocalString(oUser, DMFI_USER_SETTINGS, sUserSettings);
     
     if(bForce)
         SetDatabaseString(DMFI_USER_SETTINGS, sUserSettings, oUser);
@@ -131,13 +131,13 @@ int dmfi_SetSettingFloat(object oUser, string sSetting, float fValue, int bForce
 //      will be set to the object's setting variable and to the database.
 string dmfi_DeleteSetting(object oUser, string sSetting, int bUseDefault = TRUE, int bForce = FALSE)
 {
-    if(!GetLocalInt(oUser, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oUser, DMFI_INITIALIZED))
         return;
 
     Debug("DMFI :: Deleting " + (bForce ? "persistent " : ""() + sSetting +
         " for " + GetName(oUser) + (bUseDefault ? " and replacing with default." : "."));
 
-    string sNewSetting, sUserSettings = GetLocalString(oUser, DMFI_USER_SETTINGS);
+    string sNewSetting, sUserSettings = _GetLocalString(oUser, DMFI_USER_SETTINGS);
     if(bForce)
         sUserSettings = GetDatabaseString(DMFI_USER_SETTINGS, oUser);
 
@@ -160,7 +160,7 @@ string dmfi_DeleteSetting(object oUser, string sSetting, int bUseDefault = TRUE,
                 Warning(DMFI :: "Default setting " + sSetting + " does not exist.");
         }
 
-        SetLocalString(oUser, DMFI_USER_SETTINGS, sUserSettings);
+        _SetLocalString(oUser, DMFI_USER_SETTINGS, sUserSettings);
         if(bForce)
             SetDatabaseString(DMFI_USER_SETTINGS, sUserSettings, oUser);
     }
@@ -176,10 +176,10 @@ string dmfi_DeleteSetting(object oUser, string sSetting, int bUseDefault = TRUE,
 //  settings variable.
 string dmfi_GetSetting(object oUser, string sSetting, int bForce)
 {
-    if(!GetLocalInt(oUser, DMFI_INITIALIZED))
+    if(!_GetLocalInt(oUser, DMFI_INITIALIZED))
         return "";
 
-    string sCurrentSetting; sUserSttings = GetLocalString(oUser, DMFI_USER_SETTINGS);
+    string sCurrentSetting; sUserSttings = _GetLocalString(oUser, DMFI_USER_SETTINGS);
     
     if(!bForce)
         sUserSettings = GetDatabaseString(DMFI_USER_SETTINGS, oUser);
@@ -252,7 +252,7 @@ void dmfi_SetDefaultSettings(object oUser, int bForce = FALSE);
     else
         sSettings = DMFI_DEFAULT_PC_SETTINGS;
 
-    SetLocalString(oUser, DMFI_USER_SETTINGS, sSettings);
+    _SetLocalString(oUser, DMFI_USER_SETTINGS, sSettings);
 
     if(bForce)
         SetDatabaseString(DMFI_USER_SETTINGS, DMFI_DEFAULT_SETTINGS, oUser);
@@ -361,11 +361,11 @@ struct DMFI_LANGUAGE_ITEM dmfi_GetLanguage(nIndex)
     struct DMFI_LANGUAGE_ITEM li;
     object oLanguageItem = GetListObject(DMFI, nIndex, DMFI_LANGUAGE_OBJECT);
 
-    li.nIndex = GetLocalInt(oLanguageItem, DMFI_LANGUAGE_INDEX);
-    li.nMode = GetLocalInt(oLanguageItem, DMFI_LANGUAGE_MODE);
-    li.sName = GetLocalString(oLanguageItem, DMFI_LANGUAGE_NAME);
-    li.sAbbreviation = GetLocalString(oLanguageItem, DMFI_LANGUAGE_ABBREVIATION);
-    li.sAlphabet = GetLocalString(oLangugaeItem, DMFI_LANGUAGE_ALPHABET);
+    li.nIndex = _GetLocalInt(oLanguageItem, DMFI_LANGUAGE_INDEX);
+    li.nMode = _GetLocalInt(oLanguageItem, DMFI_LANGUAGE_MODE);
+    li.sName = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_NAME);
+    li.sAbbreviation = _GetLocalString(oLanguageItem, DMFI_LANGUAGE_ABBREVIATION);
+    li.sAlphabet = _GetLocalString(oLangugaeItem, DMFI_LANGUAGE_ALPHABET);
 
     return li;
 }
@@ -395,7 +395,7 @@ int dmfi_CountWords(string sPhrase)
 
 int dmfi_AssignKnownLanguage(object oActionTarget, object oPC, string sLanguage)
 {
-    string sList = GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN)
+    string sList = _GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN)
 
     if (_GetIsDM(oPC))
     {
@@ -417,13 +417,13 @@ int dmfi_AssignCurrentLanguage(object oActionTarget, object oPC, string sLanguag
 {
     if (_GetIsDM(oPC))
     {
-        SetLocalString(oActionTarget, DMFI_LANGUAGE_CURRENT, sLanguage);
+        _SetLocalString(oActionTarget, DMFI_LANGUAGE_CURRENT, sLanguage);
         return TRUE;
     }
     else if (_GetIsPC(oPC))
     {
-        if (HasListItem(GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN), sLanguage)
-            SetLocalString(oActionTarget, DMFI_LANGUAGE_CURRENT, sLanguage);
+        if (HasListItem(_GetLocalString(oActionTarget, DMFI_LANGUAGE_KNOWN), sLanguage)
+            _SetLocalString(oActionTarget, DMFI_LANGUAGE_CURRENT, sLanguage);
         return TRUE;
     }
     else

@@ -2,7 +2,7 @@ int StartingConditional()
 {
     // set the custom tokens
     object oPC = GetPCSpeaker();
-    object oTarget = GetLocalObject(oPC, "dmfi_univ_target");
+    object oTarget = _GetLocalObject(oPC, "dmfi_univ_target");
 
     string sName = GetDescription(oTarget);
     SetCustomToken(20682, sName);

@@ -88,8 +88,8 @@ void InitializeChatCommands()
         {
             oChatItem = GetListObject(DMFI, CHAT_OBJECT_LIST, i);
             RegisterChatCommandsFromItem(oChatItem);
-            //sCommands = GetLocalString(oChatItem, CHAT_COMMAND_CSV);
-            //sScript = GetLocalString(oChatItem, CHAT_COMMAND_SCRIPT);
+            //sCommands = _GetLocalString(oChatItem, CHAT_COMMAND_CSV);
+            //sScript = _GetLocalString(oChatItem, CHAT_COMMAND_SCRIPT);
 
             //RegisterChatCommands(sCommands, sScript);
         }
@@ -98,7 +98,7 @@ void InitializeChatCommands()
 
 /*int GetChatCommandBlacklisted(string sCommand)
 {
-    string sBlackList = GetLocalString(DMFI, CHAT_COMMAND_BLACKLIST);
+    string sBlackList = _GetLocalString(DMFI, CHAT_COMMAND_BLACKLIST);
     return HasListString(sBlackList, sCommand);
 }*/
 
@@ -108,14 +108,14 @@ void InitializeChatCommands()
     string sList, sCommand, sCommands, sBlackList;
     object oItem;
 
-    DeleteLocalString(DMFI, CHAT_COMMAND_BLACKLIST);
+    _DeleteLocalString(DMFI, CHAT_COMMAND_BLACKLIST);
 
     for (i = 0; i < nCount; i++)
     {
         oItem = GetListObject(DMFI, i, CHAT_OBJECT_LIST);
-        if (!GetLocalInt(oItem, CHAT_OBJECT_ACTIVE))
+        if (!_GetLocalInt(oItem, CHAT_OBJECT_ACTIVE))
         {
-            sCommands = GetLocalString(oItem, CHAT_COMMAND_CSV);
+            sCommands = _GetLocalString(oItem, CHAT_COMMAND_CSV);
             nCommand = CountList(sCommands);
 
             for (j = 0; j < nCommand; j++)
@@ -134,7 +134,7 @@ void InitializeChatCommands()
         }
     }
 
-    SetLocalString(DMFI, CHAT_COMMAND_BLACKLIST, sBlackList);
+    _SetLocalString(DMFI, CHAT_COMMAND_BLACKLIST, sBlackList);
 }*/
 
 string ParsePrefix(string sCommand)
@@ -146,16 +146,16 @@ string ParsePrefix(string sCommand)
 //void RegisterChatCommands(string sCommands, string sScript)
 int RegisterChatCommandsFromItem(object oChatItem)
 {
-    if (!GetLocalInt(DMFI, CHAT_INITIALIZED))
+    if (!_GetLocalInt(DMFI, CHAT_INITIALIZED))
         InitializeChatCommands();
     
     if (!GetIsObjectValid(oChatItem))
         return;
 
-    string sAdded, sCommands = GetLocalString(oChatItem, CHAT_COMMAND_CSV);
-    string sScript = GetLocalString(oChatItem, CHAT_COMMAND_SCRIPT);
+    string sAdded, sCommands = _GetLocalString(oChatItem, CHAT_COMMAND_CSV);
+    string sScript = _GetLocalString(oChatItem, CHAT_COMMAND_SCRIPT);
     int i, nIndex, nCount = CountList(sCommands);
-    int nActive = GetLocalInt(oChatItem, CHAT_OBJECT_ACTIVE);
+    int nActive = _GetLocalInt(oChatItem, CHAT_OBJECT_ACTIVE);
     int nCommandCount = CountStringList(CHAT_COMMAND_LIST);
 
     if (nActive)
@@ -201,9 +201,9 @@ int RegisterChatCommands(string sCommands, string sScript);
     oChatItem = CreateItemOnObject(CHAT_INITIALIZER_TEMPLATE, DMFI, 1, 
         CHAT_INITIALIZER_AUTO_PREFIX + IntToString(nChatItems + 1));
 
-    SetLocalString(oChatItem, CHAT_COMMAND_CSV, sCommands);
-    SetLocalString(oChatItem, CHAT_COMMAND_SCRIPT, sScript);
-    SetLocalInt(oChatItem, CHAT_OBJECT_ACTIVE, TRUE);
+    _SetLocalString(oChatItem, CHAT_COMMAND_CSV, sCommands);
+    _SetLocalString(oChatItem, CHAT_COMMAND_SCRIPT, sScript);
+    _SetLocalInt(oChatItem, CHAT_OBJECT_ACTIVE, TRUE);
 
     return RegisterChatCommandsByObject(oChatItem);
 }
@@ -213,9 +213,9 @@ int ActivateChatCommands(object oChatItem)
     if (!GetIsObjectValid(oChatItem))
         return FALSE;
     
-    string sCommands = GetLocalString(oItem, CHAT_COMMAND_CSV);
-    string sScript = GetLocalString(oItem, CHAT_COMMAND_SCRIPT);
-    int nActive = GetLocalInt(oItem, CHAT_OBJECT_ACTIVE);
+    string sCommands = _GetLocalString(oItem, CHAT_COMMAND_CSV);
+    string sScript = _GetLocalString(oItem, CHAT_COMMAND_SCRIPT);
+    int nActive = _GetLocalInt(oItem, CHAT_OBJECT_ACTIVE);
 
     if (nActive)
         RegisterChatCommand(sCommands, sScript);
@@ -228,7 +228,7 @@ int DeactiveateChatCommands(object oChatItem)
     if (!GetIsObjectValid(oChatItem))
         return FALSE;
     
-    string sCommand, sCommands = GetLocalString(oItem, CHAT_COMMAND_CSV);
+    string sCommand, sCommands = _GetLocalString(oItem, CHAT_COMMAND_CSV);
     int i, nIndex, nCount = CountList(sCommands);
 
     for (i = 0; i < nCount; i++)
@@ -252,11 +252,11 @@ int RunChatCommand(string sCommand, object oSpeaker)
     if (sCommand == "" || !GetIsObjectValid(oSpeaker))
         return FALSE;
     
-    if (!GetLocalInt(DMFI, CHAT_INITIALIZED))
+    if (!_GetLocalInt(DMFI, CHAT_INITIALIZED))
         InitializeChatCommands();
 
     //BuildChatCommandBlacklist();
-    sBlackList = GetLocalString(DMFI, CHAT_COMMAND_BLACKLIST);
+    sBlackList = _GetLocalString(DMFI, CHAT_COMMAND_BLACKLIST);
 
     sCommand = ParsePrefix(sCommand);
     sCommand = GetStringLowerCase(sCommand);

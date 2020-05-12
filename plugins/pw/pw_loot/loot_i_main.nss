@@ -37,7 +37,7 @@ object h2_CreateLootBag(object oPC);
 
 object h2_CreateLootBag(object oPC)
 {
-    object oLootBag = GetLocalObject(oPC, H2_LOOT_BAG);
+    object oLootBag = _GetLocalObject(oPC, H2_LOOT_BAG);
     location lLootBag = GetLocation(oLootBag);
     location lPlayer = GetLocation(oPC);
     
@@ -46,7 +46,7 @@ object h2_CreateLootBag(object oPC)
     {
         oLootBag = CreateObject(OBJECT_TYPE_PLACEABLE, H2_LOOT_BAG, GetLocation(oPC));
         //TODO: set the name of the lootbag using 1.67 patch SetName fuction?
-        SetLocalObject(oPC, H2_LOOT_BAG, oLootBag);
+        _SetLocalObject(oPC, H2_LOOT_BAG, oLootBag);
     }
 
     return oLootBag;

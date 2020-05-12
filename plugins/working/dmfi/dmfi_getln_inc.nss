@@ -38,7 +38,7 @@ int DMFI_get_line(object oSpeaker, int iChannel, string sEventScriptName, object
         hdlHook = DMFI_ChatHookAdd(sEventScriptName, oRequester, (1 << iChannel),
                 FALSE, oSpeaker, TRUE);
 // SendMessageToPC(GetFirstPC(), "getline - hook handle returned is " + IntToString(hdlHook));
-        SetLocalInt(oRequester, DMFI_GETLINE_HOOK_HANDLE_VARNAME, hdlHook);
+        _SetLocalInt(oRequester, DMFI_GETLINE_HOOK_HANDLE_VARNAME, hdlHook);
     }
 
     return hdlHook;
@@ -54,7 +54,7 @@ int DMFI_get_line(object oSpeaker, int iChannel, string sEventScriptName, object
 void DMFI_cancel_get_line(int hdlHookIn = 0, object oRequester = OBJECT_SELF)
 {
     int hdlHook = hdlHookIn;
-    if (hdlHook == 0) hdlHook = GetLocalInt(oRequester, DMFI_GETLINE_HOOK_HANDLE_VARNAME);
+    if (hdlHook == 0) hdlHook = _GetLocalInt(oRequester, DMFI_GETLINE_HOOK_HANDLE_VARNAME);
     DMFI_ChatHookRemove(hdlHook);
 }
 

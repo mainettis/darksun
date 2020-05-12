@@ -71,7 +71,7 @@ void NPC_OnConversation()
     //     ExecuteScript("dmfi_voice_exe", OBJECT_SELF);
     //     }
 
-    if (nMatch == -1 && _GetIsPC(oShouter) &&(GetLocalInt(GetModule(), "dmfi_AllMute") || GetLocalInt(OBJECT_SELF, "dmfi_Mute")))
+    if (nMatch == -1 && _GetIsPC(oShouter) &&(_GetLocalInt(GetModule(), "dmfi_AllMute") || _GetLocalInt(OBJECT_SELF, "dmfi_Mute")))
     {
         SendMessageToAllDMs(GetName(oShouter) + " is trying to speak to a muted NPC, " + GetName(OBJECT_SELF) + ", in area " + GetName(GetArea(OBJECT_SELF)));
         SendMessageToPC(oShouter, "This NPC is muted. A DM will be here shortly.");
@@ -109,7 +109,7 @@ void NPC_OnConversation()
         // Determine the intruder if any
         if(nMatch == 4)
         {
-            oIntruder = GetLocalObject(oShouter, "NW_BLOCKER_INTRUDER");
+            oIntruder = _GetLocalObject(oShouter, "NW_BLOCKER_INTRUDER");
         }
         else if (nMatch == 5)
         {
@@ -167,15 +167,15 @@ void SafeFaction(object oCurrent, object oAttacker)
         AssignCommand(oCurrent, ClearAllActions());
         // * Note: waiting for Sophia to make SetStandardFactionReptuation to clear all personal reputation
         if (GetStandardFactionReputation(STANDARD_FACTION_COMMONER, oAttacker) <= 10)
-        {   SetLocalInt(oAttacker, "NW_G_Playerhasbeenbad", 10); // * Player bad
+        {   _SetLocalInt(oAttacker, "NW_G_Playerhasbeenbad", 10); // * Player bad
             SetStandardFactionReputation(STANDARD_FACTION_COMMONER, 80, oAttacker);
         }
         if (GetStandardFactionReputation(STANDARD_FACTION_MERCHANT, oAttacker) <= 10)
-        {   SetLocalInt(oAttacker, "NW_G_Playerhasbeenbad", 10); // * Player bad
+        {   _SetLocalInt(oAttacker, "NW_G_Playerhasbeenbad", 10); // * Player bad
             SetStandardFactionReputation(STANDARD_FACTION_MERCHANT, 80, oAttacker);
         }
         if (GetStandardFactionReputation(STANDARD_FACTION_DEFENDER, oAttacker) <= 10)
-        {   SetLocalInt(oAttacker, "NW_G_Playerhasbeenbad", 10); // * Player bad
+        {   _SetLocalInt(oAttacker, "NW_G_Playerhasbeenbad", 10); // * Player bad
             SetStandardFactionReputation(STANDARD_FACTION_DEFENDER, 80, oAttacker);
         }
 
@@ -186,7 +186,7 @@ void SafeFaction(object oCurrent, object oAttacker)
 void NPC_OnAttacked()
 {
 //DMFI CODE ADDITIONS*****************************
-    if ((_GetIsPC(GetLastAttacker()) && (GetLocalInt(GetModule(), "dmfi_safe_factions")==1)))
+    if ((_GetIsPC(GetLastAttacker()) && (_GetLocalInt(GetModule(), "dmfi_safe_factions")==1)))
         {
         SafeFaction(OBJECT_SELF, GetLastAttacker());
         SpeakString("DM ALERT:  Default non-hostile faction member attacked.  Player: "+GetName(GetLastAttacker()), TALKVOLUME_SILENT_SHOUT);
@@ -196,10 +196,10 @@ void NPC_OnAttacked()
         }
 //END DMFI CODE ADDITIONS****************************
 
-    if (!GetLocalInt(GetModule(),"X3_NO_MOUNTED_COMBAT_FEAT"))
+    if (!_GetLocalInt(GetModule(),"X3_NO_MOUNTED_COMBAT_FEAT"))
         { // set variables on target for mounted combat
-            SetLocalInt(OBJECT_SELF,"bX3_LAST_ATTACK_PHYSICAL",TRUE);
-            SetLocalInt(OBJECT_SELF,"nX3_HP_BEFORE",GetCurrentHitPoints(OBJECT_SELF));
+            _SetLocalInt(OBJECT_SELF,"bX3_LAST_ATTACK_PHYSICAL",TRUE);
+            _SetLocalInt(OBJECT_SELF,"nX3_HP_BEFORE",GetCurrentHitPoints(OBJECT_SELF));
         } // set variables on target for mounted combat
 
     if(GetFleeToExit()) {
@@ -267,9 +267,9 @@ void main()
     if (GetStringLeft(GetTag(oItem), 5) == "dmfi_" ||
     GetStringLeft(GetTag(oItem), 8) == "hlslang_")
     {
-        SetLocalObject(OBJECT_SELF, "dmfi_item", oItem);
-        SetLocalObject(OBJECT_SELF, "dmfi_target", oTarget);
-        SetLocalLocation(OBJECT_SELF, "dmfi_location", lLocal);
+        _SetLocalObject(OBJECT_SELF, "dmfi_item", oItem);
+        _SetLocalObject(OBJECT_SELF, "dmfi_target", oTarget);
+        _SetLocalLocation(OBJECT_SELF, "dmfi_location", lLocal);
         ExecuteScript("dmfi_activate", OBJECT_SELF);
         return;
     }

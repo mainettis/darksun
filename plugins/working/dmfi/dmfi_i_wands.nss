@@ -64,7 +64,7 @@ object DMFI_NextTarget(object oTarget, object oUser)
         oNew = oTarget;
     }
 
-    SetLocalObject(oUser, "dmfi_univ_target", oNew);
+    _SetLocalObject(oUser, "dmfi_univ_target", oNew);
     SetCustomToken(20680, GetName(oNew));
     FloatingTextStringOnCreature("Target changed to: "+ GetName(oNew), oUser);
     return oNew;
@@ -75,10 +75,10 @@ object DMFI_NextTarget(object oTarget, object oUser)
 void CreateSetting(object oUser)
 {
     object oSetting = CreateObject(OBJECT_TYPE_CREATURE, "dmfi_setting", GetLocation(oUser));
-    DelayCommand(0.5f, AssignCommand(oSetting, ActionSpeakString(GetLocalString(oUser, "EffectSetting") + " is currently set at " + FloatToString(GetLocalFloat(oUser, GetLocalString(oUser, "EffectSetting"))))));
-    SetLocalObject(oSetting, "MyMaster", oUser);
+    DelayCommand(0.5f, AssignCommand(oSetting, ActionSpeakString(_GetLocalString(oUser, "EffectSetting") + " is currently set at " + FloatToString(_GetLocalFloat(oUser, _GetLocalString(oUser, "EffectSetting"))))));
+    _SetLocalObject(oSetting, "MyMaster", oUser);
     SetListenPattern(oSetting, "**", LISTEN_PATTERN); //listen to all text
-    SetLocalInt(oSetting, "hls_Listening", 1); //listen to all text
+    _SetLocalInt(oSetting, "hls_Listening", 1); //listen to all text
     SetListening(oSetting, TRUE);          //be sure NPC is listening
 }
 
@@ -110,9 +110,9 @@ void RollDemBones(object oUser, int iBroadcast, int iMod = 0, string sAbility = 
     sString = sString + " = Total: " + IntToString(iTotal);
 
     //Perform appropriate animation
-    if (GetLocalInt(oUser, "dmfi_dice_no_animate")!=1)
+    if (_GetLocalInt(oUser, "dmfi_dice_no_animate")!=1)
     {
-        switch (GetLocalInt(oUser, "dmfi_univ_int"))
+        switch (_GetLocalInt(oUser, "dmfi_univ_int"))
         {
         case 71: AssignCommand(oUser, PlayAnimation(ANIMATION_LOOPING_TALK_PLEADING, 1.0, 5.0f)); break;
         case 72: AssignCommand(oUser, PlayAnimation(ANIMATION_FIREFORGET_PAUSE_SCRATCH_HEAD, 1.0)); break;
@@ -205,9 +205,9 @@ void DoDiceBagFunction(int iDice, object oUser, int iDMOverride = 0)
     case 98: iNum = 1; iSide = 20; iTrain = 1; sAbility="Tumble Check, "; iMod = GetSkillRank(SKILL_TUMBLE, oUser); break;
     case 99: iNum = 1; iSide = 20; iTrain = 1; sAbility="Use Magic Device Check, "; iMod = GetSkillRank(SKILL_USE_MAGIC_DEVICE, oUser); break;
 
-    case 101: SetLocalInt(oUser, "dmfi_dicebag", 2); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 2, oUser); SetCustomToken(20681, "Local"); FloatingTextStringOnCreature("Broadcast Mode set to Local", oUser, FALSE); return; break;
-    case 102: SetLocalInt(oUser, "dmfi_dicebag", 1); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 1, oUser); SetCustomToken(20681, "Global"); FloatingTextStringOnCreature("Broadcast Mode set to Global", oUser, FALSE); return; break;
-    case 103: SetLocalInt(oUser, "dmfi_dicebag", 0); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 0, oUser); SetCustomToken(20681, "Private"); FloatingTextStringOnCreature("Broadcast Mode set to Private", oUser, FALSE); return; break;
+    case 101: _SetLocalInt(oUser, "dmfi_dicebag", 2); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 2, oUser); SetCustomToken(20681, "Local"); FloatingTextStringOnCreature("Broadcast Mode set to Local", oUser, FALSE); return; break;
+    case 102: _SetLocalInt(oUser, "dmfi_dicebag", 1); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 1, oUser); SetCustomToken(20681, "Global"); FloatingTextStringOnCreature("Broadcast Mode set to Global", oUser, FALSE); return; break;
+    case 103: _SetLocalInt(oUser, "dmfi_dicebag", 0); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 0, oUser); SetCustomToken(20681, "Private"); FloatingTextStringOnCreature("Broadcast Mode set to Private", oUser, FALSE); return; break;
     default: iNum = iRight;
 
         switch (iLeft)
@@ -228,7 +228,7 @@ void DoDiceBagFunction(int iDice, object oUser, int iDMOverride = 0)
         return;
     }
 
-    int iTell = GetLocalInt(oUser, "dmfi_dicebag");
+    int iTell = _GetLocalInt(oUser, "dmfi_dicebag");
 
     if (iDMOverride)
         iTell = iDMOverride;
@@ -299,7 +299,7 @@ void DestroyCreature(object oTarget)
 //DMFI NPC Control Wand
 void DoControlFunction(int iFaction, object oUser)
 {
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
     object oArea = GetArea(oUser);
     object oChange;
     float fAlignShift;
@@ -309,7 +309,7 @@ void DoControlFunction(int iFaction, object oUser)
 
     object oAlignTarget = GetNearestObject(OBJECT_TYPE_CREATURE, oUser);
 
-    fAlignShift = GetLocalFloat(oUser, "dmfi_reputation");
+    fAlignShift = _GetLocalFloat(oUser, "dmfi_reputation");
 
     if (fAlignShift == 0.0f)
         fAlignShift = 10.0f;
@@ -320,7 +320,7 @@ void DoControlFunction(int iFaction, object oUser)
     switch (iFaction)
     {
     case 10: //Toggle the state of all the encounters in the area
-        if (GetLocalInt(oArea, "dmfi_encounter_inactive"))
+        if (_GetLocalInt(oArea, "dmfi_encounter_inactive"))
         {
             oChange = GetFirstObjectInArea(oArea);
             while (GetIsObjectValid(oChange))
@@ -330,7 +330,7 @@ void DoControlFunction(int iFaction, object oUser)
                 oChange = GetNextObjectInArea(oArea);
             }
             FloatingTextStringOnCreature("Bioware encounters are active",oUser, FALSE);
-            SetLocalInt(oArea, "dmfi_encounter_inactive", FALSE);
+            _SetLocalInt(oArea, "dmfi_encounter_inactive", FALSE);
         }
         else
         {
@@ -347,7 +347,7 @@ void DoControlFunction(int iFaction, object oUser)
                 oChange = GetNextObjectInArea(oArea);
             }
             FloatingTextStringOnCreature("Bioware encounters deactivated",oUser, FALSE);
-            SetLocalInt(oArea, "dmfi_encounter_inactive", TRUE);
+            _SetLocalInt(oArea, "dmfi_encounter_inactive", TRUE);
         }
         break;
     case 11: ChangeToStandardFaction(oTarget, STANDARD_FACTION_HOSTILE);  break;
@@ -443,28 +443,28 @@ void DoControlFunction(int iFaction, object oUser)
             }
             oChange = GetNextObjectInArea(oArea);
         }break;
-    case 31: SetLocalObject(oUser, "dmfi_customfaction1", oTarget); nMessage = -1; break;
-    case 32: SetLocalObject(oUser, "dmfi_customfaction2", oTarget); nMessage = -1;break;
-    case 33: SetLocalObject(oUser, "dmfi_customfaction3", oTarget); nMessage = -1;break;
-    case 34: SetLocalObject(oUser, "dmfi_customfaction4", oTarget); nMessage = -1;break;
-    case 35: SetLocalObject(oUser, "dmfi_customfaction5", oTarget); nMessage = -1;break;
-    case 36: SetLocalObject(oUser, "dmfi_customfaction6", oTarget); nMessage = -1;break;
-    case 37: SetLocalObject(oUser, "dmfi_customfaction7", oTarget); nMessage = -1;break;
-    case 38: SetLocalObject(oUser, "dmfi_customfaction8", oTarget); nMessage = -1;break;
-    case 39: SetLocalObject(oUser, "dmfi_customfaction9", oTarget); nMessage = -1;break;
-    case 41: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction1")); nMessage = -1;break;
-    case 42: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction2")); nMessage = -1;break;
-    case 43: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction3")); nMessage = -1;break;
-    case 44: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction4")); nMessage = -1;break;
-    case 45: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction5")); nMessage = -1;break;
-    case 46: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction6")); nMessage = -1;break;
-    case 47: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction7")); nMessage = -1;break;
-    case 48: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction8")); nMessage = -1;break;
-    case 49: ChangeFaction(oTarget, GetLocalObject(oUser, "dmfi_customfaction9")); nMessage = -1;break;
+    case 31: _SetLocalObject(oUser, "dmfi_customfaction1", oTarget); nMessage = -1; break;
+    case 32: _SetLocalObject(oUser, "dmfi_customfaction2", oTarget); nMessage = -1;break;
+    case 33: _SetLocalObject(oUser, "dmfi_customfaction3", oTarget); nMessage = -1;break;
+    case 34: _SetLocalObject(oUser, "dmfi_customfaction4", oTarget); nMessage = -1;break;
+    case 35: _SetLocalObject(oUser, "dmfi_customfaction5", oTarget); nMessage = -1;break;
+    case 36: _SetLocalObject(oUser, "dmfi_customfaction6", oTarget); nMessage = -1;break;
+    case 37: _SetLocalObject(oUser, "dmfi_customfaction7", oTarget); nMessage = -1;break;
+    case 38: _SetLocalObject(oUser, "dmfi_customfaction8", oTarget); nMessage = -1;break;
+    case 39: _SetLocalObject(oUser, "dmfi_customfaction9", oTarget); nMessage = -1;break;
+    case 41: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction1")); nMessage = -1;break;
+    case 42: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction2")); nMessage = -1;break;
+    case 43: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction3")); nMessage = -1;break;
+    case 44: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction4")); nMessage = -1;break;
+    case 45: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction5")); nMessage = -1;break;
+    case 46: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction6")); nMessage = -1;break;
+    case 47: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction7")); nMessage = -1;break;
+    case 48: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction8")); nMessage = -1;break;
+    case 49: ChangeFaction(oTarget, _GetLocalObject(oUser, "dmfi_customfaction9")); nMessage = -1;break;
     case 51: RemoveHenchman(GetMaster(oTarget), oTarget);
-        SetLocalObject(oUser, "dmfi_henchman", oTarget); nMessage = -1;break;
+        _SetLocalObject(oUser, "dmfi_henchman", oTarget); nMessage = -1;break;
     case 52: RemoveHenchman(oTarget, GetAssociate(ASSOCIATE_TYPE_HENCHMAN, oTarget));
-        AddHenchman(oTarget, GetLocalObject(oUser, "dmfi_henchman")); nMessage = -1;break;
+        AddHenchman(oTarget, _GetLocalObject(oUser, "dmfi_henchman")); nMessage = -1;break;
     case 61: AssignCommand(oTarget, ClearAllActions()); AssignCommand(oTarget, ActionMoveAwayFromObject(oUser, TRUE)); nMessage = -1;break;
     case 62: AssignCommand(oTarget, ClearAllActions()); AssignCommand(oTarget, ActionForceMoveToObject(oUser, TRUE, 2.0f, 30.0f)); nMessage = -1;break;
     case 63: AssignCommand(oTarget, ClearAllActions()); AssignCommand(oTarget, ActionRandomWalk());nMessage = -1; break;
@@ -536,7 +536,7 @@ void DoControlFunction(int iFaction, object oUser)
         nReport = GetReputation(oTarget, oAlignTarget);
         FloatingTextStringOnCreature("Current Reputation: "+ GetName(oAlignTarget) + " vs. " +GetName(oTarget)+": " + IntToString(nReport), oUser);
         break;
-    case 83:  SetLocalString(oUser, "EffectSetting", "dmfi_reputation");
+    case 83:  _SetLocalString(oUser, "EffectSetting", "dmfi_reputation");
         CreateSetting(oUser);nMessage = -1; break;
     case 84:  nReport = GetReputation(oAlignTarget, oTarget);
         FloatingTextStringOnCreature("Current Reputation: "+ GetName(oTarget) + " vs. " +GetName(oAlignTarget)+": " + IntToString(nReport), oUser);
@@ -544,15 +544,15 @@ void DoControlFunction(int iFaction, object oUser)
         FloatingTextStringOnCreature("Current Reputation: "+ GetName(oAlignTarget) + " vs. " +GetName(oTarget)+": " + IntToString(nReport), oUser);
         nMessage = -1;break;
     case 9:  {
-            if (GetLocalInt(GetModule(), "dmfi_safe_factions")!=1)
+            if (_GetLocalInt(GetModule(), "dmfi_safe_factions")!=1)
             {
-                SetLocalInt(GetModule(), "dmfi_safe_factions", 1);
+                _SetLocalInt(GetModule(), "dmfi_safe_factions", 1);
                 SetDMFIPersistentInt("dmfi", "dmfi_safe_factions", 1, oUser);
                 FloatingTextStringOnCreature("Default non-hostile faction should ignore PC attacks",oUser, FALSE);
             }
             else
             {
-                SetLocalInt(GetModule(), "dmfi_safe_factions", 0);
+                _SetLocalInt(GetModule(), "dmfi_safe_factions", 0);
                 SetDMFIPersistentInt("dmfi", "dmfi_safe_factions", 0, oUser);
                 FloatingTextStringOnCreature("Bioware faction behavior restored",oUser, FALSE);
             }
@@ -729,7 +729,7 @@ void DMFI_Align(object oUser, object oTarget, int nAlign, int nParty)
 {
     if (GetObjectType(oTarget)== OBJECT_TYPE_CREATURE)
     {
-        int nAmount = GetLocalInt(oUser, "dmfi_alignshift");
+        int nAmount = _GetLocalInt(oUser, "dmfi_alignshift");
 
         if (nParty)
         {
@@ -756,7 +756,7 @@ void DMFI_Align(object oUser, object oTarget, int nAlign, int nParty)
 void DMFI_Roll(object oUser)
 {
     object oStoreState = GetItemPossessedBy(oUser, "dmfi_dmw");
-    int n = GetLocalInt(oUser, "dmfi_alignshift");
+    int n = _GetLocalInt(oUser, "dmfi_alignshift");
     if (n == 1)
         n = 2;
     else if (n ==2)
@@ -766,7 +766,7 @@ void DMFI_Roll(object oUser)
     else if (n == 10)
         n = 1;
     FloatingTextStringOnCreature("Adjustment changed to " + IntToString(n), oUser);
-    SetLocalInt(oUser, "dmfi_alignshift", n);
+    _SetLocalInt(oUser, "dmfi_alignshift", n);
     SetCustomToken(20781, IntToString(n));
     SetDMFIPersistentInt("dmfi", "dmfi_alignshift", n, oUser);
 }
@@ -818,7 +818,7 @@ void TilesetMagic(object oUser, int nEffect, int nType)
 {
     int iXAxis = GetAreaXAxis(GetArea(oUser));
     int iYAxis = GetAreaYAxis(GetArea(oUser));
-    int nBase = GetLocalInt(GetModule(), "dmfi_tileset");
+    int nBase = _GetLocalInt(GetModule(), "dmfi_tileset");
 
 // nType definitions:
 // 0 fill
@@ -862,8 +862,8 @@ if (nEffect == X2_TL_GROUNDTILE_ICE)
 //New DM Wand by Demetrious
 void DoNewDMThingy(int iChoice, object oUser)
 {
-    location lLocation = GetLocalLocation(oUser, "dmfi_univ_location");
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
+    location lLocation = _GetLocalLocation(oUser, "dmfi_univ_location");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
     int iXAxis = GetAreaXAxis(GetArea(oUser));
     int iYAxis = GetAreaYAxis(GetArea(oUser));
     object oCopy; object oParty;
@@ -1085,8 +1085,8 @@ void DoNewDMThingy(int iChoice, object oUser)
             AssignCommand(oCopy, SetIsDestroyable(FALSE, TRUE, TRUE));
         }
         break;
-    case 101: SetLocalInt(GetModule(), "dmfi_tileset" , 0);   break;
-    case 102: SetLocalInt(GetModule(), "dmfi_tileset" , 1);  break; //sewer/city
+    case 101: _SetLocalInt(GetModule(), "dmfi_tileset" , 0);   break;
+    case 102: _SetLocalInt(GetModule(), "dmfi_tileset" , 1);  break; //sewer/city
 
     default: break;
     }
@@ -1097,10 +1097,10 @@ void DoNewDMThingy(int iChoice, object oUser)
 //This is for the DMFI Dicebag Wand
 void DoDMDiceBagFunction(int iDice, object oUser)
 {
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
     if (!GetIsObjectValid(oTarget))
         oTarget = oUser;
-    int iOverride = GetLocalInt(oUser, "dmfi_dicebag");
+    int iOverride = _GetLocalInt(oUser, "dmfi_dicebag");
     object oArea = GetArea(oUser);
     object oRoll;
     int iLeft;
@@ -1130,20 +1130,20 @@ void DoDMDiceBagFunction(int iDice, object oUser)
     case 10: {
             switch (iDice)
             {
-            case 101: SetLocalInt(oUser, "dmfi_dicebag", 2); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 2, oUser); SetCustomToken(20681, "Local"); FloatingTextStringOnCreature("Broadcast Mode set to Local", oUser, FALSE); return; break;
-            case 102: SetLocalInt(oUser, "dmfi_dicebag", 1); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 1, oUser); SetCustomToken(20681, "Global"); FloatingTextStringOnCreature("Broadcast Mode set to Global", oUser, FALSE); return; break;
-            case 103: SetLocalInt(oUser, "dmfi_dicebag", 0); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 0, oUser); SetCustomToken(20681, "Private"); FloatingTextStringOnCreature("Broadcast Mode set to Private", oUser, FALSE); return; break;
-            case 104: SetLocalInt(oUser, "dmfi_dicebag", 3); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 3, oUser); SetCustomToken(20681, "DM Only"); FloatingTextStringOnCreature("Broadcast Mode set to DM Only", oUser, FALSE); return; break;
+            case 101: _SetLocalInt(oUser, "dmfi_dicebag", 2); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 2, oUser); SetCustomToken(20681, "Local"); FloatingTextStringOnCreature("Broadcast Mode set to Local", oUser, FALSE); return; break;
+            case 102: _SetLocalInt(oUser, "dmfi_dicebag", 1); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 1, oUser); SetCustomToken(20681, "Global"); FloatingTextStringOnCreature("Broadcast Mode set to Global", oUser, FALSE); return; break;
+            case 103: _SetLocalInt(oUser, "dmfi_dicebag", 0); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 0, oUser); SetCustomToken(20681, "Private"); FloatingTextStringOnCreature("Broadcast Mode set to Private", oUser, FALSE); return; break;
+            case 104: _SetLocalInt(oUser, "dmfi_dicebag", 3); SetDMFIPersistentInt("dmfi", "dmfi_dicebag", 3, oUser); SetCustomToken(20681, "DM Only"); FloatingTextStringOnCreature("Broadcast Mode set to DM Only", oUser, FALSE); return; break;
             case 105: DMFI_NextTarget(oTarget, oUser);break;
             case 106: {
-                    if (GetLocalInt(oUser, "dmfi_dice_no_animate")==1)
+                    if (_GetLocalInt(oUser, "dmfi_dice_no_animate")==1)
                     {
-                        SetLocalInt(oUser, "dmfi_dice_no_animate", 0);
+                        _SetLocalInt(oUser, "dmfi_dice_no_animate", 0);
                         FloatingTextStringOnCreature("Rolls will show animation", oUser);
                     }
                     else
                     {
-                        SetLocalInt(oUser, "dmfi_dice_no_animate", 1);
+                        _SetLocalInt(oUser, "dmfi_dice_no_animate", 1);
                         FloatingTextStringOnCreature("Rolls will NOT show animation", oUser);
                     }
                 }
@@ -1172,19 +1172,19 @@ void DoOneRingFunction(int iRing, object oUser)
 {
     switch (iRing)
     {
-    case 1: SetLocalString(oUser, "dmfi_univ_conv", "afflict"); break;
-    case 2: SetLocalString(oUser, "dmfi_univ_conv", "faction"); break;
-    case 3: SetLocalString(oUser, "dmfi_univ_conv", "dicebag"); break;
-    case 4: SetLocalString(oUser, "dmfi_univ_conv", "dmw"); break;
-    case 5: SetLocalString(oUser, "dmfi_univ_conv", "emote"); break;
-    case 6: SetLocalString(oUser, "dmfi_univ_conv", "encounter"); break;
-    case 7: SetLocalString(oUser, "dmfi_univ_conv", "fx"); break;
-    case 8: SetLocalString(oUser, "dmfi_univ_conv", "music"); break;
-    case 91: SetLocalString(oUser, "dmfi_univ_conv", "sound"); break;
-    case 92: SetLocalString(oUser, "dmfi_univ_conv", "voice"); break;
-    case 93: SetLocalString(oUser, "dmfi_univ_conv", "xp"); break;
-    case 94: SetLocalString(oUser, "dmfi_univ_conv", "buff");break;
-    default: SetLocalString(oUser, "dmfi_univ_conv", "dmw"); break;
+    case 1: _SetLocalString(oUser, "dmfi_univ_conv", "afflict"); break;
+    case 2: _SetLocalString(oUser, "dmfi_univ_conv", "faction"); break;
+    case 3: _SetLocalString(oUser, "dmfi_univ_conv", "dicebag"); break;
+    case 4: _SetLocalString(oUser, "dmfi_univ_conv", "dmw"); break;
+    case 5: _SetLocalString(oUser, "dmfi_univ_conv", "emote"); break;
+    case 6: _SetLocalString(oUser, "dmfi_univ_conv", "encounter"); break;
+    case 7: _SetLocalString(oUser, "dmfi_univ_conv", "fx"); break;
+    case 8: _SetLocalString(oUser, "dmfi_univ_conv", "music"); break;
+    case 91: _SetLocalString(oUser, "dmfi_univ_conv", "sound"); break;
+    case 92: _SetLocalString(oUser, "dmfi_univ_conv", "voice"); break;
+    case 93: _SetLocalString(oUser, "dmfi_univ_conv", "xp"); break;
+    case 94: _SetLocalString(oUser, "dmfi_univ_conv", "buff");break;
+    default: _SetLocalString(oUser, "dmfi_univ_conv", "dmw"); break;
     }
     AssignCommand(oUser, ClearAllActions());
     AssignCommand(oUser, ActionStartConversation(OBJECT_SELF, "dmfi_universal", TRUE));
@@ -1195,20 +1195,20 @@ void DoOneRingFunction(int iRing, object oUser)
 void DoSoundFunction(int iSound, object oUser)
 {
 
-    location lLocation = GetLocalLocation(oUser, "dmfi_univ_location");
+    location lLocation = _GetLocalLocation(oUser, "dmfi_univ_location");
     float fDuration;
     float fDelay;
     object oTarget;
 
     if (GetIsDMPossessed(oUser))
     {
-        fDuration = GetLocalFloat(GetMaster(oUser), "dmfi_effectduration");
-        fDelay = GetLocalFloat(GetMaster(oUser), "dmfi_sound_delay");
+        fDuration = _GetLocalFloat(GetMaster(oUser), "dmfi_effectduration");
+        fDelay = _GetLocalFloat(GetMaster(oUser), "dmfi_sound_delay");
     }
     else
     {
-        fDuration = GetLocalFloat(oUser, "dmfi_effectduration");
-        fDelay = GetLocalFloat(oUser, "dmfi_sound_delay");
+        fDuration = _GetLocalFloat(oUser, "dmfi_effectduration");
+        fDelay = _GetLocalFloat(oUser, "dmfi_sound_delay");
     }
 
     switch (iSound)
@@ -1283,15 +1283,15 @@ void DoSoundFunction(int iSound, object oUser)
 
         //Settings
     case 91:
-        SetLocalString(oUser, "EffectSetting", "dmfi_effectduration");
+        _SetLocalString(oUser, "EffectSetting", "dmfi_effectduration");
         CreateSetting(oUser);
         break;
     case 92:
-        SetLocalString(oUser, "EffectSetting", "dmfi_sound_delay");
+        _SetLocalString(oUser, "EffectSetting", "dmfi_sound_delay");
         CreateSetting(oUser);
         break;
     case 93:
-        SetLocalString(oUser, "EffectSetting", "dmfi_beamduration");
+        _SetLocalString(oUser, "EffectSetting", "dmfi_beamduration");
         CreateSetting(oUser);
         break;
     case 94: //Change Day Music
@@ -1337,8 +1337,8 @@ void DoSoundFunction(int iSound, object oUser)
 void DoVoiceFunction(int iSay, object oUser)
 {
     object oMod = GetModule();
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
-    location lLocation = GetLocalLocation(oUser, "dmfi_univ_location");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
+    location lLocation = _GetLocalLocation(oUser, "dmfi_univ_location");
     object oVoice;
     string sSay;
 
@@ -1358,60 +1358,60 @@ void DoVoiceFunction(int iSay, object oUser)
 
             // v1.09 - eavesdrop at location
             {
-                int hooknum = GetLocalInt(oUser, "dmfi_MyListenerHook");
+                int hooknum = _GetLocalInt(oUser, "dmfi_MyListenerHook");
                 if (hooknum != 0) RemoveListenerHook(hooknum);
-                int hookparty = GetLocalInt(oUser, "dmfi_MyListenerPartyMode");
-                int hookbcast = GetLocalInt(oUser, "dmfi_MyListenerBcastMode");
+                int hookparty = _GetLocalInt(oUser, "dmfi_MyListenerPartyMode");
+                int hookbcast = _GetLocalInt(oUser, "dmfi_MyListenerBcastMode");
                 hooknum = dmfi_AddListenerHook(2, OBJECT_INVALID, lLocation,
                         DMFI_CHANNELMASK_TALK|DMFI_CHANNELMASK_WHISPER,
                         hookparty, hookbcast, oUser);
                 if (hooknum != 0)
                 {
                     // move ditto voice to this location (destroying any existing one)
-                    if (GetIsObjectValid(GetLocalObject(oUser, "dmfi_MyVoice")))
+                    if (GetIsObjectValid(_GetLocalObject(oUser, "dmfi_MyVoice")))
                     {
-                        DestroyObject(GetLocalObject(oUser, "dmfi_MyVoice"));
-                        DeleteLocalObject(oUser, "dmfi_MyVoice");
+                        DestroyObject(_GetLocalObject(oUser, "dmfi_MyVoice"));
+                        _DeleteLocalObject(oUser, "dmfi_MyVoice");
                         FloatingTextStringOnCreature("You have destroyed your previous Voice", oUser, FALSE);
                     }
                     oVoice = CreateObject(OBJECT_TYPE_CREATURE, "dmfi_voice", lLocation);
                     //Sets the Voice as the object to throw to.
-                    SetLocalObject(oUser, "dmfi_VoiceTarget", oVoice);
+                    _SetLocalObject(oUser, "dmfi_VoiceTarget", oVoice);
                     //Set Ownership of the Voice to the User
-                    SetLocalObject(oUser, "dmfi_MyVoice", oVoice);
+                    _SetLocalObject(oUser, "dmfi_MyVoice", oVoice);
                     DelayCommand(1.0f, FloatingTextStringOnCreature("The Voice is operational", oUser, FALSE));
                 }
                 else
                 {
                     SendMessageToPC(oUser, "ERROR: could not append listener hook!");
                 }
-                SetLocalInt(oUser, "dmfi_MyListenerHook", hooknum);
+                _SetLocalInt(oUser, "dmfi_MyListenerHook", hooknum);
             }
             break;
 
         // case 9: //Destroy any existing Voice attached to the user
-        //     if (GetIsObjectValid(GetLocalObject(oUser, "dmfi_MyVoice")))
+        //     if (GetIsObjectValid(_GetLocalObject(oUser, "dmfi_MyVoice")))
         //     {
-        //         DestroyObject(GetLocalObject(oUser, "dmfi_MyVoice"));
-        //         DeleteLocalObject(oUser, "dmfi_MyVoice");
+        //         DestroyObject(_GetLocalObject(oUser, "dmfi_MyVoice"));
+        //         _DeleteLocalObject(oUser, "dmfi_MyVoice");
         //         FloatingTextStringOnCreature("You have destroyed your previous Voice", oUser, FALSE);
         //     }
         //     //Create the Voice
         //     oVoice = CreateObject(OBJECT_TYPE_CREATURE, "dmfi_voice", lLocation);
         //     //Sets the Voice as the object to throw to.
-        //     SetLocalObject(oUser, "dmfi_VoiceTarget", oVoice);
+        //     _SetLocalObject(oUser, "dmfi_VoiceTarget", oVoice);
         //     //Set Ownership of the Voice to the User
-        //     SetLocalObject(oUser, "dmfi_MyVoice", oVoice);
+        //     _SetLocalObject(oUser, "dmfi_MyVoice", oVoice);
         //     DelayCommand(1.0f, FloatingTextStringOnCreature("The Voice is operational", oUser, FALSE));
         //     break;
 
         case 9:
             // v1.09 - Toggle location range eavesdropping
             {
-                int partylisten = GetLocalInt(oUser, "dmfi_MyListenerPartyMode");
+                int partylisten = _GetLocalInt(oUser, "dmfi_MyListenerPartyMode");
                 partylisten++;
                 if (partylisten > 2) partylisten = 0;
-                SetLocalInt(oUser, "dmfi_MyListenerPartyMode", partylisten);
+                _SetLocalInt(oUser, "dmfi_MyListenerPartyMode", partylisten);
                 string sRange;
                 if (partylisten == 0) sRange = "EARSHOT";
                 else if (partylisten == 1) sRange = "AREA";
@@ -1423,8 +1423,8 @@ void DoVoiceFunction(int iSay, object oUser)
         // Create a Loiter Voice
         default:
             oVoice = CreateObject(OBJECT_TYPE_CREATURE, "dmfi_voice", lLocation);
-            SetLocalInt(oVoice, "dmfi_Loiter", 1);
-            SetLocalString(oVoice, "dmfi_LoiterSay", GetDMFIPersistentString("dmfi", "hls206" + IntToString(iSay)));
+            _SetLocalInt(oVoice, "dmfi_Loiter", 1);
+            _SetLocalString(oVoice, "dmfi_LoiterSay", GetDMFIPersistentString("dmfi", "hls206" + IntToString(iSay)));
             break;
         }
     }
@@ -1444,45 +1444,45 @@ void DoVoiceFunction(int iSay, object oUser)
 
         //     // XXXX Create a Ditto Voice - Duplicate functionality
         // case 9: //Destroy any existing Voice attached to the user
-        //     if (GetIsObjectValid(GetLocalObject(oUser, "dmfi_MyVoice")))
+        //     if (GetIsObjectValid(_GetLocalObject(oUser, "dmfi_MyVoice")))
         //     {
-        //         DestroyObject(GetLocalObject(oUser, "dmfi_MyVoice"));
-        //         DeleteLocalObject(oUser, "dmfi_MyVoice");
+        //         DestroyObject(_GetLocalObject(oUser, "dmfi_MyVoice"));
+        //         _DeleteLocalObject(oUser, "dmfi_MyVoice");
         //         FloatingTextStringOnCreature("You have destroyed your previous Voice", oUser, FALSE);
         //     }
         //     //Create the Voice
         //     oVoice = CreateObject(OBJECT_TYPE_CREATURE, "dmfi_voice", lLocation);
         //
-        //     SetLocalObject(oUser, "dmfi_VoiceTarget", oVoice);
+        //     _SetLocalObject(oUser, "dmfi_VoiceTarget", oVoice);
         //     //Set Ownership of the Voice to the User
-        //     SetLocalObject(oUser, "dmfi_MyVoice", oVoice);
+        //     _SetLocalObject(oUser, "dmfi_MyVoice", oVoice);
         //     DelayCommand(1.0f, FloatingTextStringOnCreature("The Voice is operational", oUser, FALSE));
         //     break;
 
         case 9:
             {
                 // v1.09 - toggle eavesdrop bcast - user/alldms
-                int hookbcast = GetLocalInt(oUser, "dmfi_MyListenerBcastMode");
+                int hookbcast = _GetLocalInt(oUser, "dmfi_MyListenerBcastMode");
                 hookbcast = !hookbcast;
-                SetLocalInt(oUser, "dmfi_MyListenerBcastMode", hookbcast);
+                _SetLocalInt(oUser, "dmfi_MyListenerBcastMode", hookbcast);
                 DelayCommand(1.0f, FloatingTextStringOnCreature("DM-Broadcast mode for new eavesdroppers set to " + (hookbcast ? "ON" : "OFF"), oUser, FALSE));
             }
 
         case 10:
             // v1.09 - cancel eavesdrop mode
             {
-                int hooknum = GetLocalInt(oUser, "dmfi_MyListenerHook");
+                int hooknum = _GetLocalInt(oUser, "dmfi_MyListenerHook");
                 if (hooknum != 0)
                 {
                     RemoveListenerHook(hooknum);
-                    DeleteLocalInt(oUser, "dmfi_MyListenerHook");
+                    _DeleteLocalInt(oUser, "dmfi_MyListenerHook");
                 }
 
                 // destroy any existing ditto voice
-                if (GetIsObjectValid(GetLocalObject(oUser, "dmfi_MyVoice")))
+                if (GetIsObjectValid(_GetLocalObject(oUser, "dmfi_MyVoice")))
                 {
-                    DestroyObject(GetLocalObject(oUser, "dmfi_MyVoice"));
-                    DeleteLocalObject(oUser, "dmfi_MyVoice");
+                    DestroyObject(_GetLocalObject(oUser, "dmfi_MyVoice"));
+                    _DeleteLocalObject(oUser, "dmfi_MyVoice");
                     FloatingTextStringOnCreature("You have destroyed your previous Voice", oUser, FALSE);
                 }
             }
@@ -1491,7 +1491,7 @@ void DoVoiceFunction(int iSay, object oUser)
         default:
             // record a new phrase
             FloatingTextStringOnCreature("Ready to record new phrase", oUser, FALSE);
-            SetLocalInt(oUser, "hls_EditPhrase", 20600 + iSay);
+            _SetLocalInt(oUser, "hls_EditPhrase", 20600 + iSay);
             // set up to capture next spoken line of text
             DMFI_get_line(oUser, TALKVOLUME_TALK, "dmfi_univ_listen", OBJECT_SELF);
             break;
@@ -1504,59 +1504,59 @@ void DoVoiceFunction(int iSay, object oUser)
         switch (iSay)
         {
         // Toggle a SINGLE NPC mute / unmute function
-        case 8: SetLocalInt(oTarget, "dmfi_Mute", abs(GetLocalInt(oTarget, "dmfi_Mute") - 1));
+        case 8: _SetLocalInt(oTarget, "dmfi_Mute", abs(_GetLocalInt(oTarget, "dmfi_Mute") - 1));
             break;
 
         case 9:
             // XXXXX Set a Single NPC to listen and make it your target - VOICE WIDGET FUNCTION
-            // SetLocalObject(oUser, "dmfi_VoiceTarget", oTarget);
+            // _SetLocalObject(oUser, "dmfi_VoiceTarget", oTarget);
             // if (!_GetIsPC(oTarget))
             // {
             //     FloatingTextStringOnCreature(GetName(oTarget) + " is listening", oUser, FALSE);
             //     SetListenPattern(oTarget, "**", LISTEN_PATTERN); //listen to all text
-            //     SetLocalInt(oTarget, "hls_Listening", 1); //listen to all text
+            //     _SetLocalInt(oTarget, "hls_Listening", 1); //listen to all text
             //     SetListening(oTarget, TRUE);      //be sure NPC is listening
             // }
             // //You Targetted a PC - make a voice follow that sucker and listen.
             // else
             // {
             //     //delete any valid following voices to stop duplicates
-            //     if (GetIsObjectValid(GetLocalObject(oTarget, "dmfi_VoiceFollow")))
+            //     if (GetIsObjectValid(_GetLocalObject(oTarget, "dmfi_VoiceFollow")))
             //     {
-            //         DestroyObject(GetLocalObject(oUser, "dmfi_VoiceFollow"));
+            //         DestroyObject(_GetLocalObject(oUser, "dmfi_VoiceFollow"));
             //         FloatingTextStringOnCreature("The prior voice following this character was destroyed", oUser, FALSE);
             //     }
             //
             //     //Create the Voice
             //     oVoice = CreateObject(OBJECT_TYPE_CREATURE, "dmfi_voice", lLocation);
             //     //Sets the Voice as the object to throw to.
-            //     DelayCommand(2.0, SetLocalObject(oTarget, "dmfi_VoiceFollow", oVoice)); //only set this for finding a duplicate later
-            //     DelayCommand(2.0, SetLocalObject(oVoice, "dmfi_follow", oTarget));  //set up the player as something to follow
+            //     DelayCommand(2.0, _SetLocalObject(oTarget, "dmfi_VoiceFollow", oVoice)); //only set this for finding a duplicate later
+            //     DelayCommand(2.0, _SetLocalObject(oVoice, "dmfi_follow", oTarget));  //set up the player as something to follow
             //     DelayCommand(1.0f, FloatingTextStringOnCreature("The Voice will follow and listen to " +GetName(oTarget), oUser, FALSE));
             // }
             // break;
 
             // v1.09 - eavesdrop on pc
             {
-                int hooknum = GetLocalInt(oUser, "dmfi_MyListenerHook");
+                int hooknum = _GetLocalInt(oUser, "dmfi_MyListenerHook");
                 if (hooknum != 0) RemoveListenerHook(hooknum);
-                int hookparty = GetLocalInt(oUser, "dmfi_MyListenerPartyMode");
-                int hookbcast = GetLocalInt(oUser, "dmfi_MyListenerBcastMode");
+                int hookparty = _GetLocalInt(oUser, "dmfi_MyListenerPartyMode");
+                int hookbcast = _GetLocalInt(oUser, "dmfi_MyListenerBcastMode");
                 hooknum = AppendListenerHook(1, oTarget, lLocation,
                         DMFI_CHANNELMASK_TALK|DMFI_CHANNELMASK_WHISPER,
                         hookparty, hookbcast, oUser);
                 if (hooknum != 0)
                 {
-                    SetLocalObject(oUser, "dmfi_VoiceTarget", oTarget);
+                    _SetLocalObject(oUser, "dmfi_VoiceTarget", oTarget);
                     if (_GetIsPC(oTarget))
                     {
                         // targetted PC -
                         // delete any valid following voices to stop duplicates
-                        object oVoice = GetLocalObject(oTarget, "dmfi_VoiceFollow");
+                        object oVoice = _GetLocalObject(oTarget, "dmfi_VoiceFollow");
                         if (GetIsObjectValid(oVoice))
                         {
                             DestroyObject(oVoice);
-                            DeleteLocalObject(oTarget, "dmfi_VoiceFollow");
+                            _DeleteLocalObject(oTarget, "dmfi_VoiceFollow");
                             FloatingTextStringOnCreature("The prior voice following this character was destroyed", oUser, FALSE);
                         }
 
@@ -1564,8 +1564,8 @@ void DoVoiceFunction(int iSay, object oUser)
                         // // Create the Voice
                         // oVoice = CreateObject(OBJECT_TYPE_CREATURE, "dmfi_voice", lLocation);
                         // // Sets the Voice as the object to throw to.
-                        // DelayCommand(2.0, SetLocalObject(oTarget, "dmfi_VoiceFollow", oVoice)); //only set this for finding a duplicate later
-                        // DelayCommand(2.0, SetLocalObject(oVoice, "dmfi_follow", oTarget));  //set up the player as something to follow
+                        // DelayCommand(2.0, _SetLocalObject(oTarget, "dmfi_VoiceFollow", oVoice)); //only set this for finding a duplicate later
+                        // DelayCommand(2.0, _SetLocalObject(oVoice, "dmfi_follow", oTarget));  //set up the player as something to follow
                         // DelayCommand(1.0f, FloatingTextStringOnCreature("The Voice will follow " +GetName(oTarget), oUser, FALSE));
                     }
                     else
@@ -1577,7 +1577,7 @@ void DoVoiceFunction(int iSay, object oUser)
                 {
                     SendMessageToPC(oUser, "ERROR: could not append listener hook!");
                 }
-                SetLocalInt(oUser, "dmfi_MyListenerHook", hooknum);
+                _SetLocalInt(oUser, "dmfi_MyListenerHook", hooknum);
             }
             break;
 
@@ -1585,10 +1585,10 @@ void DoVoiceFunction(int iSay, object oUser)
             // v1.09 - Toggle PC single/party eavesdropping
             {
                 // v1.09 - toggle eavesdrop mode - single/party
-                int partylisten = GetLocalInt(oUser, "dmfi_MyListenerPartyMode");
+                int partylisten = _GetLocalInt(oUser, "dmfi_MyListenerPartyMode");
                 partylisten++;
                 if (partylisten > 1) partylisten = 0;
-                SetLocalInt(oUser, "dmfi_MyListenerPartyMode", partylisten);
+                _SetLocalInt(oUser, "dmfi_MyListenerPartyMode", partylisten);
                 DelayCommand(1.0f, FloatingTextStringOnCreature("PC eavesdrop mode for new eavesdroppers set to " + (partylisten ? "PARTY" : "PC ONLY"), oUser, FALSE));
             }
             break;
@@ -1667,7 +1667,7 @@ void CheckForEffect(effect eA, object oT, object oUser)
 void DoAfflictFunction(int iAfflict, object oUser)
 {
     effect eEffect;
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
     float fDuration;
     int nDNum;
     effect eD;
@@ -1679,15 +1679,15 @@ void DoAfflictFunction(int iAfflict, object oUser)
 
     if (GetIsDMPossessed(oUser))
     {
-        nDNum = GetLocalInt(GetMaster(oUser), "dmfi_damagemodifier");
-        fDuration = GetLocalFloat(GetMaster(oUser), "dmfi_stunduration");
-        fSaveAmount = GetLocalFloat(GetMaster(oUser), "dmfi_saveamount");
+        nDNum = _GetLocalInt(GetMaster(oUser), "dmfi_damagemodifier");
+        fDuration = _GetLocalFloat(GetMaster(oUser), "dmfi_stunduration");
+        fSaveAmount = _GetLocalFloat(GetMaster(oUser), "dmfi_saveamount");
     }
     else
     {
-        nDNum = GetLocalInt(oUser, "dmfi_damagemodifier");
-        fDuration = GetLocalFloat(oUser, "dmfi_stunduration");
-        fSaveAmount = GetLocalFloat(oUser, "dmfi_saveamount");
+        nDNum = _GetLocalInt(oUser, "dmfi_damagemodifier");
+        fDuration = _GetLocalFloat(oUser, "dmfi_stunduration");
+        fSaveAmount = _GetLocalFloat(oUser, "dmfi_saveamount");
     }
 
     nSaveAmount = FloatToInt(fSaveAmount);
@@ -1829,7 +1829,7 @@ void DoAfflictFunction(int iAfflict, object oUser)
         } break;//Added July 5, 2003
 
 // 99 is a duplicate instance - simple copy. - Demetrious
-    case 91: SetLocalString(oUser, "EffectSetting", "dmfi_stunduration");
+    case 91: _SetLocalString(oUser, "EffectSetting", "dmfi_stunduration");
         CreateSetting(oUser);
     case 92: SetDMFIPersistentInt("dmfi", "DamageModifier", nDNum+1); SetCustomToken(20780, IntToString(nDNum+1));;  break;
     case 93:
@@ -1845,7 +1845,7 @@ void DoAfflictFunction(int iAfflict, object oUser)
         }
     case 94: ReportImmunity(oTarget, oUser); break;
     case 95: DMFI_NextTarget(oTarget, oUser); break;
-    case 99: SetLocalString(oUser, "EffectSetting", "SaveEffectAmount");
+    case 99: _SetLocalString(oUser, "EffectSetting", "SaveEffectAmount");
         CreateSetting(oUser); break;
     case 101: eT = EffectSavingThrowDecrease(SAVING_THROW_FORT, nSaveAmount); break;
     case 102: eT = EffectSavingThrowDecrease(SAVING_THROW_REFLEX, nSaveAmount); break;
@@ -1855,7 +1855,7 @@ void DoAfflictFunction(int iAfflict, object oUser)
     case 106: eT = EffectSavingThrowIncrease(SAVING_THROW_WILL, nSaveAmount); break;
     case 107: eT = EffectSavingThrowDecrease(SAVING_THROW_ALL, nSaveAmount); break;
     case 108: eT = EffectSavingThrowIncrease(SAVING_THROW_ALL, nSaveAmount); break;
-    case 109: SetLocalString(oUser, "EffectSetting", "SaveEffectAmount");
+    case 109: _SetLocalString(oUser, "EffectSetting", "SaveEffectAmount");
         CreateSetting(oUser);
     case 100: eEffect = GetFirstEffect(oTarget);
         while (GetIsEffectValid(eEffect))
@@ -1923,7 +1923,7 @@ void DoAfflictFunction(int iAfflict, object oUser)
 //This function is for the DMFI XP Wand
 void DoXPFunction(int iXP, object oUser)
 {
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
     object oPartyMember;
     int iHD;
     int iParty = 0;
@@ -1963,7 +1963,7 @@ void DoXPFunction(int iXP, object oUser)
     case 54: iParty = 1; iReward = 1000; break;
     case 55: iParty = 1; iReward = 2000; break;
     case 61:   iHD = GetHitDice(oTarget);
-        SendMessageToPC(oUser, GetName(oTarget) +" has received " + IntToString(GetLocalInt(oPartyMember, "dmfi_XPGiven")) + " DMFI WAND XP this session.");
+        SendMessageToPC(oUser, GetName(oTarget) +" has received " + IntToString(_GetLocalInt(oPartyMember, "dmfi_XPGiven")) + " DMFI WAND XP this session.");
         SendMessageToPC(oUser, GetName(oTarget) +" currently has " + IntToString(GetXP(oTarget)) + " total XP.");
         SendMessageToPC(oUser, GetName(oTarget) +" currently needs " + IntToString(((iHD * (iHD + 1)) / 2 * 1000) - GetXP(oTarget)) + " to level.");
         SendMessageToPC(oUser, GetName(oTarget) +" has "+ IntToString(GetGold(oTarget)) + " gp.");
@@ -1983,7 +1983,7 @@ void DoXPFunction(int iXP, object oUser)
     case 63:   oPartyMember=GetFirstFactionMember(oTarget, TRUE);
         while (GetIsObjectValid(oPartyMember)==TRUE)
         {
-            SendMessageToPC(oUser, GetName(oPartyMember) +" has received " + IntToString(GetLocalInt(oPartyMember, "dmfi_XPGiven")) + " DMFI WAND XP this session.");
+            SendMessageToPC(oUser, GetName(oPartyMember) +" has received " + IntToString(_GetLocalInt(oPartyMember, "dmfi_XPGiven")) + " DMFI WAND XP this session.");
             oPartyMember = GetNextFactionMember(oTarget, TRUE);
         }
         return; break;
@@ -2018,9 +2018,9 @@ void DoXPFunction(int iXP, object oUser)
         {
             if (bUsePercent) iReward = (GetHitDice(oPartyMember)*iPercent*10);
             GiveXPToCreature(oPartyMember, iReward);
-            SetLocalInt(oPartyMember, "dmfi_XPGiven", GetLocalInt(oPartyMember, "dmfi_XPGiven") + iReward);
+            _SetLocalInt(oPartyMember, "dmfi_XPGiven", _GetLocalInt(oPartyMember, "dmfi_XPGiven") + iReward);
             FloatingTextStringOnCreature(sFloating + ": " + IntToString(iReward), oPartyMember, FALSE);
-            SendMessageToAllDMs(GetName(oPartyMember) +" received a "+GetLocalString(oUser, "BonusType")+ " experience reward of "+ IntToString(iReward)+ ".");
+            SendMessageToAllDMs(GetName(oPartyMember) +" received a "+_GetLocalString(oUser, "BonusType")+ " experience reward of "+ IntToString(iReward)+ ".");
             oPartyMember = GetNextFactionMember(oTarget, TRUE);
         }
         // SendMessageToAllDMs("The entire party was granted "+ IntToString(iReward)+ " XP.");
@@ -2035,9 +2035,9 @@ void DoXPFunction(int iXP, object oUser)
 
         SetXP(oTarget, nPrior+iReward);
 
-        SetLocalInt(oTarget, "dmfi_XPGiven", GetLocalInt(oTarget, "dmfi_XPGiven") + iReward);
+        _SetLocalInt(oTarget, "dmfi_XPGiven", _GetLocalInt(oTarget, "dmfi_XPGiven") + iReward);
         FloatingTextStringOnCreature(sFloating + ": " + IntToString(iReward), oTarget, FALSE);
-        SendMessageToAllDMs(GetName(oTarget) +" received a "+GetLocalString(oUser, "BonusType")+ " experience reward of "+ IntToString(iReward)+ ".");
+        SendMessageToAllDMs(GetName(oTarget) +" received a "+_GetLocalString(oUser, "BonusType")+ " experience reward of "+ IntToString(iReward)+ ".");
 
     }
     return;
@@ -2177,67 +2177,67 @@ void CreateCustomEncounter(string Template, location lEncounter)
 ////////////////////////////////////////////////////////////////////////
 void CreateEncounter(int iEncounter, location lEncounter, object oUser)
 {
-    SetLocalInt(oUser, "EncounterType", iEncounter);
+    _SetLocalInt(oUser, "EncounterType", iEncounter);
     switch (iEncounter)
     {
     case 11: //Animal - Low Badger Encounter
-        SetLocalString(oUser, "EncounterName", "Low Badger");
+        _SetLocalString(oUser, "EncounterName", "Low Badger");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_BADGER", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_BADGER", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BADGER", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BADGER", lEncounter, FALSE));
         break;
     case 12: //Animal - Low Canine Encounter
-        SetLocalString(oUser, "EncounterName", "Low Canine");
+        _SetLocalString(oUser, "EncounterName", "Low Canine");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_WOLF", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_WOLF", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_WOLF", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_WOLF", lEncounter, FALSE));
         break;
     case 13: //Animal - Low Feline Encounter
-        SetLocalString(oUser, "EncounterName", "Low Feline");
+        _SetLocalString(oUser, "EncounterName", "Low Feline");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_COUGAR", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_COUGAR", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_COUGAR", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_COUGAR", lEncounter, FALSE));
         break;
     case 14: //Animal - Low Bear Encounter
-        SetLocalString(oUser, "EncounterName", "Low Bear (Boss)");
+        _SetLocalString(oUser, "EncounterName", "Low Bear (Boss)");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_BEARBLCK", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_BEARBLCK", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BEARBLCK", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BEARBRWN", lEncounter, FALSE));
         break;
     case 15: //Animal - Boar Encounter
-        SetLocalString(oUser, "EncounterName", "Boar (Boss)");
+        _SetLocalString(oUser, "EncounterName", "Boar (Boss)");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_BOAR", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_BOAR", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BOAR", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BOARDIRE", lEncounter, FALSE));
         break;
     case 16: //Animal - Medium Feline Encounter
-        SetLocalString(oUser, "EncounterName", "Medium Feline");
+        _SetLocalString(oUser, "EncounterName", "Medium Feline");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_LION", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_LION", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_LION", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_LION", lEncounter, FALSE));
         break;
     case 17: //Animal - High Canine Encounter
-        SetLocalString(oUser, "EncounterName", "High Canine");
+        _SetLocalString(oUser, "EncounterName", "High Canine");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_DIREWOLF", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_DIREWOLF", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_DIREWOLF", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_DIREWOLF", lEncounter, FALSE));
         break;
     case 18: //Animal - High Feline Encounter
-        SetLocalString(oUser, "EncounterName", "High Feline");
+        _SetLocalString(oUser, "EncounterName", "High Feline");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_DIRETIGER", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_BEASTMALAR001", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BEASTMALAR001", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BEASTMALAR001", lEncounter, FALSE));
         break;
     case 19: //Animal - High Bear Encounter
-        SetLocalString(oUser, "EncounterName", "High Bear");
+        _SetLocalString(oUser, "EncounterName", "High Bear");
         CreateObject(OBJECT_TYPE_CREATURE, "NW_BEARDIRE", lEncounter, FALSE);
         DelayCommand(1.0f, Spawn("NW_BEARDIRE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BEARDIRE", lEncounter, FALSE));
@@ -2245,477 +2245,477 @@ void CreateEncounter(int iEncounter, location lEncounter, object oUser)
         break;
 
     case 21: //Construct - Flesh Golem
-        SetLocalString(oUser, "EncounterName", "Flesh Golem");
+        _SetLocalString(oUser, "EncounterName", "Flesh Golem");
         DelayCommand(1.0f, Spawn("NW_GOLFLESH", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GOLFLESH", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GOLFLESH", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GOLFLESH", lEncounter, FALSE));
         break;
     case 22: //Construct - Minogan
-        SetLocalString(oUser, "EncounterName", "Minogon");
+        _SetLocalString(oUser, "EncounterName", "Minogon");
         DelayCommand(1.0f, Spawn("NW_MINOGON", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_MINOGON", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_MINOGON", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_MINOGON", lEncounter, FALSE));
         break;
     case 23: //Construct - Clay Golem
-        SetLocalString(oUser, "EncounterName", "Clay Golem");
+        _SetLocalString(oUser, "EncounterName", "Clay Golem");
         DelayCommand(1.0f, Spawn("NW_GolClay", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GolClay", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GolClay", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GolClay", lEncounter, FALSE));
         break;
     case 24: //Construct - Bone Golem
-        SetLocalString(oUser, "EncounterName", "Bone Golem");
+        _SetLocalString(oUser, "EncounterName", "Bone Golem");
         DelayCommand(1.0f, Spawn("NW_GolBone", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GolBone", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GolBone", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GolBone", lEncounter, FALSE));
         break;
     case 25: //Construct - Helmed Horror
-        SetLocalString(oUser, "EncounterName", "Helmed Horror");
+        _SetLocalString(oUser, "EncounterName", "Helmed Horror");
         DelayCommand(1.0f, Spawn("NW_HELMHORR", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_HELMHORR", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_HELMHORR", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_HELMHORR", lEncounter, FALSE));
         break;
     case 26: //Construct - Stone Golem
-        SetLocalString(oUser, "EncounterName", "Stone Golem");
+        _SetLocalString(oUser, "EncounterName", "Stone Golem");
         DelayCommand(1.0f, Spawn("NW_GOLSTONE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GOLSTONE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GOLSTONE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GOLSTONE", lEncounter, FALSE));
         break;
     case 27: //Construct - Battle Horror
-        SetLocalString(oUser, "EncounterName", "Battle Horror");
+        _SetLocalString(oUser, "EncounterName", "Battle Horror");
         DelayCommand(1.0f, Spawn("NW_BATHORROR", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BATHORROR", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BATHORROR", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_BATHORROR", lEncounter, FALSE));
         break;
     case 28: //Construct - Shield Guardian
-        SetLocalString(oUser, "EncounterName", "Shield Guardian");
+        _SetLocalString(oUser, "EncounterName", "Shield Guardian");
         DelayCommand(1.0f, Spawn("NW_SHGUARD", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SHGUARD", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SHGUARD", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SHGUARD", lEncounter, FALSE));
         break;
     case 29: //Construct - Iron Golem
-        SetLocalString(oUser, "EncounterName", "Iron Golem");
+        _SetLocalString(oUser, "EncounterName", "Iron Golem");
         DelayCommand(1.0f, Spawn("NW_GOLIRON", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GOLIRON", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GOLIRON", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GOLIRON", lEncounter, FALSE));
         break;
     case 31: //Dragon - Adult White Dragon
-        SetLocalString(oUser, "EncounterName", "Adult White Dragon");
+        _SetLocalString(oUser, "EncounterName", "Adult White Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGWHITE001", lEncounter, FALSE));
         break;
     case 32: //Dragon - Adult Black Dragon
-        SetLocalString(oUser, "EncounterName", "Adult Black Dragon");
+        _SetLocalString(oUser, "EncounterName", "Adult Black Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGBLACK001", lEncounter, FALSE));
         break;
     case 33: //Dragon - Adult Green Dragon
-        SetLocalString(oUser, "EncounterName", "Adult Green Dragon");
+        _SetLocalString(oUser, "EncounterName", "Adult Green Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGGREEN001", lEncounter, FALSE));
         break;
     case 34: //Dragon - Adult Blue Dragon
-        SetLocalString(oUser, "EncounterName", "Adult Blue Dragon");
+        _SetLocalString(oUser, "EncounterName", "Adult Blue Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGBLUE001", lEncounter, FALSE));
         break;
     case 35: //Dragon - Adult Red Dragon
-        SetLocalString(oUser, "EncounterName", "Adult Red Dragon");
+        _SetLocalString(oUser, "EncounterName", "Adult Red Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGRED001", lEncounter, FALSE));
         break;
     case 36: //Dragon - Old White Dragon
-        SetLocalString(oUser, "EncounterName", "Old White Dragon");
+        _SetLocalString(oUser, "EncounterName", "Old White Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGWHITE002", lEncounter, FALSE));
         break;
     case 37: //Dragon - Old Blue Dragon
-        SetLocalString(oUser, "EncounterName", "Old Blue Dragon");
+        _SetLocalString(oUser, "EncounterName", "Old Blue Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGBLUE002", lEncounter, FALSE));
         break;
     case 38: //Dragon - Old Red Dragon
-        SetLocalString(oUser, "EncounterName", "Old Red Dragon");
+        _SetLocalString(oUser, "EncounterName", "Old Red Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGRED002", lEncounter, FALSE));
         break;
     case 39: //Dragon - Ancient Red Dragon
-        SetLocalString(oUser, "EncounterName", "Ancient Red Dragon");
+        _SetLocalString(oUser, "EncounterName", "Ancient Red Dragon");
         DelayCommand(1.0f, Spawn("NW_DRGRED003", lEncounter, FALSE));
         break;
     case 41: //Elemental - Air Elemental
-        SetLocalString(oUser, "EncounterName", "Air Elemental");
+        _SetLocalString(oUser, "EncounterName", "Air Elemental");
         DelayCommand(1.0f, Spawn("NW_AIR", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_AIR", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_AIR", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_AIR", lEncounter, FALSE));
         break;
     case 42: //Elemental - Earth Elemental
-        SetLocalString(oUser, "EncounterName", "Earth Elemental");
+        _SetLocalString(oUser, "EncounterName", "Earth Elemental");
         DelayCommand(1.0f, Spawn("NW_EARTH", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_EARTH", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_EARTH", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_EARTH", lEncounter, FALSE));
         break;
     case 43: //Elemental - Fire Elemental
-        SetLocalString(oUser, "EncounterName", "Fire Elemental");
+        _SetLocalString(oUser, "EncounterName", "Fire Elemental");
         DelayCommand(1.0f, Spawn("NW_FIRE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_FIRE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_FIRE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_FIRE", lEncounter, FALSE));
         break;
     case 44: //Elemental - Water Elemental
-        SetLocalString(oUser, "EncounterName", "Water Elemental");
+        _SetLocalString(oUser, "EncounterName", "Water Elemental");
         DelayCommand(1.0f, Spawn("NW_WATER", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_WATER", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_WATER", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_WATER", lEncounter, FALSE));
         break;
     case 45: //Elemental - Huge Air Elemental
-        SetLocalString(oUser, "EncounterName", "Huge Air Elemental");
+        _SetLocalString(oUser, "EncounterName", "Huge Air Elemental");
         DelayCommand(1.0f, Spawn("NW_AIRHUGE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_AIRHUGE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_AIRHUGE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_AIRHUGE", lEncounter, FALSE));
         break;
     case 46: //Elemental - Huge Earth Elemental
-        SetLocalString(oUser, "EncounterName", "Huge Earth Elemental");
+        _SetLocalString(oUser, "EncounterName", "Huge Earth Elemental");
         DelayCommand(1.0f, Spawn("NW_EARTHHUGE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_EARTHHUGE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_EARTHHUGE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_EARTHHUGE", lEncounter, FALSE));
         break;
     case 47: //Elemental - Huge Fire Elemental
-        SetLocalString(oUser, "EncounterName", "Huge Fire Elemental");
+        _SetLocalString(oUser, "EncounterName", "Huge Fire Elemental");
         DelayCommand(1.0f, Spawn("NW_FIREHUGE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_FIREHUGE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_FIREHUGE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_FIREHUGE", lEncounter, FALSE));
         break;
     case 48: //Elemental - Huge Water Elemental
-        SetLocalString(oUser, "EncounterName", "Huge Water Elemental");
+        _SetLocalString(oUser, "EncounterName", "Huge Water Elemental");
         DelayCommand(1.0f, Spawn("NW_WATERHUGE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_WATERHUGE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_WATERHUGE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_WATERHUGE", lEncounter, FALSE));
         break;
     case 49: //Elemental - Elemental Swarm
-        SetLocalString(oUser, "EncounterName", "Elemental Swarm");
+        _SetLocalString(oUser, "EncounterName", "Elemental Swarm");
         DelayCommand(1.0f, Spawn("NW_AIRGREAT", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_EARTHGREAT", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_FIREGREAT", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_WATERGREAT", lEncounter, FALSE));
         break;
     case 51: //Giant - Low Ogre
-        SetLocalString(oUser, "EncounterName", "Low Ogre");
+        _SetLocalString(oUser, "EncounterName", "Low Ogre");
         DelayCommand(1.0f, Spawn("NW_OGRE01", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_OGRE01", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_OGRE02", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_OGRE02", lEncounter, FALSE));
         break;
     case 52: //Giant - Low Troll
-        SetLocalString(oUser, "EncounterName", "Low Troll");
+        _SetLocalString(oUser, "EncounterName", "Low Troll");
         DelayCommand(1.0f, Spawn("NW_TROLL", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_TROLL", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_TROLL", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_TROLL", lEncounter, FALSE));
         break;
     case 53: //Giant - High Ogre
-        SetLocalString(oUser, "EncounterName", "High Ogre");
+        _SetLocalString(oUser, "EncounterName", "High Ogre");
         DelayCommand(1.0f, Spawn("NW_OGRECHIEF01", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_OGRECHIEF02", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_OGRECHIEF01", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_OGREMAGE02", lEncounter, FALSE));
         break;
     case 54: //Giant - High Troll
-        SetLocalString(oUser, "EncounterName", "High Troll");
+        _SetLocalString(oUser, "EncounterName", "High Troll");
         DelayCommand(1.0f, Spawn("NW_TROLLCHIEF", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_TROLLCHIEF", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_TROLLWIZ", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_TROLLWIZ", lEncounter, FALSE));
         break;
     case 55: //Giant - Ettin
-        SetLocalString(oUser, "EncounterName", "Ettin");
+        _SetLocalString(oUser, "EncounterName", "Ettin");
         DelayCommand(1.0f, Spawn("NW_ETTIN", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_ETTIN", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_ETTIN", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_ETTIN", lEncounter, FALSE));
         break;
     case 56: //Giant - Hill Giant
-        SetLocalString(oUser, "EncounterName", "Hill Giant");
+        _SetLocalString(oUser, "EncounterName", "Hill Giant");
         DelayCommand(1.0f, Spawn("NW_GNTHILL", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GNTHILL", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GNTMOUNT", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GNTMOUNT", lEncounter, FALSE));
         break;
     case 57: //Giant - Frost Giant
-        SetLocalString(oUser, "EncounterName", "Frost Giant");
+        _SetLocalString(oUser, "EncounterName", "Frost Giant");
         DelayCommand(1.0f, Spawn("NW_GNTFROST", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GNTFROST", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GNTFROST", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GNTFROST", lEncounter, FALSE));
         break;
     case 58: //Giant - Fire Giant
-        SetLocalString(oUser, "EncounterName", "Fire Giant");
+        _SetLocalString(oUser, "EncounterName", "Fire Giant");
         DelayCommand(1.0f, Spawn("NW_GNTFIRE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GNTFIRE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GNTFIRE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GNTFIRE", lEncounter, FALSE));
         break;
     case 59: //Giant - Ogre Mage (Boss)
-        SetLocalString(oUser, "EncounterName", "Ogre Mage (Boss)");
+        _SetLocalString(oUser, "EncounterName", "Ogre Mage (Boss)");
         DelayCommand(1.0f, Spawn("nw_ogreboss", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("nw_ogreboss", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_OGREMAGEBOSS", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_OGREMAGEBOSS", lEncounter, FALSE));
         break;
     case 61: //Humanoid - Goblin
-        SetLocalString(oUser, "EncounterName", "Goblin");
+        _SetLocalString(oUser, "EncounterName", "Goblin");
         DelayCommand(1.0f, Spawn("NW_GOBLINA", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GOBLINA", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GOBLINA", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GOBLINB", lEncounter, FALSE));
         break;
     case 62: //Humanoid - Kobold
-        SetLocalString(oUser, "EncounterName", "Kobold");
+        _SetLocalString(oUser, "EncounterName", "Kobold");
         DelayCommand(1.0f, Spawn("NW_KOBOLD002", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_KOBOLD002", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_KOBOLD002", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_KOBOLD001", lEncounter, FALSE));
         break;
     case 63: //Humanoid - Low Orc
-        SetLocalString(oUser, "EncounterName", "Low Orc");
+        _SetLocalString(oUser, "EncounterName", "Low Orc");
         DelayCommand(1.0f, Spawn("NW_ORCB", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_ORCA", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_ORCA", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_ORCA", lEncounter, FALSE));
         break;
     case 64: //Humanoid - High Orc (Wiz)
-        SetLocalString(oUser, "EncounterName", "High Orc (Wiz)");
+        _SetLocalString(oUser, "EncounterName", "High Orc (Wiz)");
         DelayCommand(1.0f, Spawn("NW_OrcChiefA", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_ORCCHIEFB", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_ORCCHIEFB", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_ORCWIZA", lEncounter, FALSE));
         break;
     case 65: //Humanoid - Bugbear
-        SetLocalString(oUser, "EncounterName", "Bugbear");
+        _SetLocalString(oUser, "EncounterName", "Bugbear");
         DelayCommand(1.0f, Spawn("NW_BUGBEARA", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BUGBEARA", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BUGBEARA", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_BUGBEARB", lEncounter, FALSE));
         break;
     case 66: //Humanoid - Lizardfolk
-        SetLocalString(oUser, "EncounterName", "Lizardfolk");
+        _SetLocalString(oUser, "EncounterName", "Lizardfolk");
         DelayCommand(1.0f, Spawn("NW_OLDWARRA", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_OLDWARRA", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_OLDWARRA", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_OLDWARB", lEncounter, FALSE));
         break;
     case 67: //Humanoid - Minotaur (Wiz)
-        SetLocalString(oUser, "EncounterName", "Minotaur (Wiz)");
+        _SetLocalString(oUser, "EncounterName", "Minotaur (Wiz)");
         DelayCommand(1.0f, Spawn("NW_MINOTAUR", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_MINOTAUR", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_MINOTAUR", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_MINWIZ", lEncounter, FALSE));
         break;
     case 68: //Humanoid - Fey
-        SetLocalString(oUser, "EncounterName", "Fey (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Fey (Mixed)");
         DelayCommand(1.0f, Spawn("NW_GRIG", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GRIG", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_PIXIE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_PIXIE", lEncounter, FALSE));
         break;
     case 69: //Humanoid -  Yuan-Ti (Mixed)
-        SetLocalString(oUser, "EncounterName", "Yuan-Ti (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Yuan-Ti (Mixed)");
         DelayCommand(1.0f, Spawn("NW_YUAN_TI001", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_YUAN_TI001", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_YUAN_TI002", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_YUAN_TI003", lEncounter, FALSE));
         break;
     case 71: //Insects - Fire Beetle
-        SetLocalString(oUser, "EncounterName", "Fire Beetle");
+        _SetLocalString(oUser, "EncounterName", "Fire Beetle");
         DelayCommand(1.0f, Spawn("NW_BTLFIRE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BTLFIRE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BTLFIRE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_BTLFIRE", lEncounter, FALSE));
         break;
     case 72: //Insects - Spitting Fire Beetle
-        SetLocalString(oUser, "EncounterName", "Spitting Fire Beetle");
+        _SetLocalString(oUser, "EncounterName", "Spitting Fire Beetle");
         DelayCommand(1.0f, Spawn("NW_BTLFIRE02", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BTLFIRE02", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BTLFIRE02", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_BTLFIRE02", lEncounter, FALSE));
         break;
     case 73: //Insects - Low Beetle (Mixed)
-        SetLocalString(oUser, "EncounterName", "Low Beetle (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Low Beetle (Mixed)");
         DelayCommand(1.0f, Spawn("NW_BTLBOMB", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BTLBOMB", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BTLSTINK", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_BTLFIRE02", lEncounter, FALSE));
         break;
     case 74: //Insects - Giant Spider
-        SetLocalString(oUser, "EncounterName", "Giant Spider");
+        _SetLocalString(oUser, "EncounterName", "Giant Spider");
         DelayCommand(1.0f, Spawn("NW_SPIDGIANT", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SPIDGIANT", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SPIDGIANT", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SPIDGIANT", lEncounter, FALSE));
         break;
     case 75: //Insects - Sword Spider
-        SetLocalString(oUser, "EncounterName", "Sword Spider");
+        _SetLocalString(oUser, "EncounterName", "Sword Spider");
         DelayCommand(1.0f, Spawn("NW_SPIDSWRD", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SPIDSWRD", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SPIDSWRD", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SPIDSWRD", lEncounter, FALSE));
         break;
     case 76: //Insects - Wraith Spider
-        SetLocalString(oUser, "EncounterName", "Wraith Spider");
+        _SetLocalString(oUser, "EncounterName", "Wraith Spider");
         DelayCommand(1.0f, Spawn("NW_SPIDWRA", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SPIDWRA", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SPIDWRA", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SPIDWRA", lEncounter, FALSE));
         break;
     case 77: //Insects - Stag Beetle
-        SetLocalString(oUser, "EncounterName", "Stag Beetle");
+        _SetLocalString(oUser, "EncounterName", "Stag Beetle");
         DelayCommand(1.0f, Spawn("NW_BTLSTAG", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BTLSTAG", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BTLSTAG", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_BTLSTAG", lEncounter, FALSE));
         break;
     case 78: //Insects - Dire Spider
-        SetLocalString(oUser, "EncounterName", "Dire Spider");
+        _SetLocalString(oUser, "EncounterName", "Dire Spider");
         DelayCommand(1.0f, Spawn("NW_SPIDDIRE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SPIDDIRE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SPIDDIRE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SPIDDIRE", lEncounter, FALSE));
         break;
     case 79: //Insects - Queen Spider
-        SetLocalString(oUser, "EncounterName", "Queen Spider");
+        _SetLocalString(oUser, "EncounterName", "Queen Spider");
         DelayCommand(1.0f, Spawn("NW_SPIDERBOSS", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SPIDERBOSS", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SPIDERBOSS", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SPIDERBOSS", lEncounter, FALSE));
         break;
     case 81: //Undead - Low Zombie
-        SetLocalString(oUser, "EncounterName", "Zombie");
+        _SetLocalString(oUser, "EncounterName", "Zombie");
         DelayCommand(1.0f, Spawn("NW_ZOMBIE01", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_ZOMBIE02", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_ZOMBIE01", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_ZOMBIE02", lEncounter, FALSE));
         break;
     case 82: //Undead - Low Skeleton
-        SetLocalString(oUser, "EncounterName", "Low Skeleton");
+        _SetLocalString(oUser, "EncounterName", "Low Skeleton");
         DelayCommand(1.0f, Spawn("NW_SKELETON", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SKELETON", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SKELETON", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SKELETON", lEncounter, FALSE));
         break;
     case 83: //Undead - Ghoul
-        SetLocalString(oUser, "EncounterName", "Ghoul");
+        _SetLocalString(oUser, "EncounterName", "Ghoul");
         DelayCommand(1.0f, Spawn("NW_GHOUL", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GHOUL", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GHOUL", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GHOUL", lEncounter, FALSE));
         break;
     case 84: //Undead - Shadow
-        SetLocalString(oUser, "EncounterName", "Shadow");
+        _SetLocalString(oUser, "EncounterName", "Shadow");
         DelayCommand(1.0f, Spawn("NW_SHADOW", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SHADOW", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SHADOW", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SHADOW", lEncounter, FALSE));
         break;
     case 85: //Undead - Mummy
-        SetLocalString(oUser, "EncounterName", "Mummy");
+        _SetLocalString(oUser, "EncounterName", "Mummy");
         DelayCommand(1.0f, Spawn("NW_MUMMY", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_MUMMY", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_MUMMY", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_MUMMY", lEncounter, FALSE));
         break;
     case 86: //Undead - High Skeleton
-        SetLocalString(oUser, "EncounterName", "High Skeleton (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "High Skeleton (Mixed)");
         DelayCommand(1.0f, Spawn("NW_SKELWARR01", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_SKELWARR02", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_SKELMAGE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_SKELPRIEST", lEncounter, FALSE));
         break;
     case 87: //Undead - Curst (Mixed)
-        SetLocalString(oUser, "EncounterName", "Curst (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Curst (Mixed)");
         DelayCommand(1.0f, Spawn("NW_CURST001", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_CURST002", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_CURST003", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_CURST004", lEncounter, FALSE));
         break;
     case 88: //Undead - Doom Knight
-        SetLocalString(oUser, "EncounterName", "Doom Knight");
+        _SetLocalString(oUser, "EncounterName", "Doom Knight");
         DelayCommand(1.0f, Spawn("NW_DOOMKGHT", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_DOOMKGHT", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_DOOMKGHT", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_DOOMKGHT", lEncounter, FALSE));
         break;
     case 89: //Undead - Vampire (Mixed)
-        SetLocalString(oUser, "EncounterName", "Vampire (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Vampire (Mixed)");
         DelayCommand(1.0f, Spawn("NW_VAMPIRE001", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_VAMPIRE002", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_VAMPIRE003", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_VAMPIRE004", lEncounter, FALSE));
         break;
     case 91: //NPC - Low Gypsy
-        SetLocalString(oUser, "EncounterName", "Low Gypsy");
+        _SetLocalString(oUser, "EncounterName", "Low Gypsy");
         DelayCommand(1.0f, Spawn("NW_GYPMALE", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_GYPMALE", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_GYPFEMALE", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_GYPFEMALE", lEncounter, FALSE));
         break;
     case 92: //NPC - Low Bandit
-        SetLocalString(oUser, "EncounterName", "Low Bandit");
+        _SetLocalString(oUser, "EncounterName", "Low Bandit");
         DelayCommand(1.0f, Spawn("NW_BANDIT001", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BANDIT001", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BANDIT001", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_BANDIT002", lEncounter, FALSE));
         break;
     case 93: //NPC - Medium Bandit (Mixed)
-        SetLocalString(oUser, "EncounterName", "Medium Bandit (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Medium Bandit (Mixed)");
         DelayCommand(1.0f, Spawn("NW_BANDIT005", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_BANDIT002", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_BANDIT003", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_BANDIT004", lEncounter, FALSE));
         break;
     case 94: //NPC - Low Mercenary (Mixed)
-        SetLocalString(oUser, "EncounterName", "Low Mercenary (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Low Mercenary (Mixed)");
         DelayCommand(1.0f, Spawn("NW_HUMANMERC001", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_HALFMERC001", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_DWARFMERC001", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_ELFMERC001", lEncounter, FALSE));
         break;
     case 95: //NPC - Elf Ranger
-        SetLocalString(oUser, "EncounterName", "Elf Ranger");
+        _SetLocalString(oUser, "EncounterName", "Elf Ranger");
         DelayCommand(1.0f, Spawn("NW_ELFRANGER005", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_ELFRANGER005", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_ELFRANGER005", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_ELFRANGER005", lEncounter, FALSE));
         break;
     case 96: //NPC - Low Drow (Mixed)
-        SetLocalString(oUser, "EncounterName", "Low Drow (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Low Drow (Mixed)");
         DelayCommand(1.0f, Spawn("NW_DROWFIGHT005", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_DROWMAGE005", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_DROWROGUE005", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_DROWCLER005", lEncounter, FALSE));
         break;
     case 97: //NPC - Medium Mercenary (Mixed)
-        SetLocalString(oUser, "EncounterName", "Medium Mercenary (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "Medium Mercenary (Mixed)");
         DelayCommand(1.0f, Spawn("NW_HUMANMERC004", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_HALFMERC004", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_DWARFMERC004", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_ELFMERC004", lEncounter, FALSE));
         break;
     case 98: //NPC - High Drow (Mixed)
-        SetLocalString(oUser, "EncounterName", "High Drow (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "High Drow (Mixed)");
         DelayCommand(1.0f, Spawn("NW_DROWFIGHT020", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_DROWMAGE020", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_DROWROGUE020", lEncounter, FALSE));
         DelayCommand(4.0f, Spawn("NW_DROWCLER020", lEncounter, FALSE));
         break;
     case 99: //NPC - High Mercenary (Mixed)
-        SetLocalString(oUser, "EncounterName", "High Mercenary (Mixed)");
+        _SetLocalString(oUser, "EncounterName", "High Mercenary (Mixed)");
         DelayCommand(1.0f, Spawn("NW_HUMANMERC006", lEncounter, FALSE));
         DelayCommand(2.0f, Spawn("NW_HALFMERC006", lEncounter, FALSE));
         DelayCommand(3.0f, Spawn("NW_DWARFMERC006", lEncounter, FALSE));
@@ -2852,21 +2852,21 @@ void CreateEffects(int iEffect, location lEffect, object oUser)
 
     if (GetIsDMPossessed(oUser))
     {
-        fDelay = GetLocalFloat(GetMaster(oUser), "dmfi_effectdelay");
-        fDuration = GetLocalFloat(GetMaster(oUser), "dmfi_effectduration");
-        fBeamDuration = GetLocalFloat(GetMaster(oUser), "dmfi_beamduration");
+        fDelay = _GetLocalFloat(GetMaster(oUser), "dmfi_effectdelay");
+        fDuration = _GetLocalFloat(GetMaster(oUser), "dmfi_effectduration");
+        fBeamDuration = _GetLocalFloat(GetMaster(oUser), "dmfi_beamduration");
     }
     else
     {
-        fDelay = GetLocalFloat(oUser, "dmfi_effectdelay");
-        fDuration = GetLocalFloat(oUser, "dmfi_effectduration");
-        fBeamDuration = GetLocalFloat(oUser, "dmfi_beamduration");
+        fDelay = _GetLocalFloat(oUser, "dmfi_effectdelay");
+        fDuration = _GetLocalFloat(oUser, "dmfi_effectduration");
+        fBeamDuration = _GetLocalFloat(oUser, "dmfi_beamduration");
     }
 
-    if (!GetIsObjectValid(GetLocalObject(oUser, "dmfi_univ_target")))
+    if (!GetIsObjectValid(_GetLocalObject(oUser, "dmfi_univ_target")))
         oTarget = oUser;
     else
-        oTarget = GetLocalObject(oUser, "dmfi_univ_target");
+        oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
     switch (iEffect)
     {
     //SoU/HotU Duration Effects(must have a target)
@@ -2977,15 +2977,15 @@ void CreateEffects(int iEffect, location lEffect, object oUser)
     case 89: FnFEffect(oUser, VFX_FNF_SWINGING_BLADE,lEffect, fDelay); break;
         //Settings
     case 91:
-        SetLocalString(oUser, "EffectSetting", "dmfi_effectduration");
+        _SetLocalString(oUser, "EffectSetting", "dmfi_effectduration");
         CreateSetting(oUser);
         break;
     case 92:
-        SetLocalString(oUser, "EffectSetting", "dmfi_effectdelay");
+        _SetLocalString(oUser, "EffectSetting", "dmfi_effectdelay");
         CreateSetting(oUser);
         break;
     case 93:
-        SetLocalString(oUser, "EffectSetting", "dmfi_beamduration");
+        _SetLocalString(oUser, "EffectSetting", "dmfi_beamduration");
         CreateSetting(oUser);
         break;
     case 94: //Change Day Music
@@ -3023,7 +3023,7 @@ void CreateEffects(int iEffect, location lEffect, object oUser)
 
     default: break;
     }
-    DeleteLocalObject(oUser, "EffectTarget");
+    _DeleteLocalObject(oUser, "EffectTarget");
     return;
 }
 
@@ -3031,7 +3031,7 @@ void CreateEffects(int iEffect, location lEffect, object oUser)
 //This function is for the DMFI Emote Wand
 void DoEmoteFunction(int iEmote, object oUser)
 {
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
     if (!GetIsObjectValid(oTarget))
         oTarget = oUser;
     float fDur = 9999.0f; //Duration
@@ -3057,12 +3057,12 @@ void DoEmoteFunction(int iEmote, object oUser)
     case 87: AssignCommand(oTarget, PlayAnimation( ANIMATION_LOOPING_TALK_FORCEFUL, 1.0, fDur)); break;
     case 88: AssignCommand(oTarget, PlayAnimation( ANIMATION_LOOPING_WORSHIP, 1.0, fDur)); break;
     case 10: 
-        if (!GetLocalInt(oTarget, "hls_emotemute")) 
+        if (!_GetLocalInt(oTarget, "hls_emotemute")) 
             FloatingTextStringOnCreature("*emote* commands are off", oTarget, FALSE);
         else 
             FloatingTextStringOnCreature("*emote* commands are on", oTarget, FALSE);
         
-        SetLocalInt(oTarget, "hls_emotemute", abs(GetLocalInt(oTarget, "hls_emotemute") - 1)); 
+        _SetLocalInt(oTarget, "hls_emotemute", abs(_GetLocalInt(oTarget, "hls_emotemute") - 1)); 
         break;
     case 91: EmoteDance(oTarget); break;
     case 92: AssignCommand(oTarget, PlayAnimation( ANIMATION_LOOPING_PAUSE_DRUNK, 1.0, fDur)); break;
@@ -3089,8 +3089,8 @@ void DoBuff (int iChoice, object oUser)
 {
     int nChoice = 0;
     string sType;
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
-    int Party = GetLocalInt(oUser, "dmfi_buff_party");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
+    int Party = _GetLocalInt(oUser, "dmfi_buff_party");
     int CL;
     int nSpell1 = SPELL_ALL_SPELLS;
     int nSpell2 = SPELL_ALL_SPELLS;
@@ -3168,37 +3168,37 @@ void DoBuff (int iChoice, object oUser)
     case 78: sType = "STEALTH"; break;
 
     case 81: DMFI_NextTarget(oTarget, oUser); nChoice = -1; break;
-    case 82: SetLocalString(oUser, "dmfi_buff_level", "LOW"); nChoice = -1;
+    case 82: _SetLocalString(oUser, "dmfi_buff_level", "LOW"); nChoice = -1;
         FloatingTextStringOnCreature("Buff level LOW", oUser);
         SetCustomToken(20782, "Low");
         SetDMFIPersistentString("dmfi", "dmfi_buff_level", "LOW", oUser);
         break;
-    case 83: SetLocalString(oUser, "dmfi_buff_level", "MID"); nChoice = -1;
+    case 83: _SetLocalString(oUser, "dmfi_buff_level", "MID"); nChoice = -1;
         FloatingTextStringOnCreature("Buff level MID", oUser);
         SetCustomToken(20782, "Mid");
         SetDMFIPersistentString("dmfi", "dmfi_buff_level", "MID", oUser);
         break;
-    case 84: SetLocalString(oUser, "dmfi_buff_level", "HIGH"); nChoice = -1;
+    case 84: _SetLocalString(oUser, "dmfi_buff_level", "HIGH"); nChoice = -1;
         FloatingTextStringOnCreature("Buff level HIGH", oUser);
         SetCustomToken(20782, "High");
         SetDMFIPersistentString("dmfi", "dmfi_buff_level", "HIGH", oUser);
         break;
-    case 85: SetLocalString(oUser, "dmfi_buff_level", "EPIC"); nChoice = -1;
+    case 85: _SetLocalString(oUser, "dmfi_buff_level", "EPIC"); nChoice = -1;
         FloatingTextStringOnCreature("Buff level EPIC", oUser);
         SetCustomToken(20782, "Epic");
         SetDMFIPersistentString("dmfi", "dmfi_buff_level", "EPIC", oUser);
         break;
     case 86: {
-            if (GetLocalInt(oUser, "dmfi_buff_party")==1)
+            if (_GetLocalInt(oUser, "dmfi_buff_party")==1)
             {
-                SetLocalInt(oUser, "dmfi_buff_party", 0);
+                _SetLocalInt(oUser, "dmfi_buff_party", 0);
                 FloatingTextStringOnCreature("Buff set to single target", oUser);
                 SetCustomToken(20783, "Single Target");
                 SetDMFIPersistentInt("dmfi","dmfi_buff_party", 0, oUser);
             }
             else
             {
-                SetLocalInt(oUser, "dmfi_buff_party", 1);
+                _SetLocalInt(oUser, "dmfi_buff_party", 1);
                 FloatingTextStringOnCreature("Buff set to party mode", oUser);
                 SetCustomToken(20783, "Party");
                 SetDMFIPersistentInt("dmfi","dmfi_buff_party", 1, oUser);
@@ -3213,7 +3213,7 @@ void DoBuff (int iChoice, object oUser)
         return;
 
 //set caster level based on set level
-    string sLevel = GetLocalString(oUser, "dmfi_buff_level");
+    string sLevel = _GetLocalString(oUser, "dmfi_buff_level");
 
     if (sLevel == "LOW") CL = 5;
     else if (sLevel == "MID") CL = 10;
@@ -3678,7 +3678,7 @@ void ToggleRestVariable(int iCurrent, int iChange, int iDefault, string sTextMes
 void DoRestFunction(int iRest, object oUser)
 {
     int iCurrentMod = GetDMFIPersistentInt("dmfi", "dmfi_r_");
-    object oTarget = GetLocalObject(oUser, "dmfi_univ_target");
+    object oTarget = _GetLocalObject(oUser, "dmfi_univ_target");
     object oArea = GetArea(oUser);
     object oLoop;
     string sAreaTag = GetTag(oArea);
@@ -3700,18 +3700,18 @@ void DoRestFunction(int iRest, object oUser)
         }
         else
         {
-            SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
-            SetLocalInt(oUser, "dmfi_r_init", TRUE);
+            _SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
+            _SetLocalInt(oUser, "dmfi_r_init", TRUE);
             int iTime = GetTimeSecond() + GetTimeMinute() * 60 + GetTimeHour() * 3600 + GetCalendarDay() * 24 * 3600 + GetCalendarMonth() *3600 * 24 * 28 + GetCalendarYear() * 24 * 28 * 12 * 3600;
-            SetLocalInt(oUser, "dmfi_r_startseconds", iTime);
+            _SetLocalInt(oUser, "dmfi_r_startseconds", iTime);
             AssignCommand(oUser, ActionRest());
         } break;
     case 8:
-        SetLocalString(oUser, "dmfi_univ_conv", "pc_emote");
+        _SetLocalString(oUser, "dmfi_univ_conv", "pc_emote");
         AssignCommand(oUser, ClearAllActions());
         AssignCommand(oUser, ActionStartConversation(OBJECT_SELF, "dmfi_universal", TRUE)); break;
     case 9:
-        SetLocalString(oUser, "dmfi_univ_conv", "pc_dicebag");
+        _SetLocalString(oUser, "dmfi_univ_conv", "pc_dicebag");
         AssignCommand(oUser, ClearAllActions());
         AssignCommand(oUser, ActionStartConversation(OBJECT_SELF, "dmfi_universal", TRUE)); break;
     case 11: //Set Unlimited Rest (module): default is ON
@@ -4106,28 +4106,28 @@ void DoRestFunction(int iRest, object oUser)
             ToggleRestVariable(iCurrentMod, 0x10000000, TRUE, "GLOBAL: Rest Conversation is ", oUser);
         else
         {
-            SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_MEDITATE); SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
+            _SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_MEDITATE); _SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
         } break;
     case 102: //Use Rest VFX
         if (_GetIsDM(oUser))
             ToggleRestVariable(iCurrentMod, 0x20000000, TRUE, "GLOBAL: Rest VFX are ", oUser);
         else
         {
-            SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_DEAD_FRONT); SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
+            _SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_DEAD_FRONT); _SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
         } break;
     case 103: //Floating Text Feedback
         if (_GetIsDM(oUser))
             ToggleRestVariable(iCurrentMod, 0x40000000, TRUE, "GLOBAL: Floating Text Feedback is ", oUser);
         else
         {
-            SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_DEAD_BACK); SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
+            _SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_DEAD_BACK); _SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
         } break;
     case 104: //Immobilized Resting
         if (_GetIsDM(oUser))
             ToggleRestVariable(iCurrentMod, 0x80000000, TRUE, "GLOBAL: Immobile resting is ", oUser);
         else
         {
-            SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_WORSHIP); SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
+            _SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_WORSHIP); _SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
         } break;
     case 108: //All PCs in Area are Rested
         break;
@@ -4145,9 +4145,9 @@ void DoRestFunction(int iRest, object oUser)
 ////////////////////////////////////////////////////////////////////////
 void main()
 {
-    string sDMFI = GetLocalString(OBJECT_SELF, "dmfi_univ_conv");
-    int iDMFI = GetLocalInt(OBJECT_SELF, "dmfi_univ_int");
-    location lDMFI = GetLocalLocation(OBJECT_SELF, "dmfi_univ_location");
+    string sDMFI = _GetLocalString(OBJECT_SELF, "dmfi_univ_conv");
+    int iDMFI = _GetLocalInt(OBJECT_SELF, "dmfi_univ_int");
+    location lDMFI = _GetLocalLocation(OBJECT_SELF, "dmfi_univ_location");
     if (sDMFI == "emote" || sDMFI == "pc_emote")
         DoEmoteFunction(iDMFI, OBJECT_SELF);
     else if (sDMFI == "fx")
@@ -4181,6 +4181,6 @@ void main()
     else if (sDMFI == "rest")
         DoRestFunction(iDMFI, OBJECT_SELF);
 
-    DeleteLocalInt(OBJECT_SELF,"Tens");
+    _DeleteLocalInt(OBJECT_SELF,"Tens");
 }
 
