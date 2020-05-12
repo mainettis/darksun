@@ -1,0 +1,222 @@
+# Dark Sun Scripter's Manual
+
+If you are scripting for us, you should also be familiar with the [player's manual](playersmanual.md), the [dungeon master's manual](dmmanual.md) and [builder's manual](buildersmanual.md).  Each of these publications build on each other.  Everything in those manuals will ensure you're familiar with the systems present in this module and how they are used.  This manual will specifically introduce you to the expected scripting style as well as some of the advanced features of the framework and other systems.
+
+* [Expectations](#expectations)
+* [Data Management](#data-management)
+* [Systems](#systems)
+    * [Core Framework](#core-framework)
+    * [HCR2](#hcr2)
+    * [DMFI](#dmfi)
+
+## Expectations
+
+As a volunteer project, we fully expect that any person that works on this project will not be around forever.  With that in mind, we expect everyone that contributes to the project to adhere to specific customs and styles so that future contributors can easily read the code and understand what is going on.  Here's a list of general expectations for scripting:
+
+* All functions, including internal function, will be prototyped and documented.  We do not expect, nor desire, comments for every line of code, but we do expect that the function description associated with the function prototype give the next programmer enough information to know what's going on.  Here's an example of bad prototyping and documentation:
+
+    ```
+
+    ```
+
+    Yep, there's nothing there.  That's bad.  Here's an example of good prototyping and documentation.  This is a simple procedures, so not much is required.  For more complicated procedures, you either need more documentation, or you need to break the procedure up.
+
+    ```c
+    // ---< ActivatePlugin >---
+    // ---< core_i_framework >---
+    // Runs oPlugin's OnPluginActivate script and sets its status to ON. Returns
+    // whether the activation was successful. If bForce is TRUE, will activate the
+    // plugin even if its status is already ON.
+    int ActivatePlugin(object oPlugin, int bForce = FALSE);
+    ```
+
+* All functions will contain debugging and logging messages, as required, to aid in future changes/debugging and to inform the module ownership, DMs and players (as appropriate) what is going on.  We have several tools to accomplish this easily.  See [debug messaging](#debug-messaging) and [module communication](#module-communication).  Here's an example of the debug messaging available in the module:
+
+    ``` c
+    Debug("Successfully created encounter with ID " + sEncounterID);
+    ```
+
+    ``` c
+    Warning("Cannot activate plugin '" + sPlugin + "': denied");
+    ```
+
+    This message will be sent to all destinations as opted in core_c_config.  You are not necessarily limited to basic data message, though.  Here's an example of a more complicated Debug message that will help everyone determine exactly what is happening within a system:
+
+    ``` c
+    Debug("Checking " + sEvent + " script " + IntToString(i + 1) + sCount +
+        "\n    Script: " + sScript +
+        "\n    Priority: " + PriorityToString(fPriority) +
+        "\n    Source: " + GetName(oSource));
+    ```
+
+    Although there is nothing wrong with simple debug messages, ensure there is enough information available to allow any scripter to determine where the issues may lie.  
+    *Note: **We DO NOT send debug messages with the SendMessageToPC() function.***
+
+* Data (primarily variables) intended for the module or any player will be handled by our [data handling functions](#data-handling) instead of setting variables on the Module or on the PC.
+
+* Scripting is intended to make the builder's life easier.  Where feasible, use wrapper functions instead of requiring the builder to know every possible variable or option they can send to a function.  The debug system is a great example of this.  The `Debug()` function handles the heavy liftin go sending messages where they need to go, but it has three wrapper/alias functions:  `Warning()`, `Error()`, and `CriticalError()`.  Each one sets specific variables to allow coloring of the variaous messages, but all the builder/scripter has to know if the function name.
+
+## Data Management System
+
+Saving variables and determining who a player is are two of the most common functions in nwscript.  To that end, we're provided alias functions for them to prevent overloading the Module and PC objects, and to quickly determine the identify of a PC.  Just about every script in the module should have an include reference to `dsutil_i_data`.  This script itself includes [`util_i_debug`](../framework/src/utils/util_i_debug.nss) and [`dsutil_i_comms`](../utilities/dsutil_i_comms), so including `dsutil_i_data` should provide you with a great portion of the functionality to set variables, determine identities, provide debug information and send messages around the module.
+
+Here are the basic functions it provides:
+* `_GetIsPC()` - a replacement for nwscript's `GetIsPC()`.  Our version determines whether the character is player-controlled (PC) and not a DM.  So if you're trying to determine if a player is a PC and not a DM, use this function.
+* `_GetIsDM()` - a replacement for nwscript's `GetIsDM()`.  Our version determines whether the passes character object is a DM or a DM possessing an NPC.
+
+* In work, module-private replacements to allow inheritance.
+* ~~`[Get, Set, Delete]Module*` - alias functions for [Set, Get, Delete]Local*.  These are equivalent to `SetLocalInt(GetModule(), sVarName, nValue)`, except our version sets the variables on a MODULE datapoint instead of the module object itself.  This help to keep the module object from being overloaded with variables and allows them to be accessed more quickly.~~
+* ~~`[Get, Set, Delete]Player*` - alias functions for [Set, Get, Delete]Local*.  These are equivalent to `SetLocalInt(oPC, sVarName, nValue)`, except our version sets the variables on a player-held, non-droppable, player data item.  This allows us to keep the player object from being overused and to allow persistence in player-assigned variables without using the database.~~
+
+To learn more and understand exactly how the functions work, open up [`dsutil_i_data`](../utilities/dsutil_i_data.nss) and take a look!
+
+*Acknowledgement:  As acknowledged in our [acknowledgements document](acknowledgements.md/#hcr2), many of these functions are taken directly from Edward Beck's HCR2 system and modified for our use.*
+
+## Framework System
+
+The entire module rests on the core framework developed, maintained and continuously improved by Michael Sinclair (squattingmonk).  The framework does an amazing job of organizing code and managing events, as well as providing access to efficient list management, debugging utilities, datapoints, text coloring, database interface and script library functions.  This is all done inside of nwscript with the exception of the database interface, which uses NWNXEE. I cannot say enough about how well this framework handles the basic functionality of the module.  In order to successfully script here, you must understand how the framework works and the various methods to call functions, events, etc.
+
+***Note:  No pull requests will be accepted that involve modification to any file in the `framework` submodule.***
+
+* [Math](#math-functions)
+* [Lists](#list-functions)
+* [Datapoints](#datapoint-functions)
+* [Debugging](#debug-functions)
+* [Color](#coloring-functions)
+* [Library](#library-functions)
+* [Event Management](#event-management)
+
+#### Math Functions
+
+[`util_i_math`](../framework/src/utils/util_i_math) provides access to some useful basic math functions such as mod, min, max, clamps, etc.  None of these require detailed explanation.  Open up the file and take a look at what's available.
+
+#### List Functions
+
+The framework provides access to two types of lists:  comma separated values (CSVs) and array-like lists (varlists).  There is not extensive documentation here because the author has provided his own [list documentation](../framework/docs/lists.md).  In addition to the functions and ideas found there, there is another script file called `util_i_lists` which contains functions to swap from one list type to the other.  These lists are extensively used throughout the module.
+
+An example of the power of these lists is the way in which languages are added into the DMFI language system.  When initiated, the language system searches for all items in a CSV, which are references to game objects (items) that contain the appropriate variables to allow language translation.  As each object is found, it is added to an object varlist on the DMFI data point.  Simultaneously, a CSV is created with the names of each of the languages.  This allows a quick way to create an index of languages.  The CSV is searched by language name to determine its index, then the object list is refernced by index to get the required object and its variables.  In this way, new languages can be added to the module without any scripting at all.  A new language initializer items simply needs to be created with the appropriate variables and the expected tag.
+
+#### Datapoint Functions
+
+Much like the list functions above, the author has provided his own [datapoint documentation](../framework/docs/datapoints.md).  Datapoints are used extensively by the framework as well os other module systems, such as DMFI, travel area encounters, etc.  Using datapoints allows us to provide module-wide access to various variables without overloading the module object.
+
+#### Debugging Functions
+
+The author has provided his own [debugging documentation](../framework/docs/debugging.md).  In addition to debugging functions, we also have systems for module-wide communications and logging.
+
+#### Coloring Functions
+
+Another utility, `util_i_color`, provides function for coloring various strings for presentation to players.  Many of the functions in this script are dependent on `util_i_math`.  These functions can be sued to color strings for debugging presentation, messaging around the module and within custom conversations.  Your primary use will probably be `HexColorString()` which allows you to use one of the many pre-defined colors within the script.
+
+#### Library Functions
+
+//TODO - this is not very explanatory.  Rewrite.
+
+The author has included his own [library documentation](../framework/docs/libraries.md) to help in understanding how the library system works.  The library system allows the framework's [event management system](#event-management) to do what it does so well.  The gist of the system, however, is that you expose the functions you wish to be public through the library and pointers to those functions are stored in varlists on various datapoints in the module.  When any of those functions is called from any part of the module, the library system is able to find the function and run it, without the scripter/builder having to know which library it's in.  This does not mean you can call a function from another script directly without an `#include` reference, but it does mean that you can run an event script (such as `OnAreaExit`) that resides in the HCR2 fugue system from any and all areas without having to point the event directly to the script.
+
+Here are some notes from our implementation of the library system:
+* All scripts associated with a library, if written correctly, become part of one large script at compile time.  This is the primary reason each our libraries has only six different scripts in them (configuration, text, constants, events, main, and plugin/library).
+* Bioware override scripts can be housed in any library and don't need to have the same name as the script they're overriding, only the event name passed through the library does.  Here's an example of a library exposure that override Bioware's nw_s2_animalcom:
+
+    ``` c
+    void OnLibraryLoad()
+    {
+        RegisterLibraryScript("nw_s2_animalcom", 1);
+    }
+
+    void OnLibraryScript(string sScript, int nEntry)
+    {
+        switch (nEntry)
+        {
+            case 1:  MyAnimalCompanionScript(); break;
+            default: CriticalError("Library function " + sScript + " not found");
+        }
+    }
+    ```
+
+* The same can be done with item-based scripting.  For both cases, separate, specially named scripts are not required, just expose your function to the library system with the correct name and you can run any function or script that you want.  Here's an example of tag-based scripting from HCR2's torch subsystem.  This isn't the entire script, it just shows the portion necessary to understand tag-based scripting.  The actual name of the items are carried inside constants (H2_LANTERN and H2_OILFLASK, in this case), so you can change the tag of the item and not have the system break.  When any player uses an item tagged as a lantern (`h2_lantern`), the system looks for a script with that item name, which matches the constant we passed (`H2_LANTERN = "h2_lantern"`).  Once found, it looks into the library for the nEntry that matches the one we assigned (`2` in this case).  
+
+    ``` c
+    void OnLibraryLoad()
+    {
+        ...
+
+        // ----- Tag-based Scripting -----
+        RegisterLibraryScript(H2_LANTERN,            2);
+        RegisterLibraryScript(H2_OILFLASK,           3);
+
+        ...
+    }
+
+    void OnLibraryScript(string sScript, int nEntry)
+    {
+        switch (nEntry)
+        {
+            ...
+
+            // ----- Tag-based Scripting -----
+            case 2: torch_lantern();       break;
+            case 3: torch_oilflask();      break;
+
+            ...
+        }
+    }
+    ```
+
+    It then runs the script associated with that entry (`torch_lantern()`), which contains all the scripting you would normally keep in its own .nss, without having to maintain another file.
+
+    ``` c
+    void torch_lantern()
+    {
+        int nEvent = GetUserDefinedItemEventNumber();
+
+        // * This code runs when the item is equipped
+        // * Note that this event fires PCs only
+        if (nEvent ==  X2_ITEM_EVENT_EQUIP)
+        {
+            h2_EquippedLightSource(FALSE);
+        }
+        // * This code runs when the item is unequipped
+        // * Note that this event fires for PCs only
+        else if (nEvent == X2_ITEM_EVENT_UNEQUIP)
+        {
+            h2_UnEquipLightSource(FALSE);
+        }
+    }
+    ```
+    
+* 
+* 
+* 
+* 
+
+
+
+
+
+#### Event Management
+
+
+
+
+## Dialog/Conversation System
+
+
+## Quest Management System
+
+
+
+
+
+
+
+
+
+
+## Questions
+
+If you have any questions about installing these tools, and you're sure you followed the instructions above correctly, you're best bet is to get onto the [Dark Sun discord](https://discordapp.com/channels/468225176773984256/468225176773984258) and ask a question about installing the tools.  If you're not a member of our discord, you can [join](https://discord.gg/8ZxgMRc).  If you tag me (@tinygiant) in your post, I'll likely answer pretty quickly.  If you don't tag me, I may not see the question at all, but one of our many other team members might be able to help.  I'm happy to answer discord DMs also if you don't want to join the discord.
+
+## Conclusion
+
+I know this was a lot of information, but, again, it all boils down to just a few commands once you're used to it.  The majority of this tutorial is aimed at our audience that is new to this process.  If you've decided to use VS Code, which can accomplish a lot of these steps in a visual environment, please read the [~~VS Code Tutorial~~coming soon](vscode.md).  This is not really necessary for most content developers, but if you're a scripter, I highly recommend your consider VS Code as your primary development environment for this module.

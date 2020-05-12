@@ -19,7 +19,7 @@ void main()
     int nMatch = GetListenPatternNumber();
     object oShouter = GetLastSpeaker();
 
-    if (GetIsDM(oShouter))
+    if (_GetIsDM(oShouter))
         SetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter), 1);
 
     if (GetIsDMPossessed(oShouter))
@@ -34,7 +34,7 @@ void main()
 
     //*object oSummon;
 
-    if (nMatch == LISTEN_PATTERN && GetIsObjectValid(oShouter) && GetIsDM(oShouter))
+    if (nMatch == LISTEN_PATTERN && GetIsObjectValid(oShouter) && _GetIsDM(oShouter))
     {
         string sSaid = GetMatchedSubstring(0);
 

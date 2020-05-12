@@ -40,6 +40,7 @@ object h2_CreateLootBag(object oPC)
     object oLootBag = GetLocalObject(oPC, H2_LOOT_BAG);
     location lLootBag = GetLocation(oLootBag);
     location lPlayer = GetLocation(oPC);
+    
     if (!GetIsObjectValid(oLootBag) || GetDistanceBetweenLocations(lPlayer, lLootBag) > 3.0 ||
         GetAreaFromLocation(lLootBag) != GetArea(oPC))
     {
@@ -47,5 +48,6 @@ object h2_CreateLootBag(object oPC)
         //TODO: set the name of the lootbag using 1.67 patch SetName fuction?
         SetLocalObject(oPC, H2_LOOT_BAG, oLootBag);
     }
+
     return oLootBag;
 }

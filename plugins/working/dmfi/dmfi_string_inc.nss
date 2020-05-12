@@ -50,7 +50,7 @@ void DMFISendMessageToPC(object oPC, string sMsg, int bAllDMs = FALSE, string sR
     if (bAllDMs) oTarget = GetFirstPC();
     while (GetIsObjectValid(oTarget))
     {
-        if ((!bAllDMs) || (GetIsDM(oTarget) || GetIsDMPossessed(oTarget)))
+        if ((!bAllDMs) || _GetIsDM(oTarget))
         {
             if (sRGB != "")
                 sColMsg = StringToRGBString(sMsg, sRGB);

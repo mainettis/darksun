@@ -60,7 +60,7 @@ void pw_OnModuleHeartbeat()
 void pw_OnClientEnter()
 {
     object oPC = GetEnteringObject();
-    int bIsDM = GetIsDM(oPC);
+    int bIsDM = _GetIsDM(oPC);
 
     int iNameLength = GetStringLength(GetName(oPC));
     if (iNameLength > H2_MAX_LENGTH_PCNAME)
@@ -87,14 +87,14 @@ void pw_OnClientEnter()
         return;
     }
 
-    if (!bIsDM && h2_GetModLocalInt(H2_MODULE_LOCKED))
+    if (!bIsDM && GetModuleInt(H2_MODULE_LOCKED))
     {
         SetLocalInt(oPC, H2_LOGIN_BOOT, TRUE);
         h2_BootPlayer(oPC, H2_TEXT_MODULE_LOCKED, 10.0);
         return;
     }
 
-    int iPlayerState = h2_GetPlayerPersistentInt(oPC, H2_PLAYER_STATE);
+    int iPlayerState = GetPlayerInt(oPC, H2_PLAYER_STATE);
     if (!bIsDM && iPlayerState == H2_PLAYER_STATE_RETIRED)
     {
         SetLocalInt(oPC, H2_LOGIN_BOOT, TRUE);
@@ -102,7 +102,7 @@ void pw_OnClientEnter()
         return;
     }
 
-    if (!bIsDM && H2_REGISTERED_CHARACTERS_ALLOWED > 0 && !h2_GetPlayerPersistentInt(oPC, H2_REGISTERED))
+    if (!bIsDM && H2_REGISTERED_CHARACTERS_ALLOWED > 0 && !GetPlayerInt(oPC, H2_REGISTERED))
     {
         int registeredCharCount = GetDatabaseInt(GetPCPlayerName(oPC) + H2_REGISTERED_CHAR_SUFFIX);
         if (registeredCharCount >= H2_REGISTERED_CHARACTERS_ALLOWED)
@@ -114,8 +114,8 @@ void pw_OnClientEnter()
     }
     if (!bIsDM)
     {
-        int iPlayerCount = h2_GetModLocalInt(H2_PLAYER_COUNT);
-        h2_SetModLocalInt(H2_PLAYER_COUNT, iPlayerCount + 1);
+        int iPlayerCount = GetModuleInt(H2_PLAYER_COUNT);
+        SetModuleInt(H2_PLAYER_COUNT, iPlayerCount + 1);
     }
 
     SetLocalString(oPC, H2_PC_PLAYER_NAME ,GetPCPlayerName(oPC));
@@ -136,10 +136,10 @@ void pw_OnClientLeave()
     object oPC = GetExitingObject();
     if (GetLocalInt(oPC, H2_LOGIN_BOOT))
         return;
-    if (!GetIsDM(oPC))
+    if (!_GetIsDM(oPC))
     {
-        int iPlayerCount = h2_GetModLocalInt(H2_PLAYER_COUNT);
-        h2_SetModLocalInt(H2_PLAYER_COUNT, iPlayerCount - 1);
+        int iPlayerCount = GetModuleInt(H2_PLAYER_COUNT);
+        SetModuleInt(H2_PLAYER_COUNT, iPlayerCount - 1);
         h2_SavePersistentPCData(oPC);
     }
 }
@@ -147,30 +147,29 @@ void pw_OnClientLeave()
 void pw_OnPlayerDying()
 {
     object oPC = GetLastPlayerDying();
-    if (h2_GetPlayerPersistentInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DEAD)
-        h2_SetPlayerPersistentInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_DYING);
+    if (GetPlayerInt(oPC, H2_PLAYER_STATE) != H2_PLAYER_STATE_DEAD)
+        SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_DYING);
 }
 
 void pw_OnPlayerDeath()
 {
     object oPC = GetLastPlayerDied();
     SetLocalLocation(oPC, H2_LOCATION_LAST_DIED, GetLocation(oPC));
-    h2_SetPlayerPersistentInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_DEAD);
+    SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_DEAD);
     h2_RemoveEffects(oPC);
     string deathLog = GetName(oPC) + "_" + GetPCPlayerName(oPC) + H2_TEXT_LOG_PLAYER_HAS_DIED;
     deathLog += GetName(GetLastHostileActor(oPC));
-    if (GetIsPC(GetLastHostileActor(oPC)))
+    if (_GetIsPC(GetLastHostileActor(oPC)))
         deathLog += "_" + GetPCPlayerName(GetLastHostileActor(oPC));
     deathLog += H2_TEXT_LOG_PLAYER_HAS_DIED2 + GetName(GetArea(oPC));
-    WriteTimestampedLogEntry(deathLog);
+    Debug(deathLog);
     SendMessageToAllDMs(deathLog);
 }
 
 void pw_OnPlayerReSpawn()
 {
     object oPC = GetLastRespawnButtonPresser();
-    h2_SetPlayerPersistentInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
-    //h2_RunModuleEventScripts(H2_EVENT_ON_PLAYER_RESPAWN);
+    SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
 }
 
 void pw_OnPlayerLevelUp()
@@ -227,7 +226,7 @@ void pw_OnPlayerRest()
 
 void pw_OnAreaEnter()
 {
-    if (GetIsPC(GetEnteringObject()))
+    if (_GetIsPC(GetEnteringObject()))
     {
         int playercount = GetLocalInt(OBJECT_SELF, H2_PLAYERS_IN_AREA);
         SetLocalInt(OBJECT_SELF, H2_PLAYERS_IN_AREA, playercount + 1);
@@ -236,7 +235,7 @@ void pw_OnAreaEnter()
 
 void pw_OnAreaExit()
 {
-    if (GetIsPC(GetExitingObject()))
+    if (_GetIsPC(GetExitingObject()))
     {
         int playercount = GetLocalInt(OBJECT_SELF, H2_PLAYERS_IN_AREA);
         SetLocalInt(OBJECT_SELF, H2_PLAYERS_IN_AREA, playercount - 1);
@@ -277,7 +276,7 @@ void pw_ExportPCs_OnTimerExpire()
 
 void pw_SavePCLocation_OnTimerExpire()
 {
-    if (GetIsObjectValid(OBJECT_SELF) && GetIsPC(OBJECT_SELF))
+    if (GetIsObjectValid(OBJECT_SELF) && _GetIsPC(OBJECT_SELF))
     {
         location loc = GetLocation(OBJECT_SELF);
         h2_SavePCLocation(OBJECT_SELF);

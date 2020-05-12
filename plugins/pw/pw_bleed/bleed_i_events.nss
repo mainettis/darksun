@@ -85,7 +85,7 @@ void bleed_OnPlayerRestStarted()
 void bleed_OnPlayerDying()
 {
     object oPC = GetLastPlayerDying();
-    if (h2_GetPlayerPersistentInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DYING)
+    if (GetPlayerInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DYING)
         h2_BeginPlayerBleeding(oPC);
 }
 
@@ -111,7 +111,7 @@ void bleed_healwidget()
 void bleed_OnTimerExpire()
 {
     object oPC = OBJECT_SELF;
-    int nPlayerState = h2_GetPlayerPersistentInt(oPC, H2_PLAYER_STATE);
+    int nPlayerState = GetPlayerInt(oPC, H2_PLAYER_STATE);
     if (nPlayerState != H2_PLAYER_STATE_DYING && nPlayerState != H2_PLAYER_STATE_STABLE &&
         nPlayerState != H2_PLAYER_STATE_RECOVERING)
     {
@@ -141,7 +141,7 @@ void bleed_OnTimerExpire()
         }
         else
         {
-            h2_SetPlayerPersistentInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_DEAD);
+            SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_DEAD);
             ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), oPC);
         }
     }

@@ -19,6 +19,7 @@
 // -----------------------------------------------------------------------------
 
 #include "ds_htf_i_main"
+#include "dsutil_i_data"
 
 // -----------------------------------------------------------------------------
 //                              Function Prototypes
@@ -45,12 +46,12 @@ void ds_htf_OnAreaEnter()
 {
     object oCreature = GetEnteringObject();
 
-    if (GetIsDM(oCreature)) return;
+    if (_GetIsDM(oCreature)) return;
 
     int nAreaType = GetLocalInt(GetArea(oCreature), DS_HTF_VARIABLE_AREATYPE);
     string sAreaPaid = GetLocalString(oCreature, DS_HTF_LAST_TRAVEL_COST_PAID);
 
-    if(GetIsPC(oCreature) && !nAreaType)
+    if(_GetIsPC(oCreature) && !nAreaType)
     {
         string sPCMessage = ds_GetAreaTravelMessage(nAreaType);
         if (sPCMessage != "") 
@@ -82,7 +83,8 @@ void ds_htf_OnAreaEnter()
 void ds_htf_OnAreaExit()
 {
     object oCreature = GetExitingObject();
-    if (GetIsDM(oCreature)) return;
+    if (_GetIsDM(oCreature))
+        return;
 
     int nAreaType = GetLocalInt(GetArea(oCreature), DS_HTF_VARIABLE_AREATYPE);
     
@@ -139,7 +141,7 @@ void ds_htf_TravelCostTimerExpirationHT()
 
     h2_PerformHungerThirstCheck(oCreature, fThirstDecrement, fHungerDecrement);
 
-    if(!GetIsPC(oCreature) && GetIsPC(GetMaster(oCreature)))
+    if(!_GetIsPC(oCreature) && _GetIsPC(GetMaster(oCreature)))
     {
         float fThirst = GetLocalFloat(oCreature, H2_HT_CURR_THIRST) * 100.0;
         float fHunger = GetLocalFloat(oCreature, H2_HT_CURR_HUNGER) * 100.0;
@@ -158,7 +160,7 @@ void ds_htf_TravelCostTimerExpirationF()
 
     h2_PerformFatigueCheck(oCreature, fDecrement);
 
-    if(!GetIsPC(oCreature) && !GetIsDM(oCreature) && GetIsPC(GetMaster(oCreature)))
+    if(!_GetIsPC(oCreature) && !_GetIsDM(oCreature) && _GetIsPC(GetMaster(oCreature)))
     {
         float fThirst = GetLocalFloat(oCreature, H2_HT_CURR_THIRST) * 100.0;
         float fHunger = GetLocalFloat(oCreature, H2_HT_CURR_HUNGER) * 100.0;

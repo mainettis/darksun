@@ -48,10 +48,10 @@ void h2_DeityRez(object oPC)
     effect eHeal = EffectHeal(GetMaxHitPoints(oPC));
     ApplyEffectToObject(DURATION_TYPE_INSTANT, eRes, oPC);
     ApplyEffectToObject(DURATION_TYPE_INSTANT, eHeal, oPC);
-    h2_SetPlayerPersistentInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
+    SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
     SendMessageToPC(oPC, H2_TEXT_DEITY_REZZED);
     string deityRez = GetName(oPC) + "_" + GetPCPlayerName(oPC) + H2_TEXT_DM_DEITY_REZZED + GetDeity(oPC);
-    WriteTimestampedLogEntry(deityRez);
+    Debug(deityRez);
     SendMessageToAllDMs(deityRez);
     object deitywp = GetObjectByTag("WP_" + deity);
     if (GetIsObjectValid(deitywp))

@@ -76,7 +76,7 @@ void other2()
     int bGoing;
 
     // Only fire for (real) PCs. 
-    if (GetIsDM(oPC) || GetIsDMPossessed(oPC)) 
+    if (_GetIsDM(oPC)) 
         return; 
     
     if (GetIsDawn() || GetIsDay())

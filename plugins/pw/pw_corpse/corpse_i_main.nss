@@ -109,7 +109,7 @@ void h2_DropPlayerCorpse(object oCorpseToken)
 
 void h2_CreatePlayerCorpse(object oPC)
 {
-    string uniquePCID = h2_GetPlayerPersistentString(oPC, H2_UNIQUE_PC_ID);
+    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
     location loc = GetLocalLocation(oPC, H2_LOCATION_LAST_DIED);
     object oDeadPlayer = CopyObject(oPC, loc, OBJECT_INVALID, H2_CORPSE + uniquePCID);
     SetName(oDeadPlayer, H2_TEXT_CORPSE_OF + GetName(oPC));
@@ -177,11 +177,11 @@ void h2_RaiseSpellCastOnCorpseToken(int spellID, object oToken = OBJECT_INVALID)
     location castLoc = GetLocation(oCaster);
     string uniquePCID = GetLocalString(oToken, H2_DEAD_PLAYER_ID);
     object oPC = h2_FindPCWithGivenUniqueID(uniquePCID);
-    if (!GetIsDM(oCaster))
+    if (!_GetIsDM(oCaster))
     {
-        if (H2_ALLOW_CORPSE_RESS_BY_PLAYERS == FALSE && GetIsPC(oPC))
+        if (H2_ALLOW_CORPSE_RESS_BY_PLAYERS == FALSE && _GetIsPC(oPC))
             return;
-        if (H2_REQUIRE_GOLD_FOR_RESS && GetIsPC(oCaster))
+        if (H2_REQUIRE_GOLD_FOR_RESS && _GetIsPC(oCaster))
         {
             int goldCost = h2_GoldCostForRessurection(oCaster, spellID);
             if (goldCost <= 0)
@@ -217,17 +217,17 @@ void h2_RaiseSpellCastOnCorpseToken(int spellID, object oToken = OBJECT_INVALID)
     ApplyEffectAtLocation(DURATION_TYPE_INSTANT, eVis, castLoc);
     DestroyObject(oToken);
     string sMessage;
-    if (GetIsPC(oCaster))
+    if (_GetIsPC(oCaster))
         sMessage = GetName(oCaster) + "_" + GetPCPlayerName(oCaster);
     else
         sMessage = "NPC " + GetName(oCaster) + " (" + H2_TEXT_CORPSE_TOKEN_USED_BY + GetName(oPC) + "_" + GetPCPlayerName(oPC) + ") ";
 
     sMessage + H2_TEXT_RESS_PC_CORPSE_ITEM;
 
-    if (GetIsObjectValid(oPC) && GetIsPC(oPC))
+    if (GetIsObjectValid(oPC) && _GetIsPC(oPC))
     {
         SendMessageToPC(oPC, H2_TEXT_YOU_HAVE_BEEN_RESSURECTED);
-        h2_SetPlayerPersistentInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
+        SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
         AssignCommand(oPC, JumpToLocation(castLoc));
         sMessage += GetName(oPC) + "_" + GetPCPlayerName(oPC);
     }
@@ -236,19 +236,19 @@ void h2_RaiseSpellCastOnCorpseToken(int spellID, object oToken = OBJECT_INVALID)
         SendMessageToPC(oCaster, H2_TEXT_OFFLINE_RESS_CASTER_FEEDBACK);
         SetDatabaseLocation(uniquePCID + H2_RESS_LOCATION, castLoc);
 
-        if (GetIsDM(oCaster))
+        if (_GetIsDM(oCaster))
             SetDatabaseInt(uniquePCID + H2_RESS_BY_DM, TRUE);
         sMessage += H2_TEXT_OFFLINE_PLAYER + " " + GetDatabaseString(uniquePCID);
     }
     SendMessageToAllDMs(sMessage);
-    WriteTimestampedLogEntry(sMessage);
+    Debug(sMessage);
 }
 
 void h2_PerformOffLineRessurectionLogin(object oPC, location ressLoc)
 {
-    string uniquePCID = h2_GetPlayerPersistentString(oPC, H2_UNIQUE_PC_ID);
+    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
     DeleteDatabaseVariable(uniquePCID + H2_RESS_LOCATION);
-    h2_SetPlayerPersistentInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
+    SetPlayerInt(oPC, H2_PLAYER_STATE, H2_PLAYER_STATE_ALIVE);
     SendMessageToPC(oPC, H2_TEXT_YOU_HAVE_BEEN_RESSURECTED);
     DelayCommand(H2_CLIENT_ENTER_JUMP_DELAY, AssignCommand(oPC, JumpToLocation(ressLoc)));
     if (H2_APPLY_XP_LOSS_FOR_RESS && !GetDatabaseInt(uniquePCID + H2_RESS_BY_DM))
@@ -259,5 +259,5 @@ void h2_PerformOffLineRessurectionLogin(object oPC, location ressLoc)
     DeleteDatabaseVariable(uniquePCID + H2_RESS_BY_DM);
     string sMessage = GetName(oPC) + "_" + GetPCPlayerName(oPC) + H2_TEXT_OFFLINE_RESS_LOGIN;
     SendMessageToAllDMs(sMessage);
-    WriteTimestampedLogEntry(sMessage);
+    Debug(sMessage);
 }

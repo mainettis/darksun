@@ -132,7 +132,7 @@ I can't give you a lot of direction here.  If you're adding content via the tool
 
 #### Other Files
 
-If you're simply copying or moving files into your local repository that don't require the use of the toolset, then use your file explorer utility to move those files into the appropirate folder in your repository.
+If you're reading this, then you didn't read my note about not needing to build the module for non-toolset file modifications.  If you're working in any utility except the toolset, just open the files you need directly from the repository and save them to the same place when you're done.
 
 #### Tracking New Files
 
@@ -223,7 +223,9 @@ Well, we're finally here.  All of your hard work has paid off and it's now in yo
 
 ## Request Review of New Content
 
-This is also known as a pull request.  To submit a pull request, go to your forked repository's home page on git hub (`https://github.com/<your-user-name>/darksun`).  Near the top, underneat the summary section that shows all of the commit and branch numbers, but above the files, you should see a couple of buttons that look like this: ![pull request button](https://help.github.com/assets/images/help/pull_requests/pull-request-start-review-button.png)
+This is also known as a pull request.  To submit a pull request, go to your forked repository's home page on git hub (`https://github.com/<your-user-name>/darksun`).  Near the top, underneat the summary section that shows all of the commit and branch numbers, but above the files, you should see a couple of buttons that look like this: 
+
+![pull request button](https://help.github.com/assets/images/help/pull_requests/pull-request-start-review-button.png)
 
 Click on the `New Pull Request` button.  The next screen will show you all of the changes you've made, including file additions.  It will also request you add some text as to why you're requesting this pull to the primary repository.  Add some discussion as to what changes you made, what your intent behavior for the new items is and any other pertinent information necessary to ensure smooth integration into the primary repostitory.  When you're done, click on the big green button and either send the pull request or save it as a draft request for later submission.
 

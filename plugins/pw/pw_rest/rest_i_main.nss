@@ -45,15 +45,15 @@ int h2_RemainingTimeForRecoveryInRest(object oPC);
 void h2_SaveLastRecoveryRestTime(object oPC)
 {
     int restTime = h2_GetSecondsSinceServerStart();
-    string uniquePCID = h2_GetPlayerPersistentString(oPC, H2_UNIQUE_PC_ID);
-    h2_SetModLocalInt(uniquePCID + H2_LAST_PC_REST_TIME, restTime);
+    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
+    SetModuleInt(uniquePCID + H2_LAST_PC_REST_TIME, restTime);
 }
 
 int h2_RemainingTimeForRecoveryInRest(object oPC)
 {
     int currTime = h2_GetSecondsSinceServerStart();
-    string uniquePCID = h2_GetPlayerPersistentString(oPC, H2_UNIQUE_PC_ID);
-    int lastrest = h2_GetModLocalInt(uniquePCID + H2_LAST_PC_REST_TIME);
+    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
+    int lastrest = GetModuleInt(uniquePCID + H2_LAST_PC_REST_TIME);
     int elapsedTime = currTime - lastrest;
     if (lastrest > 0 &&  elapsedTime < H2_MINIMUM_SPELL_RECOVERY_REST_TIME)
         return H2_MINIMUM_SPELL_RECOVERY_REST_TIME - elapsedTime;

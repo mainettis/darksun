@@ -41,8 +41,10 @@ void main()
         {
             // put your code here to process the input line (in sSaid)
 
-            if (GetIsDM(oShouter)) SetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter), 1);
-            if (GetIsDMPossessed(oShouter)) SetLocalObject(GetMaster(oShouter), "dmfi_familiar", oShouter);
+            if (_GetIsDM(oShouter))
+                SetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter), 1);
+            if (GetIsDMPossessed(oShouter)) 
+                SetLocalObject(GetMaster(oShouter), "dmfi_familiar", oShouter);
 
             object oTarget = GetLocalObject(oShouter, "dmfi_VoiceTarget");
             object oMaster = OBJECT_INVALID;
@@ -52,7 +54,7 @@ void main()
 
             object oSummon;
 
-            if (GetIsObjectValid(oShouter) && GetIsDM(oShouter))
+            if (GetIsObjectValid(oShouter) && _GetIsDM(oShouter))
             {
                 if (GetTag(OBJECT_SELF) == "dmfi_setting" && GetLocalString(oShouter, "EffectSetting") != "")
                 {
@@ -65,7 +67,7 @@ void main()
                 }
             }
 
-            if (GetIsObjectValid(oShouter) && GetIsPC(oShouter))
+            if (GetIsObjectValid(oShouter) && _GetIsPC(oShouter))
             {
                 if (sSaid != GetLocalString(GetModule(), "hls_voicebuffer"))
                 {
@@ -76,7 +78,7 @@ void main()
                     // if the phrase begins with .MyName, reparse the string as a voice throw
                     if (GetStringLeft(sSaid, GetStringLength("." + GetName(OBJECT_SELF))) == "." + GetName(OBJECT_SELF) &&
                         (GetLocalInt(GetModule(), "dmfi_Admin" + GetPCPublicCDKey(oShouter)) ||
-                        GetIsDM(oShouter) || GetIsDMPossessed(oShouter)))
+                        _GetIsDM(oShouter)))
                     {
                         oTarget = OBJECT_SELF;
                         sSaid = GetStringRight(sSaid, GetStringLength(sSaid) - GetStringLength("." + GetName(OBJECT_SELF)));

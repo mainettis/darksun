@@ -27,6 +27,20 @@
           "type": "resref",
           "value": "travelarea01"
         }
+      },
+      {
+        "__struct_id": 6,
+        "Area_Name": {
+          "type": "resref",
+          "value": "desert_enc1"
+        }
+      },
+      {
+        "__struct_id": 6,
+        "Area_Name": {
+          "type": "resref",
+          "value": "overlandmap"
+        }
       }
     ]
   },
@@ -95,6 +109,13 @@
   "Mod_HakList": {
     "type": "list",
     "value": [
+      {
+        "__struct_id": 8,
+        "Mod_Hak": {
+          "type": "cexostring",
+          "value": "ds_twm_system"
+        }
+      },
       {
         "__struct_id": 8,
         "Mod_Hak": {

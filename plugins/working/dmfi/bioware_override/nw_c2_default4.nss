@@ -35,7 +35,7 @@ void main()
 
     // 2008.05.25 tsunami282 - removed for NWN 1.69 (no longer needed)
     //DMFI CODE ADDITIONS BEGIN HERE
-    // if (GetIsPC(oShouter) || GetIsDM(oShouter) || GetIsDMPossessed(oShouter))
+    // if (_GetIsPC(oShouter) || GetIsDM(oShouter) || GetIsDMPossessed(oShouter))
     //     {
     //     ExecuteScript("dmfi_voice_exe", OBJECT_SELF);
     //     }
@@ -71,7 +71,7 @@ void main()
     }
     // Respond to shouts from friendly non-PCs only
     else if (GetIsObjectValid(oShouter)
-               && !GetIsPC(oShouter)
+               && !_GetIsPC(oShouter)
                && GetIsFriend(oShouter))
     {
         object oIntruder = OBJECT_INVALID;

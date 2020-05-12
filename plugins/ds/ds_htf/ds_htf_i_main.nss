@@ -121,28 +121,28 @@ float ds_ModifyFatigueDecrementUnit(object oCreature, float fDecrement)
 
 float ds_ModifyThirstDecrementUnit(object oCreature, float fDecrement)
 {
-    if (GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE) {
-        fDecrement = _calculateTravelCostUnit(oCreature);
-        return fDecrement;
-    }
+    if (GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE)
+        return _calculateTravelCostUnit(oCreature);
 
     if ((GetTimeHour() >= DS_HOUR_START_HEAT) &&
         (GetTimeHour() <  DS_HOUR_STOP_HEAT)  &&
-        (GetLocalInt(GetArea(oCreature), DS_HTF_VARIABLE_AREATYPE) > 0)) {
-            fDecrement = fDecrement * DS_THIRST_MULTIPLIER_HEAT;
-    }
+        (GetLocalInt(GetArea(oCreature), DS_HTF_VARIABLE_AREATYPE) > 0))
+            fDecrement *= DS_THIRST_MULTIPLIER_HEAT;
 
-    if (GetRacialType(oCreature) == DS_RACIAL_TYPE_HALFGIANT)  fDecrement = fDecrement * DS_THIRST_MULTIPLIER_HALFGIANT;
+    if (GetRacialType(oCreature) == DS_RACIAL_TYPE_HALFGIANT)
+        fDecrement *= DS_THIRST_MULTIPLIER_HALFGIANT;
+
     return fDecrement;
 }
 
 float ds_ModifyHungerDecrementUnit(object oCreature, float fDecrement)
 {
-    if (GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE) {
-        fDecrement = _calculateTravelCostUnit(oCreature);
-        return fDecrement;
-    }
-    if (GetRacialType(oCreature) == DS_RACIAL_TYPE_HALFGIANT)  fDecrement = fDecrement * DS_HUNGER_MULTIPLIER_HALFGIANT;
+    if (GetLocalInt(oCreature, DS_HTF_VARIABLE_COSTTRIGGER) == TRUE)
+        return _calculateTravelCostUnit(oCreature);
+
+    if (GetRacialType(oCreature) == DS_RACIAL_TYPE_HALFGIANT) 
+        fDecrement *= DS_HUNGER_MULTIPLIER_HALFGIANT;
+
     return fDecrement;
 }
 
@@ -161,13 +161,17 @@ string _createAssociateHTFBar(int nValue)
 
 void ds_DisplayAssociateHTFValues(object oCreature, float fThirst, float fHunger, float fFatigue)
 {
-    if (GetIsPC(oCreature) || GetIsDM(oCreature) || GetAssociateType(oCreature) == ASSOCIATE_TYPE_NONE) return;
-    if (!H2_USE_HUNGERTHIRST_SYSTEM && !H2_USE_FATIGUE_SYSTEM) return;
+    if (_GetIsPC(oCreature) || _GetIsDM(oCreature) || GetAssociateType(oCreature) == ASSOCIATE_TYPE_NONE) 
+        return;
+
+    if (!H2_USE_HUNGERTHIRST_SYSTEM && !H2_USE_FATIGUE_SYSTEM) 
+        return;
      
     int currThirst = FloatToInt(fThirst);
     int currHunger = FloatToInt(fHunger);
     int currFatigue = FloatToInt(fFatigue);
 
+    //TODO color text -> framework color
     string sOpen = h2_ColorText(DS_TEXT_BRACKET_L, H2_COLOR_WHITE);
     string sClose = h2_ColorText(DS_TEXT_BRACKET_R, H2_COLOR_WHITE);
     string sDelimiter = h2_ColorText(DS_TEXT_DELIMITER, H2_COLOR_WHITE);
@@ -239,7 +243,8 @@ void ds_DisplayAssociateHTFValues(object oCreature, float fThirst, float fHunger
         SetName(oCreature, "");
         sName = GetName(oCreature) + "\n" + sHTFBar;
         SetName(oCreature, sName);
-    } else
+    } 
+    else
         SetName(oCreature, "");
 }
 
@@ -282,6 +287,7 @@ int ds_GetAreaTravelCost(int iAreaType)
         default:
             iTravelCost = DS_AREATRAVELCOST_DEFAULT;
     }
+
     return iTravelCost;
 }
 
@@ -324,14 +330,15 @@ string ds_GetAreaTravelMessage(int iAreaType)
         default:
             sMessage = DS_AREATRAVELMESSAGE_DEFAULT;
     }
+
     return sMessage;
 }
 
 void ds_SaveLastFindWaterTime(object oPC)
 {
     int findWaterTime = h2_GetSecondsSinceServerStart();
-    string uniquePCID = h2_GetPlayerPersistentString(oPC, H2_UNIQUE_PC_ID);
-    h2_SetModLocalInt(uniquePCID + DS_HTF_VARIABLE_LAST_PC_FINDWATER_TIME, findWaterTime);
+    string uniquePCID = GetPlayerString(oPC, H2_UNIQUE_PC_ID);
+    SetModuleInt(uniquePCID + DS_HTF_VARIABLE_LAST_PC_FINDWATER_TIME, findWaterTime);
 }
 
 void ds_SearchForWater(object oPC, int iAreaType)
@@ -417,7 +424,7 @@ void ds_SearchForWater(object oPC, int iAreaType)
 
 void _initAssociate(object oAssociate)
 {
-    if(!GetIsPC(oAssociate) && GetIsPC(GetMaster(oAssociate)))
+    if(!_GetIsPC(oAssociate) && _GetIsPC(GetMaster(oAssociate)))
     {    
         h2_InitFatigueCheck(oAssociate);
         h2_InitHungerThirstCheck(oAssociate);
@@ -434,6 +441,6 @@ void ds_htf_AddAssociate()
 {
     object oAssociate = OBJECT_SELF;
     
-    if(GetIsPC(GetMaster(oAssociate)))
+    if(_GetIsPC(GetMaster(oAssociate)))
         DelayCommand(0.2, _initAssociate(oAssociate));
 }

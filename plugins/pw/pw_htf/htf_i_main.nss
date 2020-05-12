@@ -45,7 +45,7 @@ float h2_GetThirstDecrement(object oPC)
 
 void h2_DisplayHTInfoBars(object oPC)
 {
-    if (!GetIsPC(oPC) || GetIsDM(oPC)) return;
+    if (!_GetIsPC(oPC) || _GetIsDM(oPC)) return;
 
     int thirstCount = FloatToInt(GetLocalFloat(oPC, H2_HT_CURR_THIRST) * 100.0);
     int hungerCount = FloatToInt(GetLocalFloat(oPC, H2_HT_CURR_HUNGER) * 100.0);
@@ -72,7 +72,7 @@ void h2_InitHungerThirstCheck(object oPC)
     StartTimer(timerID, FALSE);
     //h2_StartTimer(timerID);
 
-    if (GetIsPC(oPC) && H2_HT_DISPLAY_INFO_BARS)
+    if (_GetIsPC(oPC) && H2_HT_DISPLAY_INFO_BARS)
         h2_DisplayHTInfoBars(oPC);
 }
 
@@ -145,7 +145,7 @@ void h2_DoHungerFortitudeCheck(object oPC)
 
 void h2_PerformHungerThirstCheck(object oPC, float fCustomThirstDecrement = -1.0, float fCustomHungerDecrement = -1.0)
 {
-    if (h2_GetPlayerPersistentInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DEAD)
+    if (GetPlayerInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DEAD)
     {
         DeleteLocalFloat(oPC, H2_HT_CURR_ALCOHOL);
         int timerID = GetLocalInt(oPC, H2_HT_DRUNK_TIMERID);
@@ -459,7 +459,7 @@ float h2_GetFatigueDecrement()
 
 void h2_DisplayFatigueInfoBar(object oPC)
 {
-    if(GetIsDM(oPC)) return;
+    if(_GetIsDM(oPC)) return;
 
     int fatigueCount = FloatToInt(GetLocalFloat(oPC, H2_CURR_FATIGUE) * 100.0);
     string greenBar = h2_ColorText(GetSubString(H2_FATIGUE_INFO_BAR, 0, fatigueCount), H2_COLOR_GREEN);
@@ -478,7 +478,7 @@ void h2_InitFatigueCheck(object oPC)
     StartTimer(timerID, FALSE);
     //h2_StartTimer(timerID);
 
-    if (GetIsPC(oPC) && H2_FATIGUE_DISPLAY_INFO_BAR)
+    if (_GetIsPC(oPC) && H2_FATIGUE_DISPLAY_INFO_BAR)
         h2_DisplayFatigueInfoBar(oPC);
 }
 
@@ -486,7 +486,7 @@ void h2_DoFatigueFortitudeCheck(object oPC)
 {
     SetLocalInt(oPC, H2_IS_FATIGUED, TRUE);
     int saveCount = GetLocalInt(oPC, H2_FATIGUE_SAVE_COUNT);
-    if(GetIsPC(oPC)) 
+    if(_GetIsPC(oPC)) 
     {
         SendMessageToPC(oPC, H2_TEXT_NEAR_COLLAPSE);
         AssignCommand(oPC, ActionPlayAnimation(ANIMATION_LOOPING_PAUSE_TIRED, 1.0, 2.0));
@@ -511,7 +511,7 @@ void h2_DoFatigueFortitudeCheck(object oPC)
                 ApplyEffectToObject(DURATION_TYPE_TEMPORARY, ExtraordinaryEffect(EffectSleep()), oPC, 180.0);
                 ApplyEffectToObject(DURATION_TYPE_TEMPORARY, ExtraordinaryEffect(EffectVisualEffect(VFX_IMP_SLEEP)), oPC, 180.0);
             }
-            if(GetIsPC(oPC)) AssignCommand(oPC, SpeakString(H2_TEXT_COLLAPSE));
+            if(_GetIsPC(oPC)) AssignCommand(oPC, SpeakString(H2_TEXT_COLLAPSE));
             ApplyEffectToObject(DURATION_TYPE_TEMPORARY, ExtraordinaryEffect(EffectBlindness()), oPC, 180.0);
             SetLocalFloat(oPC, H2_CURR_FATIGUE, 0.33);
         }
@@ -521,10 +521,11 @@ void h2_DoFatigueFortitudeCheck(object oPC)
 
 void h2_PerformFatigueCheck(object oPC, float fCustomFatigueDecrement = -1.0)
 {
-    if(GetIsDM(oPC)) return;
+    if(_GetIsDM(oPC))
+        return;
 
-    if(GetIsPC(oPC))
-        if (h2_GetPlayerPersistentInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DEAD)
+    if(_GetIsPC(oPC))
+        if (GetPlayerInt(oPC, H2_PLAYER_STATE) == H2_PLAYER_STATE_DEAD)
             return;
 
     float fatigueDrop = (fCustomFatigueDecrement >= 0.0) ? fCustomFatigueDecrement : h2_GetFatigueDecrement();
@@ -536,7 +537,7 @@ void h2_PerformFatigueCheck(object oPC, float fCustomFatigueDecrement = -1.0)
         currFatigue = 0.0;
     SetLocalFloat(oPC, H2_CURR_FATIGUE, currFatigue);
     
-    if(GetIsPC(oPC))
+    if(_GetIsPC(oPC))
     {
         if (H2_FATIGUE_DISPLAY_INFO_BAR)
             h2_DisplayFatigueInfoBar(oPC);

@@ -26,6 +26,7 @@
 
 #include "x3_inc_string"
 #include "dmfi_i_util"
+#include "dsutil_i_data"
 
 const int DMFI_LOG_CONVERSATION = TRUE; // turn on or off logging of conversation text
 
@@ -563,7 +564,7 @@ string dmfi_TranslatePhrase(string sLanguage, string sPhrase))
 
             return sTranslation;
         case DMFI_LANGUAGE_MODE_WORD:
-            if (GetStringLength(sPhrase) && (nCount = dmfi_CountWords(sPhrase)))
+            if (GetStringLength(sPhrase) && (nCount = dmfi_GetWordCount(sPhrase)))
             {
                 //TODO add util_i_math include
                 nCount = min(nCount, CountList(liTranslateTo.sAlphabet));
@@ -1430,8 +1431,7 @@ void subTranslateToLanguage(string sSaid, object oShouter, int nVolume,
         GetIsObjectValid(GetItemPossessedBy(oEavesdrop, "babelfish")) ||
         iTranslate == GetDefaultRacialLanguage(oEavesdrop, 0) ||
         iTranslate == GetDefaultClassLanguage(oEavesdrop) ||
-        GetIsDM(oEavesdrop) ||
-        GetIsDMPossessed(oEavesdrop))
+        _GetIsDM(oEavesdrop))
     {
         DelayCommand(0.1, DMFISendMessageToPC(oEavesdrop, GetName(oShouter) + " " + sVolume + " in " + sLanguageName + ": " + sSaid, FALSE, DMFI_MESSAGE_COLOR_TRANSLATION));
     }
@@ -1493,7 +1493,7 @@ string TranslateToLanguage(string sSaid, object oShouter, int nVolume, object oM
     object oEavesdrop = GetFirstObjectInShape(SHAPE_SPHERE, fDistance, GetLocation(oShouter), FALSE, OBJECT_TYPE_CREATURE);
     while (GetIsObjectValid(oEavesdrop))
     {
-        if (GetIsPC(oEavesdrop) || GetIsDM(oEavesdrop) || GetIsDMPossessed(oEavesdrop) || GetIsPossessedFamiliar(oEavesdrop))
+        if (_GetIsPC(oEavesdrop) || _GetIsDM(oEavesdrop) || GetIsPossessedFamiliar(oEavesdrop))
         {
             subTranslateToLanguage(sSaid, oShouter, nVolume, oMaster, iTranslate, sLanguageName, oEavesdrop);
         }
@@ -1504,7 +1504,7 @@ string TranslateToLanguage(string sSaid, object oShouter, int nVolume, object oM
     oEavesdrop = GetFirstPC();
     while (GetIsObjectValid(oEavesdrop))
     {
-        if (GetIsDM(oEavesdrop))
+        if (_GetIsDM(oEavesdrop))
         {
             if (GetArea(oShouter) == GetArea(oEavesdrop) &&
                 GetDistanceBetweenLocations(GetLocation(oShouter), GetLocation(oEavesdrop)) <= fDistance)
@@ -1655,7 +1655,7 @@ int RelayTextToEavesdropper(object oShouter, int nVolume, string sSaid)
                     }
                     else
                     {
-                        WriteTimestampedLogEntry("ERROR: DMFI OnPlayerChat handler: invalid iHookType; removing hook.");
+                        Debug("ERROR: DMFI OnPlayerChat handler: invalid iHookType; removing hook.");
                         iHookToDelete = iHook;
                     }
                 }

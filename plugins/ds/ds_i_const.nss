@@ -7,6 +7,25 @@
 * Created On:   2019-04-13
 *******************************************************************************/
 
+#include "util_i_datapoint"
+
+const string MODULE_DATAPOINT = "MODULE_DATAPOINT";
+const string PLAYER_DATAPOINT = "h2_playerdata";
+const string ENCOUNTER_DATAPOINT = "ENCOUNTER_DATAPOINT";
+const string ENCOUNTER_NEXT_ID = "ENCOUNTER_NEXT_ID";
+const string ENCOUNTER_AREA_TAG = "ENCOUNTER_AREA_TAG";
+const int ENCOUNTER_WAYPOINT_PRIMARY = 1;
+const int ENCOUNTER_WAYPOINT_SECONDARY = 0;
+const string ENCOUNTER_WAYPOINT_TAG = "ENCOUNTER_WAYPOINT_TAG";
+const string ENCOUNTER_TRIGGERED_BY = "ENCOUNTER_TRIGGERED_BY";
+const string ENCOUNTER_PRIMARY_WAYPOINT = "ENCOUNTER_PRIMARY_WAYPOINT";
+const string ENCOUNTER_SECONDARY_WAYPOINTS = "ENCOUNTER_SECONDARY_WAYPOINTS";
+const string ENCOUNTER_AREA = "ENCOUNTER_AREA";
+
+object       MODULE           = GetDatapoint(MODULE_DATAPOINT);
+object       ENCOUNTERS       = GetDatapoint(ENCOUNTER_DATAPOINT);
+
+
 // Race Constants
 const int DS_RACIAL_TYPE_DWARF =      0;
 const int DS_RACIAL_TYPE_ELF =        1;

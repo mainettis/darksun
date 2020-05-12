@@ -25,7 +25,7 @@ void SetRestTokens(object oPC)
     SetCustomToken(20797, IntToString(iMinutesPerHour * 12));
     SetCustomToken(20798, IntToString(iMinutesPerHour * 24));
 
-    if (GetIsDM(oPC))
+    if (_GetIsDM(oPC))
     {
         string sRest = "";
         if (iSettings & 0x00000080)
@@ -338,17 +338,17 @@ int StartingConditional()
         SetCustomToken(20782, GetLocalString(oPC, "dmfi_buff_level"));
         return TRUE;
     }
-    else if (sOffset == "rest" && iOffset == 17 && !GetIsDM(oPC) && GetLocalInt(oPC, "dmfi_norest")) //This is the case of a No-Rest situation
+    else if (sOffset == "rest" && iOffset == 17 && !_GetIsDM(oPC) && GetLocalInt(oPC, "dmfi_norest")) //This is the case of a No-Rest situation
     {
         SetRestTokens(oPC);
         return TRUE;
     }
-    else if (sOffset == "rest" && iOffset == 18 && !GetIsDM(oPC) && !GetLocalInt(oPC, "dmfi_norest")) //This is the case of a Rest situation
+    else if (sOffset == "rest" && iOffset == 18 && !_GetIsDM(oPC) && !GetLocalInt(oPC, "dmfi_norest")) //This is the case of a Rest situation
     {
         SetRestTokens(oPC);
         return TRUE;
     }
-    else if (sOffset == "rest" && iOffset == 19 && GetIsDM(oPC)) //This is the case of a DM activating the rest menu
+    else if (sOffset == "rest" && iOffset == 19 && _GetIsDM(oPC)) //This is the case of a DM activating the rest menu
     {
         SetRestTokens(oPC);
         return TRUE;

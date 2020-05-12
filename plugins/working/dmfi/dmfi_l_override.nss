@@ -66,12 +66,12 @@ void NPC_OnConversation()
 
     // 2008.05.25 tsunami282 - removed for NWN 1.69 (no longer needed)
     //DMFI CODE ADDITIONS BEGIN HERE
-    // if (GetIsPC(oShouter) || GetIsDM(oShouter) || GetIsDMPossessed(oShouter))
+    // if (_GetIsPC(oShouter) || _GetIsDM(oShouter))
     //     {
     //     ExecuteScript("dmfi_voice_exe", OBJECT_SELF);
     //     }
 
-    if (nMatch == -1 && GetIsPC(oShouter) &&(GetLocalInt(GetModule(), "dmfi_AllMute") || GetLocalInt(OBJECT_SELF, "dmfi_Mute")))
+    if (nMatch == -1 && _GetIsPC(oShouter) &&(GetLocalInt(GetModule(), "dmfi_AllMute") || GetLocalInt(OBJECT_SELF, "dmfi_Mute")))
     {
         SendMessageToAllDMs(GetName(oShouter) + " is trying to speak to a muted NPC, " + GetName(OBJECT_SELF) + ", in area " + GetName(GetArea(OBJECT_SELF)));
         SendMessageToPC(oShouter, "This NPC is muted. A DM will be here shortly.");
@@ -102,7 +102,7 @@ void NPC_OnConversation()
     }
     // Respond to shouts from friendly non-PCs only
     else if (GetIsObjectValid(oShouter)
-               && !GetIsPC(oShouter)
+               && !_GetIsPC(oShouter)
                && GetIsFriend(oShouter))
     {
         object oIntruder = OBJECT_INVALID;
@@ -186,7 +186,7 @@ void SafeFaction(object oCurrent, object oAttacker)
 void NPC_OnAttacked()
 {
 //DMFI CODE ADDITIONS*****************************
-    if ((GetIsPC(GetLastAttacker()) && (GetLocalInt(GetModule(), "dmfi_safe_factions")==1)))
+    if ((_GetIsPC(GetLastAttacker()) && (GetLocalInt(GetModule(), "dmfi_safe_factions")==1)))
         {
         SafeFaction(OBJECT_SELF, GetLastAttacker());
         SpeakString("DM ALERT:  Default non-hostile faction member attacked.  Player: "+GetName(GetLastAttacker()), TALKVOLUME_SILENT_SHOUT);

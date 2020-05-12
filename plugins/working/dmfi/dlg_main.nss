@@ -84,7 +84,7 @@ int dmwand_isnearbydestroyable()
 {
     object oMyTest = GetFirstObjectInShape(SHAPE_CUBE, 0.6, lMyLoc, FALSE, OBJECT_TYPE_ALL);
     int nTargetType = GetObjectType(oMyTest);
-    return (GetIsObjectValid(oMyTest) && (! GetIsPC(oMyTest)) && ((nTargetType == OBJECT_TYPE_ITEM) || (nTargetType == OBJECT_TYPE_PLACEABLE) || (nTargetType == OBJECT_TYPE_CREATURE)));
+    return (GetIsObjectValid(oMyTest) && (!_GetIsPC(oMyTest)) && ((nTargetType == OBJECT_TYPE_ITEM) || (nTargetType == OBJECT_TYPE_PLACEABLE) || (nTargetType == OBJECT_TYPE_CREATURE)));
 }
 
 int dmwand_istargetcreateable()
@@ -101,7 +101,7 @@ int dmwand_istargetdestroyable()
     if(! GetIsObjectValid(oMyTarget)) { return FALSE; }
 
     int nTargetType = GetObjectType(oMyTarget);
-    if(! GetIsPC(oMyTarget))
+    if(!_GetIsPC(oMyTarget))
     {
         return ((nTargetType == OBJECT_TYPE_ITEM) || (nTargetType == OBJECT_TYPE_PLACEABLE) || (nTargetType == OBJECT_TYPE_CREATURE));
     }
@@ -125,12 +125,12 @@ int dmwand_istargetnotme()
 
 int dmwand_istargetpc()
 {
-    return (GetIsObjectValid(oMyTarget) && GetIsPC(oMyTarget));
+    return (GetIsObjectValid(oMyTarget) && _GetIsPC(oMyTarget));
 }
 
 int dmwand_istargetpcnme()
 {
-    return (GetIsObjectValid(oMyTarget) && GetIsPC(oMyTarget) && (oMySpeaker != oMyTarget));
+    return (GetIsObjectValid(oMyTarget) && _GetIsPC(oMyTarget) && (oMySpeaker != oMyTarget));
 }
 
 int dmwand_istargetpcornpc()
@@ -140,7 +140,7 @@ int dmwand_istargetpcornpc()
 
 int dmwand_istargetnpc()
 {
-    return (dmwand_istargetpcornpc() && (!GetIsPC(oMyTarget)));
+    return (dmwand_istargetpcornpc() && (!_GetIsPC(oMyTarget)));
 }
 
 int dmwand_istargetpcornpcnme()
@@ -298,7 +298,7 @@ void DMFI_toad(object oTarget, object oUser)
 
 void DMFI_jail(object oOther, object oUser)
 {
-    if (GetIsObjectValid(oOther) && !GetIsDM(oOther) && oOther != oUser)
+    if (GetIsObjectValid(oOther) && !_GetIsDM(oOther) && oOther != oUser)
     {
         object oJail = GetObjectByTag("dmfi_jail");
         if (!GetIsObjectValid(oJail))

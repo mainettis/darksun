@@ -21,6 +21,7 @@
 #include "x3_inc_string"
 #include "dmfi_i_const"
 #include "util_i_debug"
+#include "dsutil_i_data"
 
 // ---< dmfi_GetDefaultSetting >---
 // Returns the default setting for the passed sSetting given the object oUser.
@@ -32,7 +33,7 @@ string dmfi_GetDefaultSetting(object oUser, string sSetting)
     Debug("DMFI :: Setting Default " + sSetting + " value for " + GetName(oUser);
     
     string sRet, sDefaults = DMFI_DEFAULT_PC_SETTINGS;
-    if(GetIsDM(oUser) || GetIsDMPossessed(oUser))
+    if(_GetIsDM(oUser))
         sDefaults = DMFI_DEFAULT_DM_SETTINGS;
 
     return csv_GetKeyValueString(sDefaults, sSetting);
@@ -246,7 +247,7 @@ void dmfi_SetDefaultSettings(object oUser, int bForce = FALSE);
     Debug("DMFI:  Initializing default settings for " /*+player*/);
     
     string sSettings = DMFI_DEFAULT_PC_SETTINGS;
-    if(GetIsDM(oUser) || GetIsDMPossessed(oUser))
+    if(_GetIsDM(oUser))
         sSettings = DMFI_DEFAULT_DM_SETTINGS;
     else
         sSettings = DMFI_DEFAULT_PC_SETTINGS;
@@ -296,16 +297,6 @@ struct DMFI_LISTENER_HOOK dmfi_GetListenerHook(int nHandle)
     }
 
     return lh;
-}
-
-int _GetIsDM(object oPC)
-{
-    return (GetIsDM(oPC) || GetIsDMPossessed(oPC));
-}
-
-int _GetIsPC(object oPC)
-{
-    return (GetIsPC(oPC) && !GetIsDM(oPC) && !GetIsDMPossessed(oPC));
 }
 
 int dmfi_IsVoiceCommand(string sCommand)

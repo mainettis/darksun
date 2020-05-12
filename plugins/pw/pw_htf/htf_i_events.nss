@@ -34,14 +34,14 @@
 void hungerthirst_OnClientEnter()
 {
     object oPC = GetEnteringObject();
-    if (!GetIsDM(oPC))
+    if (!_GetIsDM(oPC))
         h2_InitHungerThirstCheck(oPC);
 }
 
 void fatigue_OnClientEnter()
 {
     object oPC = GetEnteringObject();
-    if (!GetIsDM(oPC))
+    if (!_GetIsDM(oPC))
         h2_InitFatigueCheck(oPC);
 }
 

@@ -114,7 +114,11 @@ Since we already have the nimble programming language installed via choosenim, i
     nasher config --nssFlags "-n C:/<path>/<to>/<NWNEE> -owkey"
     ```
 
-    *Note:  A common error is to have a trailing '/' after the path in the command above.  There should be no trailing '/'.*
+    *Note:  A common error is to have a trailing '/' after the path in the command above.  There should be no trailing '/'.  Additionally, the slants need to be forward, not back, and any folder names that have spaces must be in double quotes with the quotes escaped.  For example,*
+
+    ```
+    nasher config --nssFlags "-n C:/<path>/<to>/\"Neverwinter Nights\" -owkey"
+    ```
 
 ## Questions
 

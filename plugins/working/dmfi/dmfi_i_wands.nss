@@ -47,7 +47,7 @@ object DMFI_NextTarget(object oTarget, object oUser)
 {
     object oNew;
 
-    if (GetIsPC(oTarget))
+    if (_GetIsPC(oTarget))
     {
         if (GetIsObjectValid(GetNextFactionMember(oTarget)))
             oNew = GetNextFactionMember(oTarget);
@@ -140,7 +140,7 @@ void RollDemBones(object oUser, int iBroadcast, int iMod = 0, string sAbility = 
     case 3: break;                             //dm only
     case 1: AssignCommand(oUser, SpeakString(sString , TALKVOLUME_SHOUT)); break;
     case 2: AssignCommand(oUser, SpeakString(sString)); break;
-    default: if (GetIsPC(oUser)) SendMessageToPC(oUser, sString);break;
+    default: if (_GetIsPC(oUser)) SendMessageToPC(oUser, sString);break;    //TODO
     }
     //--------------------------------------------------------
     AssignCommand(oUser, SpeakString( sString, TALKVOLUME_SILENT_SHOUT));
@@ -357,28 +357,28 @@ void DoControlFunction(int iFaction, object oUser)
     case 15: oChange = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oChange))
         {
-            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !GetIsPC(oChange))
+            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !_GetIsPC(oChange))
                 ChangeToStandardFaction(oChange, STANDARD_FACTION_HOSTILE);
             oChange = GetNextObjectInArea(oArea);
         }break;
     case 16: oChange = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oChange))
         {
-            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !GetIsPC(oChange))
+            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !_GetIsPC(oChange))
                 ChangeToStandardFaction(oChange, STANDARD_FACTION_COMMONER);
             oChange = GetNextObjectInArea(oArea);
         }break;
     case 17: oChange = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oChange))
         {
-            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !GetIsPC(oChange))
+            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !_GetIsPC(oChange))
                 ChangeToStandardFaction(oChange, STANDARD_FACTION_DEFENDER);
             oChange = GetNextObjectInArea(oArea);
         }break;
     case 18: oChange = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oChange))
         {
-            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !GetIsPC(oChange))
+            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !_GetIsPC(oChange))
                 ChangeToStandardFaction(oChange, STANDARD_FACTION_MERCHANT);
             oChange = GetNextObjectInArea(oArea);
         }break;
@@ -472,7 +472,7 @@ void DoControlFunction(int iFaction, object oUser)
     case 65: oChange = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oChange))
         {
-            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !GetIsPC(oChange))
+            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !_GetIsPC(oChange))
             {
                 AssignCommand(oChange, ClearAllActions()); AssignCommand(oChange, ActionMoveAwayFromObject(oUser, TRUE));
             }
@@ -481,7 +481,7 @@ void DoControlFunction(int iFaction, object oUser)
     case 66: oChange = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oChange))
         {
-            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !GetIsPC(oChange))
+            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !_GetIsPC(oChange))
             {
                 AssignCommand(oChange, ClearAllActions()); AssignCommand(oChange, ActionForceMoveToObject(oUser, TRUE, 2.0f, 30.0f));
             }
@@ -490,7 +490,7 @@ void DoControlFunction(int iFaction, object oUser)
     case 67: oChange = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oChange))
         {
-            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !GetIsPC(oChange))
+            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !_GetIsPC(oChange))
             {
                 AssignCommand(oChange, ClearAllActions()); AssignCommand(oChange, ActionRandomWalk());
             }
@@ -499,7 +499,7 @@ void DoControlFunction(int iFaction, object oUser)
     case 68: oChange = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oChange))
         {
-            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !GetIsPC(oChange))
+            if (GetObjectType(oChange) == OBJECT_TYPE_CREATURE && !_GetIsPC(oChange))
             {
                 AssignCommand(oChange, ClearAllActions()); AssignCommand(oChange, ActionRest());
             }
@@ -1122,7 +1122,7 @@ void DoDMDiceBagFunction(int iDice, object oUser)
         oRoll = GetFirstObjectInArea(oArea);
         while (GetIsObjectValid(oRoll))
         {
-            if ((GetIsPC(oTarget) && GetIsPC(oRoll)) || (!GetIsPC(oTarget) && !GetIsPC(oRoll) && GetObjectType(oRoll) == OBJECT_TYPE_CREATURE))
+            if ((_GetIsPC(oTarget) && _GetIsPC(oRoll)) || (!_GetIsPC(oTarget) && !_GetIsPC(oRoll) && GetObjectType(oRoll) == OBJECT_TYPE_CREATURE))
                 DoDiceBagFunction(iDice+10, oRoll, iOverride);
             oRoll = GetNextObjectInArea(oArea);
         }
@@ -1510,7 +1510,7 @@ void DoVoiceFunction(int iSay, object oUser)
         case 9:
             // XXXXX Set a Single NPC to listen and make it your target - VOICE WIDGET FUNCTION
             // SetLocalObject(oUser, "dmfi_VoiceTarget", oTarget);
-            // if (!GetIsPC(oTarget))
+            // if (!_GetIsPC(oTarget))
             // {
             //     FloatingTextStringOnCreature(GetName(oTarget) + " is listening", oUser, FALSE);
             //     SetListenPattern(oTarget, "**", LISTEN_PATTERN); //listen to all text
@@ -1548,7 +1548,7 @@ void DoVoiceFunction(int iSay, object oUser)
                 if (hooknum != 0)
                 {
                     SetLocalObject(oUser, "dmfi_VoiceTarget", oTarget);
-                    if (GetIsPC(oTarget))
+                    if (_GetIsPC(oTarget))
                     {
                         // targetted PC -
                         // delete any valid following voices to stop duplicates
@@ -1692,8 +1692,7 @@ void DoAfflictFunction(int iAfflict, object oUser)
 
     nSaveAmount = FloatToInt(fSaveAmount);
 
-    if (!(GetObjectType(oTarget) == OBJECT_TYPE_CREATURE) ||
-        GetIsDM(oTarget))
+    if (!(GetObjectType(oTarget) == OBJECT_TYPE_CREATURE) || _GetIsDM(oTarget))
     {
         FloatingTextStringOnCreature("You must target a valid creature!", oUser, FALSE);
         return;
@@ -1906,7 +1905,7 @@ void DoAfflictFunction(int iAfflict, object oUser)
         if (!GetIsObjectValid(oFollowMe))
             oFollowMe = GetNearestCreature(CREATURE_TYPE_PLAYER_CHAR, PLAYER_CHAR_IS_PC, oTarget, 1,CREATURE_TYPE_IS_ALIVE, TRUE);
 
-        if (GetIsDM(oFollowMe) || GetIsDMPossessed(oFollowMe))
+        if (_GetIsDM(oFollowMe))
             oFollowMe = GetNearestCreature(CREATURE_TYPE_PLAYER_CHAR, PLAYER_CHAR_IS_PC, oTarget, 2,CREATURE_TYPE_IS_ALIVE, TRUE);
 
         if (!GetIsObjectValid(oFollowMe))
@@ -3689,7 +3688,7 @@ void DoRestFunction(int iRest, object oUser)
     {
     //Rest All PCs in the area for DMs, Rest for PCs
     case 7:
-        if (GetIsDM(oUser))
+        if (_GetIsDM(oUser))
         {
             oLoop = GetFirstPC();
             while (GetIsObjectValid(oLoop))
@@ -4103,28 +4102,28 @@ void DoRestFunction(int iRest, object oUser)
             SetDMFIPersistentInt("dmfi", "dmfi_r_", iCurrentMod);
         } break;
     case 101: //Use Rest Conversation Toggle
-        if (GetIsDM(oUser))
+        if (_GetIsDM(oUser))
             ToggleRestVariable(iCurrentMod, 0x10000000, TRUE, "GLOBAL: Rest Conversation is ", oUser);
         else
         {
             SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_MEDITATE); SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
         } break;
     case 102: //Use Rest VFX
-        if (GetIsDM(oUser))
+        if (_GetIsDM(oUser))
             ToggleRestVariable(iCurrentMod, 0x20000000, TRUE, "GLOBAL: Rest VFX are ", oUser);
         else
         {
             SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_DEAD_FRONT); SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
         } break;
     case 103: //Floating Text Feedback
-        if (GetIsDM(oUser))
+        if (_GetIsDM(oUser))
             ToggleRestVariable(iCurrentMod, 0x40000000, TRUE, "GLOBAL: Floating Text Feedback is ", oUser);
         else
         {
             SetLocalInt(oUser, "dmfi_r_alternate", ANIMATION_LOOPING_DEAD_BACK); SetLocalInt(oUser, "dmfi_r_bypass", TRUE); AssignCommand(oUser, ActionRest());
         } break;
     case 104: //Immobilized Resting
-        if (GetIsDM(oUser))
+        if (_GetIsDM(oUser))
             ToggleRestVariable(iCurrentMod, 0x80000000, TRUE, "GLOBAL: Immobile resting is ", oUser);
         else
         {
