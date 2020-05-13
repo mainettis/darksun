@@ -21,6 +21,7 @@
 
 #include "x3_inc_horse"
 #include "ds_htf_i_config"
+#include "dsutil_i_data"
 
 void _hookAssociate(object oPaladinMount)
 {

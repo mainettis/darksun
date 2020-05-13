@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
 //    File: dsutil_i_data.nss
-//  System: PW Administration (identity and data)
+//  System: PW Administration (identity and data management)
 //     URL: 
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------
@@ -20,12 +20,11 @@
 
 // These functions are meant to be included in just about every script in the
 //  module.  They reference basic identities, module and player data.  It
-//  also includes debugging and communcations, so including this script will
-//  give every script just about all the connectivity they need.
+//  also includes debugging and communications, so including this script will
+//  give every script just about all the administrative connectivity they need.
 
 #include "ds_i_const"
-#include "util_i_debug"
-//#include "dsutil_i_comms"
+#include "util_i_debug"     //also give util_i_color
 
 // -----------------------------------------------------------------------------
 //                              Function Prototypes
@@ -34,45 +33,46 @@
 // ---< Identity >---
 
 // ---< _GetIsDM >---
-// A module-private function intended to replace the game's GetIsDM() function.
+// A module-level function intended to replace the game's GetIsDM() function.
 //  Checks for GetIsDM and GetIsDMPossessed.
 int _GetIsDM(object oPC);
 
 // ---< _GetIsPC >---
-// A module-private function intended to repalce the game's IsPC() function.
+// A module-level function intended to repalce the game's IsPC() function.
 //  Checks to see if oPC is a player character that is not DM-controlled.
 int _GetIsPC(object oPC);
 
 // ---< _GetIsPartyMember >---
-// A module-private function intended to determine if oPC is a member of
+// A module-level function intended to determine if oPC is a member of
 //  oKnownPartyMember's party/faction.
 int _GetIsPartyMember(object oPC, object oKnownPartyMember);
 
 // ---< [_Get/_Set/_Delete]Local[Int/Float/String/Object/Location] >---
-// Custom module functions intended to replace Bioware's variable handling
-//  functions.  Currently, just a wrapper and perform the same functions, save
-//  for PC variable-setting via HCR2, having these functions in place will allow
-//  future modification for planned variable inheritance in NPC classes.
-// _SetLocal* have return functions (TRUE/FALSE) to allow error-checking for future
-//  expansion.  For now, the return value has no use, but future development
-//  will use this value to pass an error condition.
-int      _GetLocalInt     (object oObject, string sVarName);
-float    _GetLocalFloat   (object oObject, string sVarName);
-string   _GetLocalString  (object oObject, string sVarName);
-object   _GetLocalObject  (object oObject, string sVarName);
-location _GetLocalLocation(object oObject, string sVarName);
+// Custom module-level functions intended to replace Bioware's variable handling
+//  functions.  oObject will be checked for specific conditions, such as
+//  == GetModule() or GetIsPC() to route the variable to the correct location.
+// nFlag will modify the routing.  
+// sData is not currently planned for use but is in place for future expansion.
+// _SetLocal* will return TRUE/FALSE based on whether the operation was completed.
+//  This is in place solely for future expansion to denote an error condition.
+//  Although a value is currently returned, it has no meaning WRT an error condition.
+int      _GetLocalInt        (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+float    _GetLocalFloat      (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+string   _GetLocalString     (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+object   _GetLocalObject     (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+location _GetLocalLocation   (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
 
-int      _SetLocalInt     (object oObject, string sVarName, int      nValue, int nDeclare = FALSE);
-int      _SetLocalFloat   (object oObject, string sVarName, float    fValue, int nDeclare = FALSE);
-int      _SetLocalString  (object oObject, string sVarName, string   sValue, int nDeclare = FALSE);
-int      _SetLocalObject  (object oObject, string sVarName, object   oValue, int nDeclare = FALSE);
-int      _SetLocalLocation(object oObject, string sVarName, location lValue, int nDeclare = FALSE);
+int      _SetLocalInt        (object oObject, string sVarName, int      nValue, int nFlag = 0x00, string sData = "");
+int      _SetLocalFloat      (object oObject, string sVarName, float    fValue, int nFlag = 0x00, string sData = "");
+int      _SetLocalString     (object oObject, string sVarName, string   sValue, int nFlag = 0x00, string sData = "");
+int      _SetLocalObject     (object oObject, string sVarName, object   oValue, int nFlag = 0x00, string sData = "");
+int      _SetLocalLocation   (object oObject, string sVarName, location lValue, int nFlag = 0x00, string sData = "");
 
-void     _DeleteLocalInt     (object oObject, string sVarName);
-void     _DeleteLocalFloat   (object oObject, string sVarName);
-void     _DeleteLocalString  (object oObject, string sVarName);
-void     _DeleteLocalObject  (object oObject, string sVarName);
-void     _DeleteLocalLocation(object oObject, string sVarName);
+void     _DeleteLocalInt     (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+void     _DeleteLocalFloat   (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+void     _DeleteLocalString  (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+void     _DeleteLocalObject  (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+void     _DeleteLocalLocation(object oObject, string sVarName, int nFlag = 0x00, string sData = "");
 
 // -----------------------------------------------------------------------------
 //                             Function Definitions
@@ -104,16 +104,16 @@ int _GetIsPartyMember(object oPC, object oKnownPartyMember)
     return FALSE;
 }
 
+//Just to allow compilation during testing
+const string INHERIT_INT = "INHERIT_INT";
+const string PARENT = "PARENT";
+
 // The following three procedures have a double underscore in front of them
 //  and are currently only for test purposes while the variable inheritence
 //  system is developed/tested.  Once complete, the new procedures will be
 //  incorporated into the single underscore procedures below and should be
 //  integrated seamlessly into the module since everything was built with
 //  the _* procedures.
-
-const int DECLARE = TRUE;
-const string INHERIT_INT = "INH_INT:";
-const string PARENT = "*Parent";
 
 // ---< _GetLocalInt >---
 // This is an experiment in overriding  the module's [Get/Set/Delete]Local*
@@ -125,7 +125,13 @@ const string PARENT = "*Parent";
 // The inheritance idea is unabashedly stolen from the awesome programmers behind
 //  memeticai.  Why useful?  Not sure yet, maybe for spawns?  Possibly for other
 //  smaller things like lootbags on dead pcs and such.
-int __GetLocalInt(object oObject, string sVarName)
+// nFlag is meant to provide a flag for various uses.  These uses are likely
+//  unrelated and therefore bitwise | (or) will not make sense on these.  One
+//  planned use is to override setting the variable on the PC datapoint and
+//  instead set it directly on the PC.  Another planned use is to declare
+//  a variable for inheritance instead of simply setting it on the object.
+// sData is currently unused but available for future expansion.
+int __GetLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
     //Since we don't allow inheritance on PCs (at least yet), let's check that
     //  first and move on.
@@ -136,14 +142,13 @@ int __GetLocalInt(object oObject, string sVarName)
     //We're not using the module-specific _GetIsPC because we want to be able
     //  to set variables on DMs also, so any player controlled character
     //  needs to pass this test.
-    if (GetIsPC(oObject))
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
             return GetLocalInt(oData, sVarName);
     }  
 
-    /*
     //Check for declared variables that are inherited by others.  This will allow
     //  declared variabled to act as local variables for the parent object.
     object oDeclarations = GetLocalObject(oObject, INHERIT_INT + sVarName);
@@ -156,7 +161,6 @@ int __GetLocalInt(object oObject, string sVarName)
     object oParent = GetLocalObject(oObject, PARENT);
     if (GetIsObjectValid(oParent))
         return _GetLocalInt(oParent, sVarName);
-    */
 
     //Well, there's no other possibilities left, just see if the called object
     //  has the variable on it.
@@ -166,15 +170,15 @@ int __GetLocalInt(object oObject, string sVarName)
 // ---< _SetLocalInt >---
 // Continues experiment to override the game's SetLocalInt with something more
 //  flexible, although much more complicated.  See documentation for _GetLocalInt
-//  for notes.  This functions returns false if you're trying to declare and
+//  for notes.  This function returns false if you're trying to declare and
 //  this isn't a parent.  This should be checked for anytime you're declaring to
 //  check for errors.
-int __SetLocalInt(object oObject, string sVarName, int nValue, int nDeclare = FALSE)
+int __SetLocalInt(object oObject, string sVarName, int nValue, int nFlag = 0x00, string sData = "")
 {
     //Since we don't allow inheritance on PC objects, let's check that first
     //  so we can depart quickly if necessary and prevent accidentally setting
     //  inheritance variables on PCs.
-    if (GetIsPC(oObject))
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -184,7 +188,6 @@ int __SetLocalInt(object oObject, string sVarName, int nValue, int nDeclare = FA
         }
     }
 
-    /*
     object oParent = GetLocalObject(oObject, PARENT);
     //Declaring should only be done on the parent object.  'return' is not used
     //  except on PC objects to allow oObject to "fall through" to the final
@@ -192,35 +195,32 @@ int __SetLocalInt(object oObject, string sVarName, int nValue, int nDeclare = FA
     // TODO check this logic, I think it's wrong.
     if (GetIsObjectValid(oParent))
         SetLocalObject(oObject, INHERIT_INT + sVarName, oObject);
-    else if (nDeclare)
+    else if (nFlag & 0x00)
         SetLocalObject(oObject, INHERIT_INT + sVarName, oObject);
     else
         return FALSE;
-    */
 
     //Otherwise, just set the variable on the object.
     SetLocalInt(oObject, sVarName, nValue);
     return TRUE;
 }
 
-void __DeleteLocalInt(object oObject, string sVarName)
+void __DeleteLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
     //So this will be a little different.  If we're a child, we shouldn't be
     //  deleting any inherited variables on the parent, only ones that belong
     //  to us.
     //How to handle variables that are declared?
 
-    /*
     object oParent = GetLocalObject(oObject, PARENT);
     if (GetIsObjectValid(oParent))
     {
         DeleteLocalObject(oObject, INHERIT_INT + sVarName);
         return;
     }
-    */
 
-    if (GetIsPC(oObject))
-    {
+    if (GetIsPC(oObject) && !nFlag)
+    {        
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
             DeleteLocalInt(oData, sVarName);
@@ -229,11 +229,14 @@ void __DeleteLocalInt(object oObject, string sVarName)
     DeleteLocalInt(oObject, sVarName);
 }
 
-// ---< _Get Variable Procedures >---
+// ---< _Get* Variable Procedures >---
 
-int      _GetLocalInt  (object oObject, string sVarName)
+int _GetLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+    
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -243,9 +246,12 @@ int      _GetLocalInt  (object oObject, string sVarName)
     return GetLocalInt(oObject, sVarName);
 }
 
-float    _GetLocalFloat(object oObject, string sVarName)
+float _GetLocalFloat(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+     
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -255,9 +261,12 @@ float    _GetLocalFloat(object oObject, string sVarName)
     return GetLocalFloat(oObject, sVarName);
 }
 
-string   _GetLocalString(object oObject, string sVarName)
+string _GetLocalString(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+     
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -267,9 +276,12 @@ string   _GetLocalString(object oObject, string sVarName)
     return GetLocalString(oObject, sVarName);
 }
 
-object   _GetLocalObject(object oObject, string sVarName)
+object _GetLocalObject(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+     
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -279,9 +291,12 @@ object   _GetLocalObject(object oObject, string sVarName)
     return GetLocalObject(oObject, sVarName);
 }
 
-location _GetLocalLocation(object oObject, string sVarName)
+location _GetLocalLocation(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+      
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -291,11 +306,14 @@ location _GetLocalLocation(object oObject, string sVarName)
     return GetLocalLocation(oObject, sVarName);
 }
 
-// ---< _Set Variable Procedures >---
+// ---< _Set* Variable Procedures >---
 
-int _SetLocalInt(object oObject, string sVarName, int nValue, int nDeclare = FALSE)
+int _SetLocalInt(object oObject, string sVarName, int nValue, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+       
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -309,9 +327,12 @@ int _SetLocalInt(object oObject, string sVarName, int nValue, int nDeclare = FAL
     return TRUE;
 }
 
-int _SetLocalFloat(object oObject, string sVarName, float fValue, int nDeclare = FALSE)
+int _SetLocalFloat(object oObject, string sVarName, float fValue, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+       
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -325,9 +346,12 @@ int _SetLocalFloat(object oObject, string sVarName, float fValue, int nDeclare =
     return TRUE;
 }
 
-int _SetLocalString(object oObject, string sVarName, string sValue, int nDeclare = FALSE)
+int _SetLocalString(object oObject, string sVarName, string sValue, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+       
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -341,9 +365,12 @@ int _SetLocalString(object oObject, string sVarName, string sValue, int nDeclare
     return TRUE;
 }
 
-int _SetLocalObject(object oObject, string sVarName, object oValue, int nDeclare = FALSE)
+int _SetLocalObject(object oObject, string sVarName, object oValue, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+      
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -357,9 +384,12 @@ int _SetLocalObject(object oObject, string sVarName, object oValue, int nDeclare
     return TRUE;
 }
 
-int _SetLocalLocation(object oObject, string sVarName, location lValue, int nDeclare = FALSE)
+int _SetLocalLocation(object oObject, string sVarName, location lValue, int nFlag = 0x00, string sData = "")
 {
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+      
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -373,11 +403,14 @@ int _SetLocalLocation(object oObject, string sVarName, location lValue, int nDec
     return TRUE;
 }
 
-// ---< _Delete Variable Procedures >---
+// ---< _Delete* Variable Procedures >---
 
-void _DeleteLocalInt(object oObject, string sVarName)
+void _DeleteLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+       
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -387,9 +420,12 @@ void _DeleteLocalInt(object oObject, string sVarName)
     DeleteLocalInt(oObject, sVarName);
 }
 
-void _DeleteLocalFloat(object oObject, string sVarName)
+void _DeleteLocalFloat(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+       
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -399,9 +435,12 @@ void _DeleteLocalFloat(object oObject, string sVarName)
     DeleteLocalFloat(oObject, sVarName);
 }
 
-void _DeleteLocalString(object oObject, string sVarName)
+void _DeleteLocalString(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+       
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -411,9 +450,12 @@ void _DeleteLocalString(object oObject, string sVarName)
     DeleteLocalString(oObject, sVarName);
 }
 
-void _DeleteLocalObject(object oObject, string sVarName)
+void _DeleteLocalObject(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+       
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
@@ -423,9 +465,12 @@ void _DeleteLocalObject(object oObject, string sVarName)
     DeleteLocalObject(oObject, sVarName);
 }
 
-void _DeleteLocalLocation(object oObject, string sVarName)
+void _DeleteLocalLocation(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (GetIsPC(oObject))
+    if (oObject == oModule)
+        oObject = MODULE;
+        
+    if (GetIsPC(oObject) && !nFlag)
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))

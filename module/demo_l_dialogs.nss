@@ -10,6 +10,7 @@
 
 #include "dlg_i_dialogs"
 #include "util_i_library"
+#include "dsutil_i_data"
 
 // -----------------------------------------------------------------------------
 //                                  Poet Dialog

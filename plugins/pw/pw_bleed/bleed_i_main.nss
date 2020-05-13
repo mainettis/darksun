@@ -82,7 +82,7 @@ void h2_StabilizePlayer(object oPC, int bNaturalHeal = FALSE)
 {
     int nPlayerState = _GetLocalInt(oPC, H2_PLAYER_STATE);
     int nCurrentHitPoints = GetCurrentHitPoints(oPC);
-    _SetLocal Int(oPC, H2_LAST_HIT_POINTS, nCurrentHitPoints);
+    _SetLocalInt(oPC, H2_LAST_HIT_POINTS, nCurrentHitPoints);
     if (nPlayerState == H2_PLAYER_STATE_DYING)
     {
         SendMessageToPC(oPC,  H2_TEXT_PLAYER_STABLIZED);

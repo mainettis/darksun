@@ -286,7 +286,7 @@
         "__struct_id": 0,
         "Name": {
           "type": "cexostring",
-          "value": "OnAreaEnter"
+          "value": "TRAVEL_ENCOUNTER_AREAS"
         },
         "Type": {
           "type": "dword",
@@ -294,22 +294,7 @@
         },
         "Value": {
           "type": "cexostring",
-          "value": "tr_OnAreaEnter"
-        }
-      },
-      {
-        "__struct_id": 0,
-        "Name": {
-          "type": "cexostring",
-          "value": "OnAreaExit"
-        },
-        "Type": {
-          "type": "dword",
-          "value": 3
-        },
-        "Value": {
-          "type": "cexostring",
-          "value": "tr_OnAreaExit"
+          "value": "desert_enc1"
         }
       }
     ]

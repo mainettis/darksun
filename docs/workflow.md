@@ -149,8 +149,7 @@ The `.` tells Git to ensure all files in your repository, including subfolders, 
 If you've added content to the module and saved your work, you can unpack that work back into your repository.  **You do not need to build the module within the toolset to do this.**  To unpack the module, accomplish the following
 
 1. Ensure all of your toolset work is saved.
-2. *Read this entire step before proceeding* -- Delete the module file from your local repository directory.  **Do not delete** the module file from your modules directory or your work will be lost.
-3. Unpack the module into your repository with the following:
+2. Unpack the module into your repository with the following:
 
 ```
 nasher unpack ds
