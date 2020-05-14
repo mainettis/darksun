@@ -15,7 +15,7 @@ We've provided several manuals for use by various levels of players and contribu
 * [Builder's Manual (in development)](buildersmanual.md)
 * [Scripter's Manual (in development)](scriptersmanual.md)
 
-# Contribuations
+# Contributions
 
 This section is provided for team members, or any potential contributors, in case they are not familiar with the tools we are using or what an effective work flow looks like.  If you're a seasoned developer or contributor, feel free to continue using your own processes.  You don't need permission to fork the repository and ask to contibute something.  If you don't know how to fork the repository, [check out our installation tools tutorial](docs/tools.md/#github-account).
 
