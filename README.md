@@ -2,7 +2,20 @@
 
 This repo contains the developmental Dark Sun NWN1:EE module content.  If you want to contribute, please fork this repository and send a pull request when your testing is complete.
 
-# Tutorials
+# Acknowledgements
+
+Although there is a lot of original work in this module, there is also a lot of work that was contributed by many other builders and scripters who have graciously allowed their works to be used by the general public.  Since much of our systems rest on a central framework, a good bit of the contributed code had to be modified (in format, not in function) to make it work correctly in the module.  As humans, we suck at tracking the original scripts and since many individual scripts were deleted in favor of consolidating scripts into libraries, some of the original author blocks and statements have been lost to the ages.  Therefore, we are providing an [acknowledgements document](docs/acknowledgements.md) to ensure we're providing credit to those whose systems or code we have used here.  We have no intention of hiding, plagiarizing or otherwise minimizing the work you've done.  If you find that we're using something you wrote, and you're not mentioned in the acknowledgements, please contact us and we'll get you added.
+
+# Manuals
+
+We've provided several manuals for use by various levels of players and contributors at Dark Sun.  Please check out the following based on your role.  The manuals build on each other as you get further down the list, so don't expect the scripter's manual to go into detail on the death and corpse loot systems, that's what the player's and dungeon master's manuals are for.  You should be familiar with the content of each manual that is listed before your role:
+
+* [~~Player's Manual~~ coming soon](playersmanual.md)
+* [~~Dungeon Master's Manual~~ coming soon](dmmanual.md)
+* [Builder's Manual (in development)](buildersmanual.md)
+* [Scripter's Manual (in development)](scriptersmanual.md)
+
+# Contribuations
 
 This section is provided for team members, or any potential contributors, in case they are not familiar with the tools we are using or what an effective work flow looks like.  If you're a seasoned developer or contributor, feel free to continue using your own processes.  You don't need permission to fork the repository and ask to contibute something.  If you don't know how to fork the repository, [check out our installation tools tutorial](docs/tools.md/#github-account).
 
@@ -20,7 +33,7 @@ The whole purpose of setting up these tools is to create an efficient developmen
 
 ## Using VSCode as a Development Environment
 
-[Coming soon! ~~Read the VSCode Installation and Setup Tutorial~~](docs/vscode.md)
+[Read the VSCode Installation and Setup Tutorial (in development)](docs/vscode.md)
 
 For the scripters among us, and even those who are more daring, I highly suggest using Visual Studio Code as your prefered development environment.  It is lightweight, agile, contains a powershell terminal, interaces with your git repository and allow you to stage and commit changes to your forked repository.  Additonally, you edit, debug and compile all of you scripts directly in the program without ever having to touch the toolset.
 
@@ -35,30 +48,3 @@ This is for team members and players.  For players, you can submit bugs you find
 [Coming soon! ~~Read the Wiki tutorial~~](docs/wiki.md)
 
 The wiki pages on this site should contain documentation on the major system of the module, as well as story background and other information.  If you want to contribute to our wiki, but don't know how, [this tutorial](docs/wiki.md) is for you.
-
-# Module Systems
-
-## HCR2
-
-HCR2 is incorporated into this framework as a plugin (designated `pw`).  Just about all the code within this subdirectory is straight out of Edward Beck's HCR2 creation.  There's been some code removed to allow it work more readily in the library framework we're using.  Generally, however, it remains intact.
-
-## Core Framework
-
-The entire module rests on Michael Sinclair's (squattingmonk) [core framework](https://github.com/squattingmonk/nwn-core-framework).  The `framework` folder is a fork directly off his repository.  **There will be no pull requests accepted that involve changes to any script in this folder.**
-
-## Plugins
-
-### Dark Sun
-The `ds` folder contains Dark Sun specific plugins that modify or otherwise hook into the base module systems (HCR2 and core framework)
-
-### DMFI
-DMFI development is currently underway and will not be included in the module when you install it.  The scripts do not yet compile and are under heavy revision.  If you modify nasher.cfg to include these scripts, you will not be able to install correctly run the module.  When development is complete, the scripts will automatically be included in the module.
-
-### Working
-The `working` folder is used to store scripts that are currently under revision.  This folder will not be included in a module installation, so don't put any scripts there.
-
-## Server
-The server will be setup with a docker version of nasher so we don't have to keep uploading .mod files to the server.  I'll let you know when that's complete and how to build the module on the VM server.
-
-## Contributing
-If you want to contribute, create a fork off this repository.  Any work you do will automatically be saved to the appropriate folder when you `nasher unpack` your saved work.  The only except to this is scripts.  New scripts will be saved to the `module` base folder so they're easy to find.
