@@ -10,10 +10,10 @@ Although there is a lot of original work in this module, there is also a lot of 
 
 We've provided several manuals for use by various levels of players and contributors at Dark Sun.  Please check out the following based on your role.  The manuals build on each other as you get further down the list, so don't expect the scripter's manual to go into detail on the death and corpse loot systems, that's what the player's and dungeon master's manuals are for.  You should be familiar with the content of each manual that is listed before your role:
 
-* [~~Player's Manual~~ coming soon](playersmanual.md)
-* [~~Dungeon Master's Manual~~ coming soon](dmmanual.md)
-* [Builder's Manual (in development)](buildersmanual.md)
-* [Scripter's Manual (in development)](scriptersmanual.md)
+* [~~Player's Manual~~ coming soon](docs/playersmanual.md)
+* [~~Dungeon Master's Manual~~ coming soon](docs/dmmanual.md)
+* [Builder's Manual (in development)](docs/buildersmanual.md)
+* [Scripter's Manual (in development)](docs/scriptersmanual.md)
 
 # Contributions
 
