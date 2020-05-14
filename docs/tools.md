@@ -11,7 +11,7 @@ There are **A LOT** of words here.  Don't let this scare you off of the idea of 
 * [Installing Nimble and Neverwinter](#nimble-&-neverwinter)
 * [Installing Nasher](#nasher)
 * [Getting your Questions Answered](#questions)
-* [The Next Step](#conclusion)
+* [The Next Steps](#conclusion)
 
 ## GitHub Account
 

@@ -209,8 +209,49 @@ Here are some notes from our implementation of the library system:
 ## Quest Management System
 
 
+## Travel Encounter System
 
+The travel encounter system is easily expandable and requires no scripting knowledge to make work.  The travel encounter system is designed to be used on inter-city travel maps. There are two areas required to make the encounter system work.
 
+1. **The travel area.**  The travel area is usually a very large area (32x32 is the max) that is used for intra-city travel.  To mark a travel area as an area that can spawn encounters, you must set a variable on the travel area.  The value of this variable is a comma delimited list of the resrefs of all the encounter areas you want to use.  It must contain at least one if you want this travel area to spawn encounters, but there is no limit to how many areas can be assigned.  When an encounter is spawned, the encounter area will be chosen at random from this list.
+
+    |Variable Name|Type|Value|
+    |---|---|---|
+    |TRAVEL_ENCOUNTER_AREAS|string|area1_resref,area2_resref|
+
+2. **The encounter area(s).**  A travel area can have several encounter areas associated with it.  For example, if builders have created multiple encounter areas, you can select which ones you want to use as your encounter areas based on their tileset matching the general theme of the travel area.  A successful encounter area will have the following features:
+
+    * 1 waypoint designated as the primary portal into the encounter area
+    * 2-5 waypoints designated as secondary portals into the encounter area
+    * 2-5 waypoints designated as spawn points for the encounter enemies
+    * 1-2 exits that are obvious to the player and require the characters to traverse spawn waypoints to reach them
+
+    Although the encounter area itself requires no specific variables, each waypoint added must have one variable assigned to it in order for it to be used successfully by the travel encounter system.  Below are the three possible values.  Only one should be assigned.  The primary waypoint will be the waypoint the PC triggering the encounter will port to, along with any party members within a specific distance of the PC.  There should be only one primary waypoint designated.  If two are designated, the first one the system finds will be marked primary, the rest will be ignored.  If no waypoints are designated as primary, the encounter will not occur.  Any party members outside the specified distance, but still close to the triggering PC will be ported to one of the secondary waypoints at random.  There is no limit to the number of secondary waypoints you can place.  If there are no secondary waypoints placed, the primary waypoint will be used.  The encounter enemies will spawn at randomly selected spawn waypoint.
+
+    |Variable Name|Type|Value|
+    |---|---|---|
+    |TRAVEL_WAYPOINT_TYPE|string|primary|
+    |TRAVEL_WAYPOINT_TYPE|string|secondary|
+    |TRAVEL_WAYPOINT_TYPE|string|spawn|
+
+That's it!  If all of the above conditions are satisfied, the encounters will happen automatically.
+
+## Dungeon Master Friendly Initiative
+
+#### Languages
+
+Languages are initialized through language initalizer items in the module.  The system is designed to allow builder to add, modify or remove languages at any time.
+
+To add a new language to the module, the following requirements must be met:
+
+* A language initializer item must be created within the toolset.  Make a copy of the template language initializer item to accomplish this.  It already has the required variables set on it, you just need to change the variables to match your new language.  Once again, do not edit the template, edit a copy of the template
+
+* The language initializer item must be named `dmfi_l_<language name>`.  The language name cannot be more than nine characters long due to the 16 character limit in NWN.  Do not use spaces in your language name or the item name.
+
+* The following variables must be set on the language initializer item:
+
+    |Variable Name|Type|Value|
+    |---|---|---|
 
 
 
