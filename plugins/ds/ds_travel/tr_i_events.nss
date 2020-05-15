@@ -53,7 +53,7 @@ void tr_OnAreaEnter()
 
     if (!nReturning)    //Entering area from another area, not from an encounter
     {
-        _SetLocalInt(oPC, TRAVEL_MAX_ENCOUNTERS, TRAVEL_ENCOUNTER_LIMIT + (-1 + Random(2)) * Random(TRAVEL_ENCOUNTER_LIMIT_JITTER));
+        _SetLocalInt(oPC, TRAVEL_MAX_ENCOUNTERS, TRAVEL_ENCOUNTER_LIMIT + (-1 + Random(3)) * Random(TRAVEL_ENCOUNTER_LIMIT_JITTER));
         _DeleteLocalInt(oPC, TRAVEL_CURRENT_ENCOUNTERS);
 
         Debug("Maximum encounters for this PC is " + IntToString(_GetLocalInt(oPC, TRAVEL_MAX_ENCOUNTERS)));
@@ -77,6 +77,9 @@ void tr_OnAreaExit()
     object oPC = GetExitingObject();
 
     if (!_GetIsPC(oPC))
+        return;
+
+    if (!CountList(_GetLocalString(OBJECT_SELF, TRAVEL_ENCOUNTER_AREAS)))
         return;
 
     int nEncounterID = _GetLocalInt(oPC, TRAVEL_ENCOUNTER_ID);

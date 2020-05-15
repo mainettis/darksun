@@ -18,8 +18,9 @@
 //   Summary:
 // -----------------------------------------------------------------------------
 
+#include "ds_i_const"
 #include "util_i_debug"     
-#include "dsutil_i_comms"   
+//#include "dsutil_i_comms"   
 
 // -----------------------------------------------------------------------------
 //                              Function Prototypes

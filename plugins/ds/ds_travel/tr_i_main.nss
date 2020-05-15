@@ -117,15 +117,21 @@ int tf_CreateEncounter(object oPC)
     
     Debug("Creating encounter ID " + sEncounterID + " for " + GetName(oPC));
 
-    sEncounterArea = GetListItem(sEncounterAreas, Random(nCount) + 1);
-    oEncounterArea = CreateArea(sEncounterArea, TRAVEL_ENCOUNTER_AREA_TAG + IntToString(nEncounterID));
+    sEncounterArea = GetListItem(sEncounterAreas, Random(nCount));
+
+    Debug("Attempting to create new area from resref " + sEncounterArea +
+        "\n  nCount " + IntToString(nCount) +
+        "\n  sEncounterAreas " + sEncounterAreas +
+        "\n  sEncounterArea " + sEncounterArea);
+    oEncounterArea = CreateArea(sEncounterArea, TRAVEL_ENCOUNTER_AREA_TAG + IntToString(nEncounterID), "Encounter");
 
     object oAreaObject = GetFirstObjectInArea(oEncounterArea);
 
     while (GetIsObjectValid(oAreaObject))
     {
         if (GetObjectType(oAreaObject) == OBJECT_TYPE_WAYPOINT)
-        {       //TODO constant for *Type
+        {
+            Debug("  Encounter area object:  " + GetTag(oAreaObject));
             sWaypointType = GetStringLowerCase(_GetLocalString(oAreaObject, TRAVEL_WAYPOINT_TYPE));
             if (sWaypointType == TRAVEL_WAYPOINT_TYPE_PRIMARY)
                 SetTag(oAreaObject, TRAVEL_WAYPOINT_TAG + sEncounterID + IntToString(1));
@@ -142,19 +148,30 @@ int tf_CreateEncounter(object oPC)
                 sSpawnPoints = AddListItem(sSpawnPoints, sWaypointTag);
             }
         }
+
+        oAreaObject = GetNextObjectInArea(oEncounterArea);
     }
 
+    //Save encounter variables
     _SetLocalString(ENCOUNTERS, ENCOUNTER_PRIMARY_WAYPOINT    + sEncounterID, TRAVEL_WAYPOINT_TAG + sEncounterID + IntToString(1));
     _SetLocalString(ENCOUNTERS, ENCOUNTER_SECONDARY_WAYPOINTS + sEncounterID, sSecondaryWaypoints);
     _SetLocalString(ENCOUNTERS, ENCOUNTER_SPAWNPOINTS         + sEncounterID, sSpawnPoints);
     _SetLocalObject(ENCOUNTERS, ENCOUNTER_TRIGGERED_BY        + sEncounterID, oPC);
     _SetLocalObject(ENCOUNTERS, ENCOUNTER_AREA                + sEncounterID, oEncounterArea);
-    _SetLocalInt   (ENCOUNTERS, TRAVEL_ENCOUNTER_NEXT_ID                    , ++nEncounterID);
+    _SetLocalInt   (ENCOUNTERS, TRAVEL_ENCOUNTER_NEXT_ID                    , nEncounterID + 1);
 
-    _SetLocalString(oEncounterArea, AREA_EVENT_ON_EXIT, "tr_encounter_OnAreaExit");
+    //Set area events.
+    _SetLocalString(oEncounterArea, AREA_EVENT_ON_EXIT, "tr_encounter_OnAreaExit:only");
     _SetLocalString(oEncounterArea, MODULE_EVENT_ON_PLAYER_DEATH, "tr_encounter_OnPlayerDeath");
 
-    Debug("Successfully created encounter with ID " + sEncounterID);
+    struct TRAVEL_ENCOUNTER te = tr_GetEncounterData(nEncounterID);
+
+    Debug("Successfully created encounter with ID " + sEncounterID + 
+                "\n  Triggered by " + GetName(te.oTriggeredBy) +
+                "\n  Occuring in " + GetName(te.oEncounterArea) +
+                "\n  Primary " + te.sPrimaryWaypoint +
+                "\n  Secondary " + te.sSecondaryWaypoints +
+                "\n  Spawn " + te.sSpawnPoints);
     return nEncounterID;
 }
 
@@ -191,7 +208,11 @@ void tr_StartEncounter(int nEncounterID)
         _setEncounterVariables(oPartyMember, nEncounterID);
         AssignCommand(oPartyMember, ClearAllActions());
         AssignCommand(oPartyMember, JumpToObject(oTarget));
-        Debug("  " + GetName(oPartyMember) + " sent to " + GetTag(oTarget) + " to join encounter " + te.sEncounterID);
+
+        if (GetArea(oPartyMember) != te.oEncounterArea)
+            Debug("System failed to send " + GetName(oPartyMember) + " to the encounter area.");
+        else
+            Debug("  " + GetName(oPartyMember) + " sent to " + GetTag(oTarget) + " to join encounter " + te.sEncounterID);
 
         oPartyMember = GetNextFactionMember(te.oTriggeredBy);
     }

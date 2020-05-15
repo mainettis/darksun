@@ -25,8 +25,8 @@
 // The party has a set chance to have an encounter during their overland travel.
 //  these settings determine what those chances are.  Setting both of these to
 //  0 turns off the encounters.
-const int TRAVEL_ENCOUNTER_CHANCE_DAY   = 10;
-const int TRAVEL_ENCOUNTER_CHANCE_NIGHT = 20;
+const int TRAVEL_ENCOUNTER_CHANCE_DAY   = 95;
+const int TRAVEL_ENCOUNTER_CHANCE_NIGHT = 95;
 
 // This encounter system uses a timer to check whether the party will have an
 //  an encounter.  The encounter check will occur every time this timer
@@ -34,7 +34,7 @@ const int TRAVEL_ENCOUNTER_CHANCE_NIGHT = 20;
 //  timer cycle.  The jitter constant will add from 0 seconds to your set
 //  value to the interval.
 const float TRAVEL_ENCOUNTER_TIMER_INTERVAL = 20.0;
-const int   TRAVEL_ENCOUNTER_TIMER_JITTER   = 0;
+const int   TRAVEL_ENCOUNTER_TIMER_JITTER   = 30.0;
 
 // This setting will determine the maximum number of encounters that a party can
 //  have when travelling on a single map.  A value of 0 means there is no limit.
