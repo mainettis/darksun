@@ -234,9 +234,31 @@ Here are some notes from our implementation of the library system:
 
 
 
+# Timers
 
+Timers are an organic function with the core framework, but they can take up a lot of resources, so use them only when necessary.  Use the follwoing procedure to set up a timer:
 
+1. Create a script that will be executed when the timer expires.  This is an event script and you are not limited in how you name it, however our convention is `<system>_<subsystem>_OnTimerExpire()`.  As an event, it should be located in the `*_i_events` file of the system or module area you are working on.  Supporting functions can be placed in `*_i_main`.  Here's an example of one of our current prototypes.  As evidenced by the name, it's part of the module travel system and designated for the encounter subsystem.
 
+    ```c
+    void tr_encounter_OnTimerExpire();
+    ```
+
+2. Register this script in the library/plugin file so the event management system can find it when the timer expires.  You will need to register it to a custom event as well as to the library in general.  Create a constant for the name of the custom event.  Here's an example:
+
+    ```c
+    RegisterEventScripts(oPlugin, TRAVEL_ENCOUNTER_ON_TIMER_EXPIRE, "tr_encounter_OnTimerExpire");
+    
+    ...
+
+    RegisterLibraryScript("tr_encounter_OnTimerExpire", 1);
+
+    ...
+
+        case 1: tr_encounter_OnTimerExpire(); break;
+    ```
+
+3. Create the timer.  You'll need to know the name of the event you want to run (`TRAVEL_ENCOUNTER_ON_TIMER_EXPIRE`, in this case), what interval you want to run it at
 
 
 

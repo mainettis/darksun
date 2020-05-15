@@ -234,6 +234,8 @@ The travel encounter system is easily expandable and requires no scripting knowl
     |TRAVEL_WAYPOINT_TYPE|string|secondary|
     |TRAVEL_WAYPOINT_TYPE|string|spawn|
 
+    *Note: no triggers or other objects in the encounter area require specific variables for this system to function.*
+
 That's it!  If all of the above conditions are satisfied, the encounters will happen automatically.
 
 ## Dungeon Master Friendly Initiative
