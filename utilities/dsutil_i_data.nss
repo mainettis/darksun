@@ -18,13 +18,8 @@
 //   Summary:
 // -----------------------------------------------------------------------------
 
-// These functions are meant to be included in just about every script in the
-//  module.  They reference basic identities, module and player data.  It
-//  also includes debugging and communications, so including this script will
-//  give every script just about all the administrative connectivity they need.
-
-#include "ds_i_const"
-#include "util_i_debug"     //also give util_i_color
+#include "util_i_debug"     
+#include "dsutil_i_comms"   
 
 // -----------------------------------------------------------------------------
 //                              Function Prototypes
@@ -47,20 +42,23 @@ int _GetIsPC(object oPC);
 //  oKnownPartyMember's party/faction.
 int _GetIsPartyMember(object oPC, object oKnownPartyMember);
 
+// ---< Variable Management >---
+
 // ---< [_Get/_Set/_Delete]Local[Int/Float/String/Object/Location] >---
 // Custom module-level functions intended to replace Bioware's variable handling
 //  functions.  oObject will be checked for specific conditions, such as
-//  == GetModule() or GetIsPC() to route the variable to the correct location.
+//  == GetModule() or GetIsPC() to route the variable to the correct location
+//  and ensure we're always loading the variable to the correct location.
 // nFlag will modify the routing.  
 // sData is not currently planned for use but is in place for future expansion.
 // _SetLocal* will return TRUE/FALSE based on whether the operation was completed.
 //  This is in place solely for future expansion to denote an error condition.
 //  Although a value is currently returned, it has no meaning WRT an error condition.
-int      _GetLocalInt        (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
-float    _GetLocalFloat      (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
-string   _GetLocalString     (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
-object   _GetLocalObject     (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
-location _GetLocalLocation   (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+int      _GetLocalInt        (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+float    _GetLocalFloat      (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+string   _GetLocalString     (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+object   _GetLocalObject     (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+location _GetLocalLocation   (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 
 int      _SetLocalInt        (object oObject, string sVarName, int      nValue, int nFlag = 0x00, string sData = "");
 int      _SetLocalFloat      (object oObject, string sVarName, float    fValue, int nFlag = 0x00, string sData = "");
@@ -68,17 +66,18 @@ int      _SetLocalString     (object oObject, string sVarName, string   sValue, 
 int      _SetLocalObject     (object oObject, string sVarName, object   oValue, int nFlag = 0x00, string sData = "");
 int      _SetLocalLocation   (object oObject, string sVarName, location lValue, int nFlag = 0x00, string sData = "");
 
-void     _DeleteLocalInt     (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
-void     _DeleteLocalFloat   (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
-void     _DeleteLocalString  (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
-void     _DeleteLocalObject  (object oObject, string sVarName, int nFlag = 0x00, string sData = "");
-void     _DeleteLocalLocation(object oObject, string sVarName, int nFlag = 0x00, string sData = "");
+void     _DeleteLocalInt     (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+void     _DeleteLocalFloat   (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+void     _DeleteLocalString  (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+void     _DeleteLocalObject  (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+void     _DeleteLocalLocation(object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 
 // -----------------------------------------------------------------------------
 //                             Function Definitions
 // -----------------------------------------------------------------------------
 
 // ---< Identity >---
+
 int _GetIsDM(object oPC)
 {
     return (GetIsDM(oPC) || GetIsDMPossessed(oPC));
@@ -104,130 +103,7 @@ int _GetIsPartyMember(object oPC, object oKnownPartyMember)
     return FALSE;
 }
 
-//Just to allow compilation during testing
-const string INHERIT_INT = "INHERIT_INT";
-const string PARENT = "PARENT";
-
-// The following three procedures have a double underscore in front of them
-//  and are currently only for test purposes while the variable inheritence
-//  system is developed/tested.  Once complete, the new procedures will be
-//  incorporated into the single underscore procedures below and should be
-//  integrated seamlessly into the module since everything was built with
-//  the _* procedures.
-
-// ---< _GetLocalInt >---
-// This is an experiment in overriding  the module's [Get/Set/Delete]Local*
-//  in order to allow a redneck version of inheritance, essentially allowing
-//  any object with a *Parent variable set to use the parent's variables.
-// Requires the parent to first set those variables in a declaration statement.
-//  Assumes single inheritance for now -- no grandchildren inheriting from
-//  grandparents -- only parent -> child.
-// The inheritance idea is unabashedly stolen from the awesome programmers behind
-//  memeticai.  Why useful?  Not sure yet, maybe for spawns?  Possibly for other
-//  smaller things like lootbags on dead pcs and such.
-// nFlag is meant to provide a flag for various uses.  These uses are likely
-//  unrelated and therefore bitwise | (or) will not make sense on these.  One
-//  planned use is to override setting the variable on the PC datapoint and
-//  instead set it directly on the PC.  Another planned use is to declare
-//  a variable for inheritance instead of simply setting it on the object.
-// sData is currently unused but available for future expansion.
-int __GetLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
-{
-    //Since we don't allow inheritance on PCs (at least yet), let's check that
-    //  first and move on.
-    //If this is a PC, grab the variable from their local variable repository
-    //  (player item).  Careful here, can't accidentally ever set PC as a child
-    //  or a parent for now because of the way variables are handles for PCs
-    //  through the HCR2 system.
-    //We're not using the module-specific _GetIsPC because we want to be able
-    //  to set variables on DMs also, so any player controlled character
-    //  needs to pass this test.
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            return GetLocalInt(oData, sVarName);
-    }  
-
-    //Check for declared variables that are inherited by others.  This will allow
-    //  declared variabled to act as local variables for the parent object.
-    object oDeclarations = GetLocalObject(oObject, INHERIT_INT + sVarName);
-    if (GetIsObjectValid(oDeclarations))
-        return GetLocalInt(oDeclarations, sVarName);
-
-    //Check for inherited variables on the parent.  If this is a child object,
-    //  check the parent for the variable on the parent's declared variables
-    //  list.  If that variable doesn't exist, continue on.
-    object oParent = GetLocalObject(oObject, PARENT);
-    if (GetIsObjectValid(oParent))
-        return _GetLocalInt(oParent, sVarName);
-
-    //Well, there's no other possibilities left, just see if the called object
-    //  has the variable on it.
-    return GetLocalInt(oObject, sVarName);
-}
-
-// ---< _SetLocalInt >---
-// Continues experiment to override the game's SetLocalInt with something more
-//  flexible, although much more complicated.  See documentation for _GetLocalInt
-//  for notes.  This function returns false if you're trying to declare and
-//  this isn't a parent.  This should be checked for anytime you're declaring to
-//  check for errors.
-int __SetLocalInt(object oObject, string sVarName, int nValue, int nFlag = 0x00, string sData = "")
-{
-    //Since we don't allow inheritance on PC objects, let's check that first
-    //  so we can depart quickly if necessary and prevent accidentally setting
-    //  inheritance variables on PCs.
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-        {
-            SetLocalInt(oData, sVarName, nValue);
-            return TRUE;
-        }
-    }
-
-    object oParent = GetLocalObject(oObject, PARENT);
-    //Declaring should only be done on the parent object.  'return' is not used
-    //  except on PC objects to allow oObject to "fall through" to the final
-    //  SetLocalInt (much like a case without break).
-    // TODO check this logic, I think it's wrong.
-    if (GetIsObjectValid(oParent))
-        SetLocalObject(oObject, INHERIT_INT + sVarName, oObject);
-    else if (nFlag & 0x00)
-        SetLocalObject(oObject, INHERIT_INT + sVarName, oObject);
-    else
-        return FALSE;
-
-    //Otherwise, just set the variable on the object.
-    SetLocalInt(oObject, sVarName, nValue);
-    return TRUE;
-}
-
-void __DeleteLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
-{
-    //So this will be a little different.  If we're a child, we shouldn't be
-    //  deleting any inherited variables on the parent, only ones that belong
-    //  to us.
-    //How to handle variables that are declared?
-
-    object oParent = GetLocalObject(oObject, PARENT);
-    if (GetIsObjectValid(oParent))
-    {
-        DeleteLocalObject(oObject, INHERIT_INT + sVarName);
-        return;
-    }
-
-    if (GetIsPC(oObject) && !nFlag)
-    {        
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            DeleteLocalInt(oData, sVarName);
-    }
-
-    DeleteLocalInt(oObject, sVarName);
-}
+// ---< Variable Management >---
 
 // ---< _Get* Variable Procedures >---
 
