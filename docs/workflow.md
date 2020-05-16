@@ -124,6 +124,10 @@ nasher install ds --yes
 
 This command will convert, compile, pack and install a module file into your modules folder.  This will make it available immediately to the toolset when you open it.  If you're given the option to open the module via a folder tree, take that option.  If you've [updated your repository](#updating-your-forked-repository), this module file will be the most current module we're using.
 
+#### Errors
+
+It is possible that you could receive some script compilation errors during the build process.  If you're not working on scripts, this shouldn't be happening, so please contact @tinygiant on the Dark Sun discord with the error information (screenshot of the output is preferred) and we'll get it fixed.  If you are working on scripts, fix your errors and re-attempt.  If you are getting compilation errors you don't understand or can't otherwise resolve, please see the [questions](#questions) for contact information.
+
 ## Adding Content
 
 #### Toolset

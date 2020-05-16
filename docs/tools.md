@@ -60,7 +60,7 @@ In order to efficiently contribute to the Dark Sun project, you need a git clien
 
 6. Add an upstream to your forked repository so you can retrieve updates from the primary module repository.  Since you are not working on the primary repository, any updates to the primary repository will not automatically update to the fork you're working on.  If you want to retrieve updates from the primary repository to ensure you always have the most recent data, you need to add an upstream to your local repository.  On the command line, type the following: 
     ```
-    git remote add upstream https://github.com/tinygiant98/darksun.git
+    git remote add upstream https://github.com/tinygiant98/darksun.git --recurse-submodules
     ``` 
     and press enter.  You are using the primary repository (`tinygiant98/darksun`) as your upstream, not your forked repository, so type the command exactly as you see above.  Adding this upstream does not automatically keep your forked repository updated with the primary repository's content.  I'll show you how to do that later.
 
@@ -71,7 +71,7 @@ Ok, that's it for Git. Let's work on the rest.
 #### Nimble
 Nimble is a programming language.  Although you will probably only directly use this once during this setup, it is a pre-requistie for installing Nasher.
 
-You can use a program called choosenim to install all the pre-requisites for nimble and nimble itself.  To do this, go to the [choosenim releases page](https://github.com/dom96/choosenim/releases) and download the appropriate release for your operating system.  If you selected a zipped file, unzip the files to your preferred location (they cannot be run directly from the zip file) and run the `runme.bat` batch file.  This will install choosenim and add the nimble directory to your system PATH file.  Follow any prompts on you screen.
+You can use a program called choosenim to install all the pre-requisites for nimble and nimble itself.  To do this, go to the [choosenim releases page](https://github.com/dom96/choosenim/releases) and download the appropriate release for your operating system.  If you selected a zipped file, unzip the files to your preferred location (they cannot be run directly from the zip file) and run the `runme.bat` batch file.  This will install choosenim and add the nimble directory to your system PATH variable.  Follow any prompts on you screen.
 
 #### Neverwinter
 Neverwinter.nim is a set of tools that can convert the various file formats used by Neverwinter Nights into .json and other formats, which are text files readable by most text readers and easily handled by source control systems, such as Git.  Without these conversion tools, we would not be able to track file changes nor have the convenience of build tools such as Nasher.
@@ -85,6 +85,10 @@ Since we've already installed Nimble, installing neverwinter.nim is extremely ea
     ```
 
     and press enter.
+
+    *Note:  There is a possibility that choosenim does not add the nimble directory to your system's PATH environmental variable.  If you attempt to use the `nimble install neverwinter` command in the next section and you get a `command not found` error, this is likely th case.  To resolve this:*
+
+    *Windows:  Go to your `control panel` and click on `system`, then `advanced system settings`.  A new window will appear.  On the `advanced tab`, click on `environmental variables`.  On the lower half of the next window that appears, click on the `Path` variable and then click `edit`.  Click on `browse...` and search for your nimble directory.  Unless you modified the installation directory when you installed nimble in the [previous section](#nimble), it should be `c:\users\<username>\.nimble\bin` or something very similar.  Once you've added this folder to the `Path` variable, close any command line utilities you have open, then re-open then and try the command again.*
 
     *Note:  It is unlikely you'll be using neverwinter.nim directly.  These tools will primarily be used by Nasher.*
 
@@ -114,7 +118,7 @@ Since we already have the nimble programming language installed via choosenim, i
     nasher config --nssFlags "-n C:/<path>/<to>/<NWNEE> -owkey"
     ```
 
-    *Note:  A common error is to have a trailing '/' after the path in the command above.  There should be no trailing '/'.  Additionally, the slants need to be forward, not back, and any folder names that have spaces must be in double quotes with the quotes escaped.  For example,*
+    *Note:  A common error is to have a trailing '/' after the path in the command above.  There should be no trailing '/'.  Additionally, the slants need to be forward, not back, and any folder names that have spaces must be in escaped double quotes.  For example,*
 
     ```
     nasher config --nssFlags "-n C:/<path>/<to>/\"Neverwinter Nights\" -owkey"
@@ -127,4 +131,3 @@ If you have any questions about installing these tools, and you're sure you foll
 ## Conclusion
 
 Git and Nasher will be the primary programs we will use when we conduct our repository workflow.  Once all of this is setup, it only takes a few seconds to create a working module from the repository.  Any changes you make can be reflected within a working module within a few more seconds.  How to do all of this will be handled in the [workflow tutorial](workflow.md).  Read that next.
-
