@@ -108,13 +108,13 @@ pull -> the action we're taking (see [Git Terminology](#git-terminology))
 upstream -> where we're getting the files from
 master -> the name of the branch we're getting the files from
 
-This command will force your local (on your machine) and remote (on the the GitHub server) repositories to update all files that are sourced from the primary repository.  If you've added new files in your fork, those files will be ignored.  If there are no new or changed files in the primary repository, no files will be updated in your local or remote repository.
+This command will force your local (on your machine) repository to update all files that are sourced from the primary repository.  If you've added new files in your fork, those files will be ignored.  If there are no new or changed files in the primary repository, no files will be updated in your local or remote repository.  `git pull upstream master` does not update your remote repository, but your remote will be updated the next time you `git push origin master` when your workflow is complete.
 
 *Note: A common mistake that causes this command to fail is a dirty working tree.  If you have any changed files in your local repository that were sourced from the primary repository that you have not yet committed to your remote repository, and the files on the primary repository have changed, git will not allow the changes to be incorporated because it does not want to delete your work without your permission.  To resolve this issue, you must commit, undo or stash all of your changes ("clean your working tree") before updating your repositories with an upstream request.*
 
 ## Building the Module
 
-*Note:  If you are modifying non-toolset files (such as scripts, models, 2DAs, etc.), you do not need to build the module to do your work.  Open your work directly from the repository directory on your computer, do your work in whatever program you use, and re-save the work into the repository.  Then skip down to the [staging and committing section](#staging-and-committing-changes) below to continue your workflow.  So, if you are not building items, areas or conversations, you can work completely outside the toolset and save yourself a few steps.*
+*Note:  If you are modifying non-toolset files (such as scripts, models, 2DAs, etc.), you do not need to build the module to do your work.  Open your work directly from the repository directory on your computer, do your work in whatever program you use, and re-save the work into the repository.  Then skip down to the [staging and committing section](#staging-and-committing-changes) below to continue your workflow.  So, if you are not building items, areas or other toolset-centric resources, you can work completely outside the toolset and save yourself a few steps.*
 
 Now we're ready to build a module file so we can start working on it.  In your command line utility, type the following:
 
@@ -128,7 +128,7 @@ This command will convert, compile, pack and install a module file into your mod
 
 #### Toolset
 
-I can't give you a lot of direction here.  If you're adding content via the toolset, then do your thing and save your work when you're done.  
+After installing the module and attempt to open the module in the toolset, you will be given the option to open the `.mod` file or open the folder directory as a module.  In order for the unpack process to work correctly, **you must opt to open the folder directory as a module**.  Beyond that, I can't give you a lot of direction here.  If you're adding content via the toolset, then do your thing and save your work when you're done.  
 
 #### Other Files
 
@@ -142,22 +142,22 @@ Any new files you add, either in the toolset or via copy/paste, will not automat
 git add .
 ```
 
-The `.` tells Git to ensure all files in your repository, including subfolders, are included in your repository.  This will also stage all new files for the next commit.
+The `.` tells Git to ensure all files in your repository, including subfolders, are included in your repository.  This will also stage all new and modified files for the next commit.  If you only want to stage a specific file, you can use `git add <filename.ext>`.
 
 ## Unpacking the Module
 
-If you've added content to the module and saved your work, you can unpack that work back into your repository.  **You do not need to build the module within the toolset to do this.**  To unpack the module, accomplish the following
+If you've added content to the module and saved your work, you can unpack that work back into your repository.  **You do not need to build the module within the toolset to do this.**  Building the module compiles the scripts, but we can use nasher (via nwnsc.exe) to do that much more reliably and with better feedback.  To unpack the module, accomplish the following:
 
 1. Ensure all of your toolset work is saved.
 2. Unpack the module into your repository with the following:
 
-```
-nasher unpack ds
-```
+    ```
+    nasher unpack ds
+    ```
 
-This is the most conservative way to unpack the module as it will prompt you for a yes or no answer for any major changes, such as deleting files from the repository that you've removed in the toolset.  It will not overwrite any files that have not been changed nor any files that don't exist in the module (such as these markdown files).  There are other command arguments you can to make the unpacking go faster.  You may wish to use these when you're more comfortable with the process.
+This is the most conservative way to unpack the module as it will prompt you for a yes or no answer for any major changes, such as deleting files from the repository that you've removed in the toolset.  It will not overwrite any files that have not been changed nor any files that don't exist in the module (such as these markdown files).  There are other command arguments you can use to make the unpacking process go faster.  You may wish to use these when you're more comfortable with the process.
 
-`nasher unpack ds --removeDeleted:true --yes`, will unpack the module, remove any deleted files without prompt and, if there are any prompts, it will force answer them with yes.
+`nasher unpack ds --removeDeleted:true --yes`, will unpack the module, remove any deleted files without prompt and, if there are any prompts, it will force answer them with yes.  This is a command you may want to use if all you've done in the toolset is remove some resources, such as items, areas, etc.  Otherwise, the files will still exist in the repository and will be built into the next install.
 
 `nasher unpack ds --removeDeleted:false --no` will unpack the module, keep all the files in your repository, even if you deleted them in the toolset and force answer no to any prompts that might come up.  If you delete files in the toolset (such as removing items or areas), I recommend removing the deleted files from your repository with the `--removeDeleted:true` argument.  Otherwise, the files will be included in your module when you build it again the next time you work on it.
 
@@ -165,7 +165,7 @@ This is the most conservative way to unpack the module as it will prompt you for
 
 ## Cleaning up Your Workspace
 
-Now that you've done your work and unpacked it back to your repository, you can clean up your workspace.  This step is never strictly necessary, but it doesn clean up some files to ensure you're not accidentally using old files in your work.  Also, it reduces some of the prompting you will see when using Nasher commands.
+Now that you've done your work and unpacked it back to your repository, you can clean up your workspace.  This step is never strictly necessary, but it does clean up some files to ensure you're not accidentally using old files in your work.  Also, it reduces some of the prompting you will see when using nasher commands.
 
 1. Delete the module file and the module working directory in your modules folder.
 2. Delete the module file, if you haven't already, in your local repository folder.

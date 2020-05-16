@@ -42,28 +42,63 @@ const string FALLBACK_DATABASE = "core_framework";
 // - DEBUG_LOG_ALL: debug messages are sent to the log files, DMs, and first PC
 int DEBUG_LOGGING = DEBUG_LOG_ALL;
 
-// This is the level of debug messages to generate. All debug messages of this
-// level or higher will be logged to DEBUG_LOGGING. This is only the default
-// level for the module. You can set a higher level on an object by calling
-// SetDebugLevel() on it. Alternatively, you may use the toolset to add a local
-// int named DEBUG_LEVEL on the object; the value should be 0-3, where a higher
-// value means higher verbosity.
+// This is the level of debug messages to generate. This can be overriden to
+// debug specific objects or events (see below).
+//
+// You can override this level on all events using SetDebugLevel(), or on a
+// specific event using SetEventDebugLevel(). These functions can set the level
+// for all objects or for a specific object.
+//
+// Alternatively, you can set the value on a specific object in the toolset:
+// - To set the debug level for all events, add a local int named DEBUG_LEVEL
+// - To set the debug level for a single event, add a local int named
+//   DEBUG_LEVEL_* and a local int named DEBUG_EVENT_*, where * is the name of
+//   the event as defined in core_i_constants.nss.
+// - The value of either of these settings should be a value from 1-5
+//   representing one of the DEBUG_LEVEL_* constants below.
+//
+// The value that is used is determined as follows:
+// 1. If set, the object-specific debug level for the current event is used.
+// 2. If set, the global debug level for the current event is used. Otherwise...
+// 3. The higher of the global or the object-specific debug level is used.
+//
+// This priority system is intended to allow you to reduce the amount of debug
+// calls from verbose events such as heartbeats or OnCreaturePerception, which
+// can make it hard to scan for useful information.
+//
 // Possible values:
 // - DEBUG_LEVEL_CRITICAL: errors severe enough to stop the script
 // - DEBUG_LEVEL_ERROR: indicates the script malfunctioned in some way
 // - DEBUG_LEVEL_WARNING: indicates unexpected behavior may occur
 // - DEBUG_LEVEL_NOTICE: information to track the flow of functions
-const int DEFAULT_DEBUG_LEVEL = DEBUG_LEVEL_NOTICE;
+// - DEBUG_LEVEL_DEBUG: data dumps used for debugging
+const int DEFAULT_DEBUG_LEVEL = DEBUG_LEVEL_DEBUG;
 
 // This controls the level of debug messages to generate on heartbeat events.
 // This can be used to prevent the excessive generation of debug messages that
-// may clutter the log.
+// may clutter the log. You may override this on an event-by-event basis using
+// SetEventDebugLevel().
 // Possible values:
+// - DEBUG_LEVEL_NONE: use the object or module default level
 // - DEBUG_LEVEL_CRITICAL: errors severe enough to stop the script
 // - DEBUG_LEVEL_ERROR: indicates the script malfunctioned in some way
 // - DEBUG_LEVEL_WARNING: indicates unexpected behavior may occur
 // - DEBUG_LEVEL_NOTICE: information to track the flow of functions
+// - DEBUG_LEVEL_DEBUG: data dumps used for debugging
 const int HEARTBEAT_DEBUG_LEVEL = DEBUG_LEVEL_ERROR;
+
+// This is the level of debug messages to generate when OnCreaturePerception
+// fires. This can be used to prevent the excessive generation of debug messages
+// that may clutter the log. You may override this on an object-by-object basis
+// using SetEventDebugLevel().
+// Possible values:
+// - DEBUG_LEVEL_NONE: use the object or module default level
+// - DEBUG_LEVEL_CRITICAL: errors severe enough to stop the script
+// - DEBUG_LEVEL_ERROR: indicates the script malfunctioned in some way
+// - DEBUG_LEVEL_WARNING: indicates unexpected behavior may occur
+// - DEBUG_LEVEL_NOTICE: information to track the flow of functions
+// - DEBUG_LEVEL_DEBUG: data dumps used for debugging
+const int PERCEPTION_DEBUG_LEVEL = DEBUG_LEVEL_ERROR;
 
 // -----------------------------------------------------------------------------
 //                         Library and Plugin Management
@@ -152,4 +187,4 @@ const float ON_AREA_EMPTY_EVENT_DELAY = 180.0;
 
 // This is the welcome message that will be sent to all players and DMs that log
 // into the module.
-const string WELCOME_MESSAGE = "Welcome to the Core Framework.";
+const string WELCOME_MESSAGE = "Welcome to Athas.  Good luck.";
