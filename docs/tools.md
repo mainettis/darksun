@@ -115,13 +115,13 @@ Since we already have the nimble programming language installed via choosenim, i
 3. Configure NWNSC.  NWNSC is an external script compiler for Neverwinter Nights created by glorwinger (sorry, I don't know his real name).  He created this tool so that module developer's like yourselves could compile scripts without having to use the toolset.  NWNSC provides much better feedback and can be used with almost any development environment (including [VScode](vscode.md)) to test script compilation without opening the toolset.  The file `nwnsc.exe` is included in the base folder of the primary repository, so it will be included in your forked repository.  The following command uses the path where your NWNEE game files are installed, not the path to the user content that is normally in your documents directory.  To configure your installation path, type the following into your command line utility:
 
     ```
-    nasher config --nssFlags "-n C:/<path>/<to>/<NWNEE> -owkey"
+    nasher config --nssFlags:"-n C:/<path>/<to>/<NWNEE> -owkey"
     ```
 
     *Note:  A common error is to have a trailing '/' after the path in the command above.  There should be no trailing '/'.  Additionally, the slants need to be forward, not back, and any folder names that have spaces must be in escaped double quotes.  For example,*
 
     ```
-    nasher config --nssFlags "-n C:/<path>/<to>/\"Neverwinter Nights\" -owkey"
+    nasher config --nssFlags:"-n C:/<path>/<to>/\"Neverwinter Nights\" -owkey"
     ```
 
     *Note:  Only one of the previous two commands needs to be run.  If you have spaces in your directory name, you need the second command with the escaped quotation marks.  If you don't have spaces in your folder names, use the first command.*
