@@ -86,7 +86,7 @@ Since we've already installed Nimble, installing neverwinter.nim is extremely ea
 
     and press enter.
 
-    *Note:  There is a possibility that choosenim does not add the nimble directory to your system's PATH environmental variable.  If you attempt to use the `nimble install neverwinter` command in the next section and you get a `command not found` error, this is likely th case.  To resolve this:*
+    *Note:  There is a possibility that choosenim does not add the nimble directory to your system's PATH environmental variable.  If you attempt to use the `nimble install neverwinter` command in the next section and you get a `command not found` error, this is likely the case.  To resolve this:*
 
     *Windows:  Go to your `control panel` and click on `system`, then `advanced system settings`.  A new window will appear.  On the `advanced tab`, click on `environmental variables`.  On the lower half of the next window that appears, click on the `Path` variable and then click `edit`.  Click on `browse...` and search for your nimble directory.  Unless you modified the installation directory when you installed nimble in the [previous section](#nimble), it should be `c:\users\<username>\.nimble\bin` or something very similar.  Once you've added this folder to the `Path` variable, close any command line utilities you have open, then re-open then and try the command again.*
 
@@ -123,6 +123,15 @@ Since we already have the nimble programming language installed via choosenim, i
     ```
     nasher config --nssFlags "-n C:/<path>/<to>/\"Neverwinter Nights\" -owkey"
     ```
+
+    *Note:  Only one of the previous two commands needs to be run.  If you have spaces in your directory name, you need the second command with the escaped quotation marks.  If you don't have spaces in your folder names, use the first command.*
+
+    Finally, even though nwnsc.exe is included in the base directory, some situation may require an explicit reference to its location.  The first time you try to build the module in the [workflow](workflow.md), if you receive an error stating that `\nwnsc.exe\ cannot be found`, you must run the following command.  **Replace the folder names with your folder structure to your local git repository.**  The double backslashes are important.
+
+    ```
+    nasher config --nssCompiler "C:\\Users\\<username>\\Desktop\\Git Repositories\\darksun\\nwnsc.exe"
+    ```
+
 
 ## Questions
 
