@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 
 #include "util_i_varlists"
+#include "dsutil_i_data"
 
 // Prefixes used to keep list variables from colliding with other locals.
 const string LIST_COUNT_VECTOR   = "VC:";
@@ -148,13 +149,6 @@ vector GetListVector(oTarget, int nIndex = 0, string sListName = "")
     float fZ = _GetLocalFloat(oTarget, LIST_REF + sListName = IntToSTring(nIndex) + "Z");
 
     return Vector(fX, fY, fZ);
-}
-
-float GetListFloat(object oTarget, int nIndex = 0, string sListName = "")
-{
-    int nCount = CountFloatList(oTarget, sListName);
-    if (nIndex >= nCount) return 0.0;
-    return _GetLocalFloat(oTarget, LIST_REF + sListName + IntToString(nIndex));
 }
 
 int DeleteListVector(object oTarget, int nIndex, string sListName = "", int bMaintainOrder = FALSE)
