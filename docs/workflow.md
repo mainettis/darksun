@@ -64,7 +64,7 @@ These definitions are provided to help you understand what some of the Git termi
 
 These definitions tell you what each of the major Nasher commands do.  Reading these definitions is not strictly necessary, but if you're confused by what Nasher is doing when you type a command, this is probably a good first place to look.
 
-`unpack` - converts all module resource files in .json files so they can be tracked by Git and shared with the rest of the team.  Script files (.nss) are plain text files, so they are not converted to .json.
+`unpack` - converts all module resource files to .json files so they can be tracked by Git and shared with the rest of the team.  Script files (.nss) are plain text files, so they are not converted to .json.
 
 `convert` - converts all .json sources in your local repository to the native gff format for use within the module.  The command will turn the unpacked .json files back into the correct file format, such as .uti.
 
@@ -72,7 +72,7 @@ These definitions tell you what each of the major Nasher commands do.  Reading t
 
 `pack` - coverts and compiles all of the resources in your local directory into a module file (.mod) and places that file into the base folder of your local repository.
 
-`install` - converst, compiles and packs all of the resources in your local repository into a module file (.mod) and copies that file into the base folder of your local repository as well as into the modules folder of your NWN:EE installation.
+`install` - converts, compiles and packs all of the resources in your local repository into a module file (.mod) and copies that file into the base folder of your local repository as well as into the modules folder of your NWN:EE installation.  If you're creating a hak, erf or tlk file, this command will copy the file into the correct directory.
 
 # Workflow
 
@@ -86,6 +86,7 @@ Here is the general workflow I've developed and it seems to be relatively effici
 * [Staging and Committing Changes](#staging-and-committing-changes)
 * [Updating the Remote Repository](#updating-the-remote-repository)
 * [Request Review of New Content](#request-review-of-new-content)
+* [Advanced Workflow Tasks](#advanced-workflow-tasks)
 * [Getting your Questions Answered](#questions)
 * [The Next Step](#conclusion)
 
@@ -97,8 +98,7 @@ Your forked repository will not automatically update from the primary repository
 
 *Note:  This step is not strictly necessary.  If you're not working on any of the base module files that are sourced from the primary repository and your work does not depend on those files being current (such as adding new models, etc.), then you can [skip this step](#building-the-module).
 
-To update your forked repository, run the following command in your command line utility:
-
+To update your forked repository, navigate to your `Git_Repositories\ds` folder and run the following command in your command line utility:
 ```
 git pull upstream master
 ```
@@ -117,7 +117,6 @@ This command will force your local (on your machine) repository to update all fi
 *Note:  If you are modifying non-toolset files (such as scripts, models, 2DAs, etc.), you do not need to build the module to do your work.  Open your work directly from the repository directory on your computer, do your work in whatever program you use, and re-save the work into the repository.  Then skip down to the [staging and committing section](#staging-and-committing-changes) below to continue your workflow.  So, if you are not building items, areas or other toolset-centric resources, you can work completely outside the toolset and save yourself a few steps.*
 
 Now we're ready to build a module file so we can start working on it.  In your command line utility, type the following:
-
 ```
 nasher install ds --yes
 ```
@@ -125,14 +124,13 @@ nasher install ds --yes
 This command will convert, compile, pack and install a module file into your modules folder.  This will make it available immediately to the toolset when you open it.  If you're given the option to open the module via a folder tree, take that option.  If you've [updated your repository](#updating-your-forked-repository), this module file will be the most current module we're using.
 
 #### Errors
-
-It is possible that you could receive some script compilation errors during the build process.  If you're not working on scripts, this shouldn't be happening, so please contact @tinygiant on the Dark Sun discord with the error information (screenshot of the output is preferred) and we'll get it fixed.  If you are working on scripts, fix your errors and re-attempt.  If you are getting compilation errors you don't understand or can't otherwise resolve, please see the [questions](#questions) for contact information.
+It is possible that you could receive some script compilation errors during the build process.  If you're not working on scripts, this shouldn't be happening, so please contact @tinygiant on the Dark Sun discord with the error information (screenshot of the output is preferred) and we'll get it fixed.  If you are working on scripts, fix your errors and re-attempt.  If you are getting compilation errors you don't understand or can't otherwise resolve, please see the [questions](#questions) for contact information.  Script compilation errors will not keep you from working on non-script resources, so if you don't get an answer, continue your workflow and we'll get it fixed as soon as we can.
 
 ## Adding Content
 
 #### Toolset
 
-After installing the module and attempt to open the module in the toolset, you will be given the option to open the `.mod` file or open the folder directory as a module.  In order for the unpack process to work correctly, **you must opt to open the folder directory as a module**.  Beyond that, I can't give you a lot of direction here.  If you're adding content via the toolset, then do your thing and save your work when you're done.  
+After installing the module and attempting to open the module in the toolset, you will be given the option to open the `.mod` file or open the folder directory as a module.  In order for the unpack process to work correctly, **you must opt to open the folder directory as a module**.  Beyond that, I can't give you a lot of direction here.  If you're adding content via the toolset, then do your thing and save your work when you're done.  
 
 #### Other Files
 
@@ -141,7 +139,6 @@ If you're reading this, then you didn't read my note about not needing to build 
 #### Tracking New Files
 
 Any new files you add, either in the toolset or via copy/paste, will not automatically be tracked by Git for pushing to the repository.  In order to track all of your new files, type the following into your command line utility:
-
 ```
 git add .
 ```
@@ -150,7 +147,7 @@ The `.` tells Git to ensure all files in your repository, including subfolders, 
 
 ## Unpacking the Module
 
-If you've added content to the module and saved your work, you can unpack that work back into your repository.  **You do not need to build the module within the toolset to do this.**  Building the module compiles the scripts, but we can use nasher (via nwnsc.exe) to do that much more reliably and with better feedback.  To unpack the module, accomplish the following:
+If you've added content to the module and saved your work, you can unpack that work back into your repository.  **You do not need to *build* the module within the toolset to do this.**  Building the module compiles the scripts, but we can use nasher (via nwnsc.exe) to do that much more reliably and with better feedback.  To unpack the module, accomplish the following:
 
 1. Ensure all of your toolset work is saved.
 2. Unpack the module into your repository with the following:
@@ -183,15 +180,13 @@ You do not have to stage and commit changes every time you do your work.  Howeve
 #### Staging
 
 You stage your work by adding it to the next commit.  Previously, you used the `git add .` command to add new files and noted that doing this also staged them for the next commit.  If you've modified files in the toolset (or some other way) and they're now in your repository, you can check the status of those files by using the following command:
-
 ```
 git status
 ```
 
-This will display all new and changed files in your repository and whether those files will be included in the next commit or now.  If you see any files that are marked as not being committed, but you want them include, run the `git add .` command again to ensure they're included.  If you don't to include all of the changed file, but just some specific file, you can use:
-
+This will display all new and changed files in your repository and whether those files will be included in the next commit or now.  If you see any files that are marked as not being committed, but you want them include, run the `git add .` command again to ensure they're included.  If you don't want to include all of the changed file, but just some specific file, you can use:
 ```
-git add <filename>
+git add <filename.ext>
 ```
 
 This will stage only the selected file to the next commit.  Use `git  status` again to check the status of these files.
@@ -200,14 +195,12 @@ This will stage only the selected file to the next commit.  Use `git  status` ag
 
 #### Committing
 
-Once all the files you want sent to your remote repository are staged, you have to commit them and add a commit message.  Use the following command:
-
+Once all the files you want sent to your remote repository are staged, you have to commit them and add a commit message.  The `<your message here>` section below is a quick note (less than 50 characters) you can inlude so people know what the commit is for.  Use the following command:
 ```
 git commit -m "<your message here>"
 ```
 
 If you want to skip the staging step and include all new and changed files in the next commit, you can use the following:
-
 ```
 git commit -a -m "<your message here>"
 ```
@@ -216,8 +209,7 @@ The `-a` tells Git to stage all tracked files
 
 #### Pushing
 
-We're almost there.  To push all of your committed change, type the following into your command line utility:
-
+We're almost there.  Everything is updated on your local computer, but not sent to your remote repository yet.  To push all of your committed changes to your remote, type the following into your command line utility:
 ```
 git push origin master
 ```
@@ -233,6 +225,14 @@ This is also known as a pull request.  To submit a pull request, go to your fork
 Click on the `New Pull Request` button.  The next screen will show you all of the changes you've made, including file additions.  It will also request you add some text as to why you're requesting this pull to the primary repository.  Add some discussion as to what changes you made, what your intent behavior for the new items is and any other pertinent information necessary to ensure smooth integration into the primary repostitory.  When you're done, click on the big green button and either send the pull request or save it as a draft request for later submission.
 
  ![pull request submission button](https://help.github.com/assets/images/help/pull_requests/pullrequest-send.png)
+
+ ## Advanced Workflow Tasks
+
+ Git is a very powerful tool for source control.  You may find that you want to work on several different sections of the module, but don't want to commit all of the various sections at the same time.  You can easily accomplish this through the use of git branches.  A branch is essentially a copy of your repository that you can use to make all the changes you want without affecting your base repository until you decide to merge them.  
+ 
+ For example, if you're building two different cities in the toolset, you can create two git branches (one for each city).  This way, when you're done with one and want to incorporate it into the base module, you can send a pull request just for that city's branch without accidentally including files from the city you're still working on.  
+ 
+ Branching also allows you to update your local repository with changes from the primary repository without overwriting any of your new work or requiring you to stash or commit your changes.  It's a great way of doing business that solves a lot of problems.  Details on how to do this will be forthcoming in the next update to this tutorial.
 
 ## Questions
 
