@@ -13,6 +13,5 @@
 
 void main()
 {
-    SetEventDebugLevel(HEARTBEAT_DEBUG_LEVEL);
     RunEvent(REST_EVENT_ON_TRIGGER_HEARTBEAT);
 }
