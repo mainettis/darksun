@@ -110,19 +110,19 @@ int _GetIsPartyMember(object oPC, object oKnownPartyMember)
 
 // ---< _Get* Variable Procedures >---
 
-object DetermineObject(oObject)
+object DetermineObject(object oObject)
 {
     if (oObject == oModule)
         return MODULE;
     
-    if (GetIsPC(oObject) && !nFlag)
+    if (GetIsPC(oObject))
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
             return oData;
     }
 
-    return oObject
+    return oObject;
 }
 
 int _GetLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
