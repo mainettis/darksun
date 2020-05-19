@@ -236,7 +236,7 @@ This will stage only the selected file to the next commit.  Use `git  status` ag
 
 #### Committing
 
-Once all the files you want sent to your remote repository are staged, you have to commit them and add a commit message.  The `<your message here>` section below is a quick note (less than 50 characters) you can inlude so people know what the commit is for.  Use the following command:
+Once all the files you want sent to your remote repository are staged, you have to commit them and add a commit message.  Ensure you are on the correct branch (i.e. `git checkout <branchname>`). The `<your message here>` section below is a quick note (less than 50 characters) you can inlude so people know what the commit is for.  Use the following command:
 ```
 git commit -m "<your message here>"
 ```
@@ -255,7 +255,7 @@ We're almost there.  Everything is updated on your local computer, but not sent 
 git push origin <branchname>
 ```
 
-If you haven't already published your branch to your remote repository, this will do so and send all of your changed files with it.
+If you're working in your master branch (stop it! you know you shouldn't be working on your master branch!), the previous command would be `git push origin master`.  If you haven't already published your branch to your remote repository, this will do so and send all of your changed files with it.
 
 Well, we're finally here.  All of your hard work has paid off and it's now in your remote repository for the world to see.  You can leave it there, delete it, change it, or do whatever you want with it.  If you want to have it incorporated into the base module, however, you need to [submit a pull request](#request-review-of-new-content).
 
@@ -269,11 +269,11 @@ Click on the `New Pull Request` button.  The next screen will show you all of th
 
 ![base pull request](images/PRMaster.jpg)
 
-But, you're working on a fork, so you don't want to compary the master branches becaues they're the same anyway.  To select the branch you're working on, click on `compare across forks`.  Once you do that, you will see the options change to something like this:
+But, you're working on a fork, so you don't want to compare the master branches because they're the same anyway.  To select the branch you're working on, click on `compare across forks`.  Once you do that, you will see the options change to something like this:
 
 ![fork pull request](images/PRFork.jpg)
 
-On the ***right*** set of drop-down boxes (to the right side of the left-pointing arrow), choose your repository in the first drop down (`<your_user_name>/darksun`) and choose the branch you want to merge in the second drop down box (<branchname>).
+On the ***right*** set of drop-down boxes (to the right side of the left-pointing arrow), choose your repository in the first drop down (`<your_user_name>/darksun`) and choose the branch you want to merge in the second drop down box (`<branchname>`).
 
 It will also request you add some text as to why you're requesting this pull to the primary repository.  Add some discussion as to what changes you made, what your intended behavior for the new items is and any other pertinent information necessary to ensure smooth integration into the primary repostitory.  When you're done, click on the big green button and either send the pull request or save it as a draft request for later submission.
 
