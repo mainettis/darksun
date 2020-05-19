@@ -553,6 +553,8 @@ const int INFLATE_Z = 0x04;
 vector ERROR_VECTOR = Vector (0.5f, 0.5f, 0.5f);
 vector BLANK_VECTOR = Vector (0.0f, 0.0f, 0.0f);
 
+const string SHAPE_DRAWN = "SHAPE_DRAWN";
+
 //--------------------------------------------------------------------------------
 // Public constants for updating coordinates
 //--------------------------------------------------------------------------------
@@ -1698,7 +1700,7 @@ int DrawConnected(object oHere, string sThisShape, string sConnectionList = csPe
 // individually.
 int RedrawConnected(object oHere, string sThisShape, string sConnectionList = csPentagram, string sThisResRef = "plc_invisobj");
 //--------------------------------------------------------------------------------
-
+//TODO
 // Make sure that the shape to draw will actually all fit in the area
 int ShapeIsDrawable(object oHere, string sThis)
 {
@@ -1755,135 +1757,90 @@ int ShapeIsDrawable(object oHere, string sThis)
 
 // First part of the drawing routines. Must be called *BEFORE* any of the line drawing routines
 // Note can be called on its own in order to display patterns of visible objects
-int DrawPoints(object oHere, string sThisShape, string sThisResRef = "plc_invisobj")
+//DrawPoints
+int CreateNodes(object oTarget, string sShapeName, string sPlaceable = "plc_invisobj")
 {
-    vector vThisVector;
-    location lThisLocation;
-    int iIndex;
-    int iAlreadyDrawn;
-    int iReturnThis = TRUE;
-    int iMaxIndex;
-    string sBaseTag = sThisShape + "OBJ";
-    string sIsDrawn = sBaseTag + "Drawn";
-    object oThisObject;
-    object oArea;
+    if(!GetIsObjectValid(oTarget) || sShapeName == "" || sPlaceable == "")
+        return FALSE;
 
-    if(oHere == OBJECT_INVALID || sThisShape == "" || sThisResRef == "")
-        iReturnThis = FALSE;
-    else
+    if (_GetLocalInt(oTarget, SHAPE_DRAWN))
+        return FALSE;
+
+    if (ShapeIsDrawable(oTarget, sShapeName))
     {
-        iAlreadyDrawn = GetLocalInt(oHere, sIsDrawn);
+        int i, nCount = CountVectorList(oTarget, sShapeName);
 
-        if(iAlreadyDrawn)
-            iReturnThis = FALSE;
-        else
+        if (!nCount)
+            return FALSE;
+
+        for (i = 1; i <= nCount; i++)
         {
-            if(ShapeIsDrawable(oHere, sThisShape))
-            {
-                //iMaxIndex = LastIndex(oHere, sThisShape);
-                iMaxIndex = CountVectorList(oHere, sThisShape);
+            vector v = GetListVector(oTarget, i, sShapeName);
+            location lShapeLocation = Location(GetArea(oTarget), v, DIRECTION_NORTH);
+            object oPlaceable = CreateObject(OBJECT_TYPE_PLACEABLE, sPlaceable, lShapeLocation);
 
-                if(iMaxIndex < 0)
-                    iReturnThis = FALSE;
-                else
-                {
-                    oArea = GetArea(oHere);
+            if (!GetIsObjectValid(oPlaceable))
+                return FALSE;
 
-                    for(iIndex = 1 ; iIndex <= iMaxIndex ; iIndex++)
-                    {
-                        vThisVector = RetrieveVector(oHere, sThisShape, iIndex);
-                        lThisLocation = Location(oArea, vThisVector, DIRECTION_NORTH);
-                        oThisObject = CreateObject(OBJECT_TYPE_PLACEABLE, sThisResRef, lThisLocation);
-
-                        if(oThisObject == OBJECT_INVALID)
-                        {
-                            iReturnThis = FALSE;
-                            break;
-                        }
-
-                        SetTag(oThisObject, sBaseTag + IntToPaddedString(iIndex));
-                    }
-                    if(iReturnThis)
-                        SetLocalInt(oHere, sIsDrawn, TRUE);
-                }
-            }
-            else
-                iReturnThis = FALSE;
+            SetTag(oPlaceable, sShapeName + IntToString(i));
         }
+
+        _SetLocalInt(oTarget, SHAPE_DRAWN + sShapeName, TRUE);
     }
+    else
+        return FALSE;
+
     return iReturnThis;
 }
 
-// The converse  of the previous routine. As a by product this routine should
-// also remove any drawn lines
-int ErasePoints(object oHere, string sThisShape, float fTimeDelay = 0.001)
+int DeleteNodes(object oTarget, string sShapeName, float fDelay = 0.001)
 {
-    int iIndex;
-    int iReturnThis = TRUE;
-    int iNotDrawn;
-    int iMaxIndex;
-    string sBaseTag = sThisShape + "OBJ";
-    string sIsDrawn = sBaseTag + "Drawn";
-    object oThisObject;
+    if (oTarget == OBJECT_INVALID || sShapeName == "")
+        return FALSE;
 
-    if(oHere == OBJECT_INVALID || sThisShape == "" || iNotDrawn)
-        iReturnThis = FALSE;
-    else
+    if (!_GetLocalInt(oTarget, SHAPE_DRAWN))
+        return FALSE;
+
+    int i, nCount = CountVectorList(oTarget, sShapeName);
+    object oPlaceable;
+
+    if (!nCount)
+        return FALSE;
+
+    for (i = 1; i <= nCount; i++)
     {
-        iNotDrawn = !(GetLocalInt(oHere, sIsDrawn));
+        oPlaceable = GetObjectByTag(sShapeName + IntToString(i));
 
-        if(iNotDrawn)
-            iReturnThis = FALSE;
+        if (GetIsObjectValid(oPlaceable))
+            DestroyObject(oPlaceable, fDelay);
         else
-        {
-            //iMaxIndex = LastIndex(oHere, sThisShape);
-            iMaxIndex = CountVectorList(oHere, sThisShape);
-
-            if(iMaxIndex < 0)
-                iReturnThis = FALSE;
-            else
-            {
-                for(iIndex = 1 ; iIndex <= iMaxIndex ; iIndex++)
-                {
-                    oThisObject = GetObjectByTag(sBaseTag + IntToPaddedString(iIndex));
-
-                    if(oThisObject == OBJECT_INVALID)
-                    {
-                        iReturnThis = FALSE;
-                        break;
-                    }
-
-                    DestroyObject(oThisObject, fTimeDelay);
-                }
-                if(iReturnThis)
-                    SetLocalInt(oHere, sIsDrawn, FALSE);
-            }
-        }
+            return FALSE;
     }
-    return iReturnThis;
+
+    _DeleteLocalInt(oTarget, SHAPE_DRAWN + sShapeName);
+    return TRUE;
 }
 
-int RedrawPoints(object oHere, string sThisShape, string sThisResRef = "plc_invisobj")
+//RedrawPoints
+int RedrawNodes(object oTarget, string sShapeName, string sPlaceable = "plc_invisobj")
 {
-    int iReturnThis;
-
-    if(ErasePoints(oHere, sThisShape, 0.000000001))
-        iReturnThis = DrawPoints(oHere, sThisShape, sThisResRef);
+    if (DeleteNodes(oTarget, sShapeName, 0.000000001))
+        return CreateNoted(oTarget, sShapeName, sPlaceable);
     else
-        iReturnThis = FALSE;
-
-    return iReturnThis;
+        return FALSE;
 }
+
+//WORKING HERE
 
 // Draw a single line between two already displayed points represented by
 // object oStartPoint and string sEndPoint.
-object DrawLine(string sThisShape, object oStartPoint, string sEndPoint)
+object DrawLine(string sShapeName, object oStartNode, string sEndNode)
 {
-    string sBaseTag = sThisShape + "OBJ";
+    string sBaseTag = sShapeName + "OBJ";
     object oEndPoint;
     object oReturnThis;
 
-    if(oStartPoint == OBJECT_INVALID || sThisShape == "" || sEndPoint == "" || GetStringLength(sEndPoint) != 2)
+    if(oStartPoint == OBJECT_INVALID || sShapeName == "" || sEndPoint == "" || GetStringLength(sEndPoint) != 2)
         oReturnThis = OBJECT_INVALID;
     else if(StringToInt(sEndPoint) == 0)
         oReturnThis = OBJECT_INVALID;
@@ -1916,70 +1873,62 @@ int DrawLine2(object oStartPoint, object oEndPoint)
     return iReturnThis;
 }
 
-// Draws a simple closed 2d shape in 3d space
-int DrawSimpleShape(object oHere, string sThisShape)
+// Draws a simple closed 2d shape in 3d space  //TODO
+//DrawSimpleShape
+int DrawShape(object oTarget, string sShapeName)
 {
     int iIndex;
     int iMaxIndex;
     int iReturnThis = TRUE;
-    string sBaseTag = sThisShape + "OBJ";
+    string sBaseTag = sShapeName + "OBJ";
     object oStartPoint;
     object oEndPoint;
 
-    if(oHere == OBJECT_INVALID || sThisShape == "")
-        iReturnThis = FALSE;
-    else
+    if (!GetIsObjectValid(oTarget) || sShapeName == "")
+        return FALSE;
+
+    if (ShapeIsDrawable(oTarget, sShapeName))
     {
-        if(ShapeIsDrawable(oHere, sThisShape))
+        int i, nCount = CountVectorList(oTarget, sShapeName);
+
+        if (!nCount)
+            return FALSE;
+
+        oStartPoint = GetObjectByTag(sShapeName + IntToString(i));
+        oEndPoint = GetObjectByTag(sBaseTag + IntToPaddedString(iMaxIndex));
+
+        if (oStartPoint == OBJECT_INVALID || oEndPoint == OBJECT_INVALID)
+            return FALSE;
+        else
         {
-            //iMaxIndex = LastIndex(oHere, sThisShape);
-            iMaxIndex = CountVectorList(oHere, sThisShape);
+            AssignCommand(oStartPoint, ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectBeam(ciThisBeamVFX, oStartPoint, BODY_NODE_CHEST), oEndPoint));
 
-            if(iMaxIndex < 0)
-                iReturnThis = FALSE;
-            else
+            for(iIndex = 2 ; iIndex <= iMaxIndex ; iIndex++)
             {
-                oStartPoint = GetObjectByTag(sBaseTag + "01");
-                oEndPoint = GetObjectByTag(sBaseTag + IntToPaddedString(iMaxIndex));
+                oStartPoint = DrawLine(sShapeName, oStartPoint, IntToPaddedString(iIndex));
 
-                if(oStartPoint == OBJECT_INVALID || oEndPoint == OBJECT_INVALID)
-                    iReturnThis = FALSE;
-                else
-                {
-                    AssignCommand(oStartPoint, ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectBeam(ciThisBeamVFX, oStartPoint, BODY_NODE_CHEST), oEndPoint));
-
-                    for(iIndex = 2 ; iIndex <= iMaxIndex ; iIndex++)
-                    {
-                        oStartPoint = DrawLine(sThisShape, oStartPoint, IntToPaddedString(iIndex));
-
-                        if(oStartPoint == OBJECT_INVALID)
-                        {
-                            iReturnThis = FALSE;
-                            break;
-                        }
-                    }
-                }
+                if(!GetIsObjectValid(oStartPoint))
+                    return FALSE;
             }
         }
-        else
-            iReturnThis = FALSE;
     }
-    return iReturnThis;
-}
-
-int RedrawSimpleShape(object oHere, string sThisShape, string sThisResRef = "plc_invisobj")
-{
-    int iReturnThis;
-
-    if(RedrawPoints(oHere, sThisShape, sThisResRef))
-        iReturnThis = DrawSimpleShape(oHere, sThisShape);
     else
-        iReturnThis = FALSE;
+        return FALSE;
 
-    return iReturnThis;
+    return TRUE;
 }
 
-int DrawPyramidal(object oHere, string sThisShape, int iSinglePoint = TRUE)
+//RedrawSimpleShape  TODO - make the plc_invisobj a constant so it can be changed.
+int RedrawShape(object oTarget, string sShapeName, string sPlaceable = "plc_invisobj")
+{
+    if (RedrawNodes(oTarget, sShapeName, sPlaceable))
+        return DrawShape(oTarget, sShapeName);
+    else
+        return FALSE;
+}
+
+//DrawPyramidal
+int DrawPyramidal(object oTarget, string sShapeName, int iSinglePoint = TRUE)
 {
     int iIndex;
     int iMaxIndex;
@@ -1991,80 +1940,73 @@ int DrawPyramidal(object oHere, string sThisShape, int iSinglePoint = TRUE)
     object oApex1;
     object oApex2;
 
-    if(oHere == OBJECT_INVALID || sThisShape == "")
-        iReturnThis = FALSE;
-    else
+    if(!GetIsObjectValid(oTarget) || sShapeName == "")
+        return FALSE;
+
+    if (ShapeIsDrawable(oHere, sThisShape))
     {
-        if(ShapeIsDrawable(oHere, sThisShape))
+        //iMaxIndex = LastIndex(oHere, sThisShape);
+        iMaxIndex = CountVectorList(oHere, sThisShape);
+
+        if(iMaxIndex < 0)
+           return FALSE;
+
+        oStartPoint = GetObjectByTag(sBaseTag + "01");
+        oApex1 = GetObjectByTag(sBaseTag + IntToPaddedString(iMaxIndex));
+
+        if(iSinglePoint)
+            iFinalIndex = iMaxIndex -1;
+        else
         {
-            //iMaxIndex = LastIndex(oHere, sThisShape);
-            iMaxIndex = CountVectorList(oHere, sThisShape);
+            iFinalIndex = iMaxIndex -2;
+            oApex2 = GetObjectByTag(sBaseTag + IntToPaddedString(iMaxIndex -1));
 
-            if(iMaxIndex < 0)
+            if(oApex2 == OBJECT_INVALID)
                 iReturnThis = FALSE;
-            else
+        }
+
+        oEndPoint = GetObjectByTag(sBaseTag + IntToPaddedString(iFinalIndex));
+
+        if(oStartPoint == OBJECT_INVALID || oEndPoint == OBJECT_INVALID || oApex1 == OBJECT_INVALID || !(iReturnThis))
+            iReturnThis = FALSE;
+        else
+        {
+            AssignCommand(oStartPoint, ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectBeam(ciThisBeamVFX, oStartPoint, BODY_NODE_CHEST), oEndPoint));
+            DrawLine2(oStartPoint, oApex1);
+
+            if(!(iSinglePoint))
+                DrawLine2(oStartPoint, oApex2);
+
+            for(iIndex = 2 ; iIndex <= iFinalIndex ; iIndex++)
             {
-                oStartPoint = GetObjectByTag(sBaseTag + "01");
-                oApex1 = GetObjectByTag(sBaseTag + IntToPaddedString(iMaxIndex));
+                oStartPoint = DrawLine(sThisShape, oStartPoint, IntToPaddedString(iIndex));
 
-                if(iSinglePoint)
-                    iFinalIndex = iMaxIndex -1;
-                else
+                if(oStartPoint == OBJECT_INVALID)
                 {
-                    iFinalIndex = iMaxIndex -2;
-                    oApex2 = GetObjectByTag(sBaseTag + IntToPaddedString(iMaxIndex -1));
-
-                    if(oApex2 == OBJECT_INVALID)
-                        iReturnThis = FALSE;
-                }
-
-                oEndPoint = GetObjectByTag(sBaseTag + IntToPaddedString(iFinalIndex));
-
-                if(oStartPoint == OBJECT_INVALID || oEndPoint == OBJECT_INVALID || oApex1 == OBJECT_INVALID || !(iReturnThis))
                     iReturnThis = FALSE;
-                else
-                {
-                    AssignCommand(oStartPoint, ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectBeam(ciThisBeamVFX, oStartPoint, BODY_NODE_CHEST), oEndPoint));
-                    DrawLine2(oStartPoint, oApex1);
-
-                    if(!(iSinglePoint))
-                        DrawLine2(oStartPoint, oApex2);
-
-                    for(iIndex = 2 ; iIndex <= iFinalIndex ; iIndex++)
-                    {
-                        oStartPoint = DrawLine(sThisShape, oStartPoint, IntToPaddedString(iIndex));
-
-                        if(oStartPoint == OBJECT_INVALID)
-                        {
-                            iReturnThis = FALSE;
-                            break;
-                        }
-
-                        DrawLine2(oStartPoint, oApex1);
-
-                        if(!(iSinglePoint))
-                            DrawLine2(oStartPoint, oApex2);
-
-                    }
+                    break;
                 }
+
+                DrawLine2(oStartPoint, oApex1);
+
+                if(!(iSinglePoint))
+                    DrawLine2(oStartPoint, oApex2);
+
             }
         }
-        else
-            iReturnThis = FALSE;
     }
+    else
+        iReturnThis = FALSE;
+
     return iReturnThis;
 }
 
-int RedrawPyramidal(object oHere, string sThisShape, int iSinglePoint = TRUE, string sThisResRef = "plc_invisobj")
+int RedrawPyramidal(object oTarget, string sShapeName, int iSinglePoint = TRUE, string sPlaceable = "plc_invisobj")
 {
-    int iReturnThis;
-
-    if(RedrawPoints(oHere, sThisShape, sThisResRef))
-        iReturnThis = DrawPyramidal(oHere, sThisShape, iSinglePoint);
+    if (RedrawNodes(oTarget, sShapeName, sPlaceable))
+        return DrawPyramidal(oTarget, sShapeName, iSinglePoint);
     else
-        iReturnThis = FALSE;
-
-    return iReturnThis;
+        return FALSE;
 }
 
 //TODO
@@ -2112,16 +2054,12 @@ int DrawExtruded(object oHere, string sThisShape)
     return iReturnThis;
 }
 
-int RedrawExtruded(object oHere, string sThisShape, string sThisResRef = "plc_invisobj")
+int RedrawExtruded(object oTarget, string sShapeName, string sPlaceable = "plc_invisobj")
 {
-    int iReturnThis;
-
-    if(RedrawPoints(oHere, sThisShape, sThisResRef))
-        iReturnThis = DrawExtruded(oHere, sThisShape);
+    if (RedrawNodes(oTarget, sShapeName, sPlaceable))
+        return DrawExtruded(oTarget, sShapeName);
     else
-        iReturnThis = FALSE;
-
-    return iReturnThis;
+        return FALSE;
 }
 
 // Uses an encoded string to specify which points to connect together and the order in
@@ -2129,7 +2067,8 @@ int RedrawExtruded(object oHere, string sThisShape, string sThisResRef = "plc_in
 // such that each number consists of 2 digits. Numbers less than 10 must have a leading
 // zero. The number "-1" is used to signify that the "pen" is to be lifted and a new
 // series of lines be drawn.
-int DrawConnected(object oHere, string sThisShape, string sConnectionList = csPentagram)
+//DrawConnected
+int DrawOrderedShape(object oTarget, string sShapeName, string sConnectionList)
 {
     int iReturnThis = TRUE;
     int iStart;
@@ -2140,64 +2079,64 @@ int DrawConnected(object oHere, string sThisShape, string sConnectionList = csPe
     object oStartPoint;
     object oEndPoint;
 
-    if(oHere == OBJECT_INVALID || sThisShape == "" || sConnectionList == "" || GetStringLength(sConnectionList) & 1)
-        iReturnThis = FALSE;
-    else
+    if (oTarget == OBJECT_INVALID || sShapeName == "" || sConnectionList == "")
+        return FALSE;
+
+    //TODO Grab from list instead of parsing.
+    int i, nCount = CountList(sConnectList);
+
+    if (nCount < 2)
+        return FALSE;
+    
+    nStart = StringToInt(GetListItem(sConnectionList, i));
+    nEnd = StringToInt(GetListItem(sConnectionList, i + 1));
+
+    if(sStartPoint == "-1" || sEndPoint == "" || sEndPoint == "-1")
+        return FALSE;
+
+
+    oStartPoint = GetObjectByTag(sBaseTag + sStartPoint);
+    oEndPoint = GetObjectByTag(sBaseTag + sEndPoint);
+
+    //TODO work from here.  Need loop above.
+
+    while (TRUE)
     {
-        sStartPoint = GetStringLeft(sConnectionList, 2);
-        sConnectionList = GetStringRight(sConnectionList, GetStringLength(sConnectionList) - 2);
+        AssignCommand(oStartPoint, ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectBeam(ciThisBeamVFX, oStartPoint, BODY_NODE_CHEST), oEndPoint));
+
+        if(sConnectionList == "")
+            break;
+
+        oStartPoint = oEndPoint;
 
         sEndPoint = GetStringLeft(sConnectionList, 2);
         sConnectionList = GetStringRight(sConnectionList, GetStringLength(sConnectionList) - 2);
 
-        if(sStartPoint == "-1" || sEndPoint == "" || sEndPoint == "-1")
-            iReturnThis = FALSE;
-        else
+        if(sEndPoint == "-1")
         {
+            sStartPoint = GetStringLeft(sConnectionList, 2);
+            sConnectionList = GetStringRight(sConnectionList, GetStringLength(sConnectionList) - 2);
+
+            sEndPoint = GetStringLeft(sConnectionList, 2);
+            sConnectionList = GetStringRight(sConnectionList, GetStringLength(sConnectionList) - 2);
+
             oStartPoint = GetObjectByTag(sBaseTag + sStartPoint);
             oEndPoint = GetObjectByTag(sBaseTag + sEndPoint);
-
-            while(TRUE)
-            {
-                AssignCommand(oStartPoint, ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectBeam(ciThisBeamVFX, oStartPoint, BODY_NODE_CHEST), oEndPoint));
-
-                if(sConnectionList == "")
-                    break;
-
-                oStartPoint = oEndPoint;
-
-                sEndPoint = GetStringLeft(sConnectionList, 2);
-                sConnectionList = GetStringRight(sConnectionList, GetStringLength(sConnectionList) - 2);
-
-                if(sEndPoint == "-1")
-                {
-                    sStartPoint = GetStringLeft(sConnectionList, 2);
-                    sConnectionList = GetStringRight(sConnectionList, GetStringLength(sConnectionList) - 2);
-
-                    sEndPoint = GetStringLeft(sConnectionList, 2);
-                    sConnectionList = GetStringRight(sConnectionList, GetStringLength(sConnectionList) - 2);
-
-                    oStartPoint = GetObjectByTag(sBaseTag + sStartPoint);
-                    oEndPoint = GetObjectByTag(sBaseTag + sEndPoint);
-                }
-                else if(sEndPoint == "")
-                    break;
-                else
-                    oEndPoint = GetObjectByTag(sBaseTag + sEndPoint);
-            }
         }
+        else if(sEndPoint == "")
+            break;
+        else
+            oEndPoint = GetObjectByTag(sBaseTag + sEndPoint);
     }
+
     return iReturnThis;
 }
 
-int RedrawConnected(object oHere, string sThisShape, string sConnectionList = csPentagram, string sThisResRef = "plc_invisobj")
+//RedrawConnected
+int RedrawOrderedShape(object oTarget, string sShapeName, string sConnectionList, string sPlaceable = "plc_invisobj")
 {
-    int iReturnThis;
-
-    if(RedrawPoints(oHere, sThisShape, sThisResRef))
-        iReturnThis = DrawConnected(oHere, sThisShape, sConnectionList);
+    if (RedrawNodes(oTarget, sShapeName, sPlaceable))
+        return DrawOrderedShape(oTarget, sShapeName, sConnectionList);
     else
-        iReturnThis = FALSE;
-
-    return iReturnThis;
+        return FALSE;
 }

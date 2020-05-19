@@ -65,7 +65,7 @@ In order to efficiently contribute to the Dark Sun project, you need a git clien
 
 2. Create a new folder on your computer's desktop `Git_Repositories`.  Avoid spaces in the title to make it easier to navigate from the command line.
 
-3. In your command line utility (powershell, git bash, vscode terminal, etc.), navigate to your `Git_Repositories` directory.  If you're using Git Bash, go into your file explorer, right click on the `Git_Repositories` folder and select `Git Bash here...` from the context menu.  This will open Git Bash and put you in the correct directory so you don't have to navigate your folder structure from the command line.
+3. In your command line utility (powershell, git bash, vscode terminal, etc.), navigate to your `Git_Repositories` directory.  If you're using Git Bash, go into your file explorer, right click on the `Git_Repositories` folder and select `Git Bash Here` from the context menu.  This will open Git Bash and put you in the correct directory so you don't have to navigate your folder structure from the command line.
 
     *Note:  Each command line utility displays your current folder in a different way, but it should be obvious where you are.  Use the command `dir` to see what folders are in your current directory, `cd ..` to move backward one level in the folder structure, or `cd <folder_name>` to move to another folder.*
 
