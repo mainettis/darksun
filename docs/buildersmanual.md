@@ -40,7 +40,7 @@ As a volunteer project, we fully expect that any person that works on this proje
     Warning("Cannot activate plugin '" + sPlugin + "': denied");
     ```
 
-    This message will be sent to all destinations as opted in core_c_config.  You are not necessarily limited to basic data message, though.  Here's an example of a more complicated Debug message that will help everyone determine exactly what is happening within a system:
+    This message will be sent to all destinations as opted in `core_c_config`.  You are not necessarily limited to basic data message, though.  Here's an example of a more complicated Debug message that will help everyone determine exactly what is happening within a system:
 
     ``` c
     Debug("Checking " + sEvent + " script " + IntToString(i + 1) + sCount +
@@ -65,12 +65,7 @@ Here are the basic functions it provides:
 * `_GetIsDM()` - a replacement for nwscript's `GetIsDM()`.  Our version determines whether the passes character object is a DM or a DM possessing an NPC.
 * `_GetIsPartyMember()` - will return whether the first passed object is a party member of the second passed object.
 
-* `[_Get, _Set, _Delete]Local*` - module-specific replacements for `[get,set,delete]Local*`.  For now, these are just wrappers, however, they will be used later for object/variable inheritance and other functions, so best to start using them now.  To set a variable on the module, the object `MODULE` should be passed:  `_SetLocalInt(MODULE, sVarName, nValue)`.  Also allows us to delete the HCR2 methodology of using separate functions to set module variables and player-persistent variables.  Just call out version and it'll figure it our for you.  If none of the special conditions are met (i.e. for PCs, inheritance, etc.) it just processes the variable on the passed object as the normal Bioware function would.
-
-
-* In work, module-private replacements to allow inheritance.
-* ~~`[Get, Set, Delete]Module*` - alias functions for `[Set, Get, Delete]Local*`.  These are equivalent to `SetLocalInt(GetModule(), sVarName, nValue)`, except our version sets the variables on a MODULE datapoint instead of the module object itself.  This help to keep the module object from being overloaded with variables and allows them to be accessed more quickly.~~
-* ~~`[Get, Set, Delete]Player*` - alias functions for [Set, Get, Delete]Local*.  These are equivalent to `SetLocalInt(oPC, sVarName, nValue)`, except our version sets the variables on a player-held, non-droppable, player data item.  This allows us to keep the player object from being overused and to allow persistence in player-assigned variables without using the database.~~
+* `[_Get, _Set, _Delete]Local*` - module-specific replacements for `[get,set,delete]Local*`.  For now, these are just wrappers, however, they will be used later for object/variable inheritance and other functions, so best to start using them now.  To set a variable on the module, the object `MODULE` should be passed:  `_SetLocalInt(MODULE, sVarName, nValue)`.  Also allows us to delete the HCR2 methodology of using separate functions to set module variables and player-persistent variables.  Just call our version and it'll figure it our for you.  If none of the special conditions are met (i.e. for PCs, inheritance, GetModule(), etc.) it just processes the variable on the passed object as the normal Bioware function would.
 
 To learn more and understand exactly how the functions work, open up [`dsutil_i_data`](../utilities/dsutil_i_data.nss) and take a look!
 
@@ -83,7 +78,9 @@ The entire module rests on the core framework developed, maintained and continuo
 ***Note:  No pull requests will be accepted that involve modification to any file in the `framework` submodule.***
 
 * [Math](#math-functions)
+    * [DS Math](#ds-math-functions)
 * [Lists](#list-functions)
+    * [DS Lists](#ds-list-functions)
 * [Datapoints](#datapoint-functions)
 * [Debugging](#debug-functions)
 * [Color](#coloring-functions)
@@ -94,11 +91,19 @@ The entire module rests on the core framework developed, maintained and continuo
 
 [`util_i_math`](../framework/src/utils/util_i_math) provides access to some useful basic math functions such as mod, min, max, clamps, etc.  None of these require detailed explanation.  Open up the file and take a look at what's available.
 
+###### DS Math Functions
+
+[`dsutil_i_math`](../utilities/dsutil_i_math) is a supplement to the framework's `util_i_math` and provides a rounding function for floats.
+
 #### List Functions
 
 The framework provides access to two types of lists:  comma separated values (CSVs) and array-like lists (varlists).  There is not extensive documentation here because the author has provided his own [list documentation](../framework/docs/lists.md).  In addition to the functions and ideas found there, there is another script file called `util_i_lists` which contains functions to swap from one list type to the other.  These lists are extensively used throughout the module.
 
 An example of the power of these lists is the way in which languages are added into the DMFI language system.  When initiated, the language system searches for all items in a CSV, which are references to game objects (items) that contain the appropriate variables to allow language translation.  As each object is found, it is added to an object varlist on the DMFI data point.  Simultaneously, a CSV is created with the names of each of the languages.  This allows a quick way to create an index of languages.  The CSV is searched by language name to determine its index, then the object list is refernced by index to get the required object and its variables.  In this way, new languages can be added to the module without any scripting at all.  A new language initializer items simply needs to be created with the appropriate variables and the expected tag.
+
+###### DS List Functions
+
+[`dsutil_i_varlist`](../utilities/dsutil_i_varlist) is a supplement to the framework's `util_i_varlists` and provides the ability to manipulate pseudo-vector variables.
 
 #### Datapoint Functions
 
