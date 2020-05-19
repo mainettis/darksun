@@ -41,6 +41,20 @@
           "type": "resref",
           "value": "overlandmap"
         }
+      },
+      {
+        "__struct_id": 6,
+        "Area_Name": {
+          "type": "resref",
+          "value": "kled"
+        }
+      },
+      {
+        "__struct_id": 6,
+        "Area_Name": {
+          "type": "resref",
+          "value": "silverspringoasi"
+        }
       }
     ]
   },
@@ -76,7 +90,7 @@
   },
   "Mod_Entry_Area": {
     "type": "resref",
-    "value": "startingarea"
+    "value": "kled"
   },
   "Mod_Entry_Dir_X": {
     "type": "float",
@@ -88,15 +102,15 @@
   },
   "Mod_Entry_X": {
     "type": "float",
-    "value": 10.0
+    "value": 92.16665649414063
   },
   "Mod_Entry_Y": {
     "type": "float",
-    "value": 10.0
+    "value": 18.3629150390625
   },
   "Mod_Entry_Z": {
     "type": "float",
-    "value": 0.0
+    "value": 3.000000476837158
   },
   "Mod_Expan_List": {
     "type": "list",
