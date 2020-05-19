@@ -20,7 +20,6 @@
 
 #include "ds_i_const"
 #include "util_i_debug"     
-//#include "dsutil_i_comms"   
 
 // -----------------------------------------------------------------------------
 //                              Function Prototypes
@@ -60,18 +59,21 @@ float    _GetLocalFloat      (object oObject, string sVarName,                  
 string   _GetLocalString     (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 object   _GetLocalObject     (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 location _GetLocalLocation   (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+vector   _GetLocalVector     (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 
 int      _SetLocalInt        (object oObject, string sVarName, int      nValue, int nFlag = 0x00, string sData = "");
 int      _SetLocalFloat      (object oObject, string sVarName, float    fValue, int nFlag = 0x00, string sData = "");
 int      _SetLocalString     (object oObject, string sVarName, string   sValue, int nFlag = 0x00, string sData = "");
 int      _SetLocalObject     (object oObject, string sVarName, object   oValue, int nFlag = 0x00, string sData = "");
 int      _SetLocalLocation   (object oObject, string sVarName, location lValue, int nFlag = 0x00, string sData = "");
+int      _SetLocalVector     (object oObject, string sVarName, vector   vValue, int nFlag = 0x00, string sData = "");
 
 void     _DeleteLocalInt     (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 void     _DeleteLocalFloat   (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 void     _DeleteLocalString  (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 void     _DeleteLocalObject  (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 void     _DeleteLocalLocation(object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
+void     _DeleteLocalVector  (object oObject, string sVarName,                  int nFlag = 0x00, string sData = "");
 
 // -----------------------------------------------------------------------------
 //                             Function Definitions
@@ -108,175 +110,103 @@ int _GetIsPartyMember(object oPC, object oKnownPartyMember)
 
 // ---< _Get* Variable Procedures >---
 
-int _GetLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
+object DetermineObject(object oObject)
 {
     if (oObject == oModule)
-        oObject = MODULE;
+        return MODULE;
     
-    if (GetIsPC(oObject) && !nFlag)
+    if (GetIsPC(oObject))
     {
         object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
         if (GetIsObjectValid(oData))
-            return GetLocalInt(oData, sVarName);
-    }  
+            return oData;
+    }
 
+    return oObject;
+}
+
+int _GetLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
+{
+    oObject = DetermineObject(oObject);
     return GetLocalInt(oObject, sVarName);
 }
 
 float _GetLocalFloat(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-     
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            return GetLocalFloat(oData, sVarName);
-    }  
-
+    oObject = DetermineObject(oObject);
     return GetLocalFloat(oObject, sVarName);
 }
 
 string _GetLocalString(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-     
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            return GetLocalString(oData, sVarName);
-    }  
-
+    oObject = DetermineObject(oObject);
     return GetLocalString(oObject, sVarName);
 }
 
 object _GetLocalObject(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-     
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            return GetLocalObject(oData, sVarName);
-    }  
-
+    oObject = DetermineObject(oObject);
     return GetLocalObject(oObject, sVarName);
 }
 
 location _GetLocalLocation(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-      
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            return GetLocalLocation(oData, sVarName);
-    }  
-
+    oObject = DetermineObject(oObject);
     return GetLocalLocation(oObject, sVarName);
+}
+
+vector _GetLocalVector(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
+{
+    oObject = DetermineObject(oObject);    
+    float fX = _GetLocalFloat(oObject, sVarName + "X");
+    float fY = _GetLocalFloat(oObject, sVarName + "Y");
+    float fZ = _GetLocalFloat(oObject, sVarName + "Z");
+    return Vector(fX, fY, fZ);    
 }
 
 // ---< _Set* Variable Procedures >---
 
 int _SetLocalInt(object oObject, string sVarName, int nValue, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-       
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-        {
-            SetLocalInt(oData, sVarName, nValue);
-            return TRUE;
-        }
-    }
-
+    oObject = DetermineObject(oObject);
     SetLocalInt(oObject, sVarName, nValue);
     return TRUE;
 }
 
 int _SetLocalFloat(object oObject, string sVarName, float fValue, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-       
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-        {
-            SetLocalFloat(oData, sVarName, fValue);
-            return TRUE;
-        }
-    }
-
+    oObject = DetermineObject(oObject);
     SetLocalFloat(oObject, sVarName, fValue);
     return TRUE;
 }
 
 int _SetLocalString(object oObject, string sVarName, string sValue, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-       
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-        {
-            SetLocalString(oData, sVarName, sValue);
-            return TRUE;
-        }
-    }
-
+    oObject = DetermineObject(oObject);
     SetLocalString(oObject, sVarName, sValue);
     return TRUE;
 }
 
 int _SetLocalObject(object oObject, string sVarName, object oValue, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-      
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-        {
-            SetLocalObject(oData, sVarName, oValue);
-            return TRUE;
-        }
-    }
-
+    oObject = DetermineObject(oObject);
     SetLocalObject(oObject, sVarName, oValue);
     return TRUE;
 }
 
 int _SetLocalLocation(object oObject, string sVarName, location lValue, int nFlag = 0x00, string sData = "")
 {
-    if (oObject == oModule)
-        oObject = MODULE;
-      
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-        {
-            SetLocalLocation(oData, sVarName, lValue);
-            return TRUE;
-        }
-    }
-
+    oObject = DetermineObject(oObject);
     SetLocalLocation(oObject, sVarName, lValue);
+    return TRUE;
+}
+
+int _SetLocalVector(object oObject, string sVarName, vector vValue, int nFlag = 0x00, string sData = "")
+{
+    oObject = DetermineObject(oObject);
+    _SetLocalFloat(oObject, sVarName + "X", vValue.x);
+    _SetLocalFloat(oObject, sVarName + "Y", vValue.y);
+    _SetLocalFloat(oObject, sVarName + "Z", vValue.z);
     return TRUE;
 }
 
@@ -284,75 +214,38 @@ int _SetLocalLocation(object oObject, string sVarName, location lValue, int nFla
 
 void _DeleteLocalInt(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (oObject == oModule)
-        oObject = MODULE;
-       
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            DeleteLocalInt(oData, sVarName);
-    }
-
+    oObject = DetermineObject(oObject);
     DeleteLocalInt(oObject, sVarName);
 }
 
 void _DeleteLocalFloat(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (oObject == oModule)
-        oObject = MODULE;
-       
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            DeleteLocalFloat(oData, sVarName);
-    }
-
+    oObject = DetermineObject(oObject);
     DeleteLocalFloat(oObject, sVarName);
 }
 
 void _DeleteLocalString(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (oObject == oModule)
-        oObject = MODULE;
-       
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            DeleteLocalString(oData, sVarName);
-    }
-
+    oObject = DetermineObject(oObject);
     DeleteLocalString(oObject, sVarName);
 }
 
 void _DeleteLocalObject(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (oObject == oModule)
-        oObject = MODULE;
-       
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            DeleteLocalObject(oData, sVarName);
-    }
-
+    oObject = DetermineObject(oObject);
     DeleteLocalObject(oObject, sVarName);
 }
 
 void _DeleteLocalLocation(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
 {    
-    if (oObject == oModule)
-        oObject = MODULE;
-        
-    if (GetIsPC(oObject) && !nFlag)
-    {
-        object oData = GetItemPossessedBy(oObject, PLAYER_DATAPOINT);
-        if (GetIsObjectValid(oData))
-            DeleteLocalLocation(oData, sVarName);
-    }
-
+    oObject = DetermineObject(oObject);
     DeleteLocalLocation(oObject, sVarName);
+}
+
+void _DeleteLocalVector(object oObject, string sVarName, int nFlag = 0x00, string sData = "")
+{
+    oObject = DetermineObject(oObject);
+    _DeleteLocalFloat(oObject, sVarName + "X");
+    _DeleteLocalFloat(oObject, sVarName + "Y");
+    _DeleteLocalFloat(oObject, sVarName + "Z");  
 }

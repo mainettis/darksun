@@ -54,6 +54,7 @@ void tr_KillEncounter(int nEncounterID = 0);
 // ---< tr_StartEncounter >---
 // Starts the encounter nEncounterID.  This should never be called if
 //  tr_CreateEncounter did not return a valid encounter ID.  
+void tr_StartEncounter(int nEncoutnerID);
 
 // ---< tr_CheckForEncounter >---
 // This is the executed script with the custom timer event for the overland travel
@@ -200,19 +201,27 @@ void tr_StartEncounter(int nEncounterID)
             continue;
         }
 
+        Debug("Distance between " + GetName(te.oTriggeredBy) + " and " + GetName(oPartyMember) + " is " + FloatToString(fDistance) + "m");
+
         if (fDistance <= TRAVEL_ENCOUNTER_WAYPOINT_INCLUDE)
             oTarget = GetWaypointByTag(te.sPrimaryWaypoint);
         else if (fDistance > TRAVEL_ENCOUNTER_WAYPOINT_INCLUDE && fDistance <= TRAVEL_ENCOUNTER_PARTY_INCLUDE)
             oTarget = GetWaypointByTag(GetListItem(te.sSecondaryWaypoints, Random(nWaypointCount) + 1));
 
-        _setEncounterVariables(oPartyMember, nEncounterID);
-        AssignCommand(oPartyMember, ClearAllActions());
-        AssignCommand(oPartyMember, JumpToObject(oTarget));
+        //TODO need to check for resting.  You can have an encoutner while you're resting, but you shouldn't port?  Or
+        //  port and cancel rest?
 
-        if (GetArea(oPartyMember) != te.oEncounterArea)
-            Debug("System failed to send " + GetName(oPartyMember) + " to the encounter area.");
+        if (GetIsObjectValid(oTarget))
+        {
+            _setEncounterVariables(oPartyMember, nEncounterID);
+            AssignCommand(oPartyMember, ClearAllActions());
+            AssignCommand(oPartyMember, JumpToObject(oTarget));
+            Debug(GetName(oPartyMember) + " send to encounter " + te.sEncounterID);
+        }
         else
-            Debug("  " + GetName(oPartyMember) + " sent to " + GetTag(oTarget) + " to join encounter " + te.sEncounterID);
+        {
+            Debug("Could not find valid waypoint for encounter " + te.sEncounterID);
+        }
 
         oPartyMember = GetNextFactionMember(te.oTriggeredBy);
     }
@@ -223,9 +232,11 @@ void tr_StartEncounter(int nEncounterID)
         ApplyEffectAtLocation(DURATION_TYPE_PERMANENT, eEncounterAOE, lEncounterAOE);
         oEncounterAOE = GetNearestObjectToLocation(OBJECT_TYPE_AREA_OF_EFFECT, lEncounterAOE);
         SetTag(oEncounterAOE, TRAVEL_ENCOUNTER_AOE_TAG + te.sEncounterID);
+        
         _SetLocalInt(oEncounterAOE, TRAVEL_ENCOUNTER_ID, nEncounterID);
         _SetLocalObject(ENCOUNTERS, TRAVEL_ENCOUNTER_AOE + te.sEncounterID, oEncounterAOE);
         
+        //TODO increase the AOE radius and add a visual effect so we know there's an encounter there
         //Don't let the AOE be dispelled or destroyed
         _SetLocalInt(oEncounterAOE, "X1_L_IMMUNE_TO_DISPEL", 10);
         AssignCommand(oEncounterAOE, SetIsDestroyable(FALSE));
@@ -239,12 +250,13 @@ void tr_KillEncounter(int nEncounterID = 0)
     string sEncounterID = IntToString(nEncounterID);
     object oEncounterArea = nEncounterID ? _GetLocalObject(ENCOUNTERS, ENCOUNTER_AREA + sEncounterID) : OBJECT_SELF;
 
-    if (!CountObjectList(oEncounterArea, AREA_ROSTER))
+    //TODO check why area_roster shows a PC when DestroyArea does not.
+    /*if (!CountObjectList(oEncounterArea, AREA_ROSTER))
         {
             Debug("Cannot kill encounter " + sEncounterID + "; PCs detected in encounter area.");
             //TODO delaycommand to recall this procedures?
             return;
-        }
+        }*/
 
     if (_GetLocalInt(oEncounterArea, TRAVEL_ENCOUNTER_PLAYER_DEATH))
     {
@@ -271,7 +283,7 @@ void tr_KillEncounter(int nEncounterID = 0)
                     h2_MovePossessorInventory(oLootBag, TRUE, oNewLootBag);
                     _SetLocalObject(oPC, H2_LOOT_BAG, oNewLootBag);
 
-                    /*  ALTERNATE METHOD, IF IT WORKS
+                    /*  TODO ALTERNATE METHOD, IF IT WORKS
                     AssignCommand(oObject, ClearAllActions());
                     AssignCommand(oObject, JumpToObject(lDestination))
                     AssignCommand(oLootBag, ClearAllActions());
@@ -301,12 +313,15 @@ void tr_KillEncounter(int nEncounterID = 0)
     //  whether the spawn will "give chase".  If so, on next timer expire, the party is
     //  guaranteed to re-encounter that spawn.  So, when returning, instead of killing
     //  everything, setup the auto-encounter to the same area.
+    int nDestroy = DestroyArea(oEncounterArea);
 
-    if (!DestroyArea(oEncounterArea))
+    if (nDestroy < 1)
     {
-        Debug("Cannot kill encounter " + sEncounterID + "; PCs detected in encounter area.");
+        Debug("Cannot kill encounter " + sEncounterID + "; failure id " + IntToString(nDestroy));
         return;
-    }    
+    }
+    else
+        Debug("Encounter area for encounter " + sEncounterID + " destroyed.");
 
     _DeleteLocalObject(ENCOUNTERS, ENCOUNTER_AREA                + sEncounterID);
     _DeleteLocalObject(ENCOUNTERS, ENCOUNTER_TRIGGERED_BY        + sEncounterID);

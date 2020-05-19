@@ -167,7 +167,7 @@ void tr_encounter_OnAreaExit()
     AssignCommand(oPC, ClearAllActions());
     AssignCommand(oPC, JumpToLocation(lPC));
 
-    //big TODO make sure all required fucntions are exposed in the library script
+    //big TODO make sure all required functions are exposed in the library script
     if (!CountObjectList(te.oEncounterArea, AREA_ROSTER))
     {
         /* TODO Chase implementation
