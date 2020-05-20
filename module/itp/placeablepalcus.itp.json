@@ -53,6 +53,66 @@
           "type": "byte",
           "value": 9
         },
+        "LIST": {
+          "type": "list",
+          "value": [
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Banner09"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "keg"
+              }
+            },
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Large Tent"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "plc_tent_b001"
+              }
+            },
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Mud_Wall"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "emptywagon"
+              }
+            },
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Round  Tent"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "tent_b002"
+              }
+            },
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Wall Post01"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "emptywagon001"
+              }
+            }
+          ]
+        },
         "STRREF": {
           "type": "dword",
           "value": 1592
@@ -64,6 +124,22 @@
           "type": "byte",
           "value": 10
         },
+        "LIST": {
+          "type": "list",
+          "value": [
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Tapestry03"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "plc_bench002"
+              }
+            }
+          ]
+        },
         "STRREF": {
           "type": "dword",
           "value": 6785
@@ -74,6 +150,22 @@
         "ID": {
           "type": "byte",
           "value": 11
+        },
+        "LIST": {
+          "type": "list",
+          "value": [
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Palm Tree"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "plc_palm002"
+              }
+            }
+          ]
         },
         "STRREF": {
           "type": "dword",
