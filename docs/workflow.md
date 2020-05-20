@@ -271,11 +271,16 @@ Click on the `New Pull Request` button.  The next screen will show you all of th
 
 But, you're working on a fork, so you don't want to compare the master branches because they're the same anyway.  To select the branch you're working on, click on `compare across forks`.  Once you do that, you will see the options change to something like this:
 
-![fork pull request](images/PRFork.jpg)
+![fork pull request](images/PRdevelopment.jpg)
 
-On the ***right*** set of drop-down boxes (to the right side of the left-pointing arrow), choose your repository in the first drop down (`<your_user_name>/darksun`) and choose the branch you want to merge in the second drop down box (`<branchname>`).
+We do most of our work on the `development` branch.  The master branch is reserved for the deployed module.  So all of your pull requests should be to the master branch.
 
-It will also request you add some text as to why you're requesting this pull to the primary repository.  Add some discussion as to what changes you made, what your intended behavior for the new items is and any other pertinent information necessary to ensure smooth integration into the primary repostitory.  When you're done, click on the big green button and either send the pull request or save it as a draft request for later submission.
+1. In the `base repository` drop-down, select `tinygiant98/darksun`.
+2. In the `base` drop-down, select `development`.
+3. In the `head repository` drop-down, select `<your_user_name>/darksun`.
+4. In the `compare` drop-down, select the branch you want to pull from `<branch_name>`.
+
+Give your pull request a title and add some commentary on what you did and why you did it.  The team member that ends up reviewing the pull request should not have to contact you about what you've done because, hopefully, it's all well explained in this commentary section.  Finally, submit your request!
 
  ![pull request submission button](https://help.github.com/assets/images/help/pull_requests/pullrequest-send.png)
 
