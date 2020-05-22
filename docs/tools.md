@@ -4,7 +4,7 @@ The purpose of this tutorial is to install the basic tools required to enable ou
 
 ## Disclaimer
 
-There are **A LOT** of words here.  Don't let this scare you off of the idea of using these tools.  I've chosen to add a lot of detail based on the assumption you've not worked with these tools before.  If you have, you can ignore much of this.  After installing these tools and [reading the workflow tutorial](workflow.md), you should have confidence that you can easily and readily employ these tools to make quick changes to the module.
+There are **A LOT** of words here.  Don't let this scare you off of the idea of using these tools.  I've chosen to add a lot of detail based on the assumption you've not worked with these tools before.  If you have, you can ignore much of this.  After installing these tools and [reading the workflow tutorial](workflow.md), you should have confidence that you can easily and readily employ these tools to make quick changes to the module.  Also, this document is geared toward use by Dark Sun team members.  If you're not on the team, you can substitute your own values where appropriate.  If you're having problems, [we'll still try to help](#questions).
 
 * [Setting up your GitHub Account](#github-account)
 * [Installing Git](#git)
@@ -134,7 +134,7 @@ Since we already have the nimble programming language installed via choosenim, i
 
 2. Initialize Nasher.  Much like Git, Nasher creates a cache of your repository files in order to compare file versions.  This allows Nasher to skip certain steps in the build process and saves time, especially in a large module.  In your command line utility, ensure you're in your `ds` folder and type the following:
     ```
-    nasher init
+    nasher init --default
     ```
     
 3. Configure NWNSC.  NWNSC is an external script compiler for Neverwinter Nights created by glorwinger (sorry, I don't know his real name).  He created this tool so that module developers like yourselves could compile scripts without having to use the toolset.  NWNSC provides much better feedback and can be used with almost any development environment (including [VScode](vscode.md)) to test script compilation without opening the toolset.  The file `nwnsc.exe` is included in the base folder of the primary repository, so it will be included in your forked repository.  The following command uses the path where your NWNEE game files are installed, not the path to the user content that is normally in your documents directory.  To configure your installation path, type ***one*** of the two following commands into your command line utility (read both before, then choose your own adventure):
