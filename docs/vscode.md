@@ -55,17 +55,17 @@ The following steps assume you've setup your local repository as recommended in 
     nasher compile ds
     ```
 
-    This will compile all of the scripts that will be going in to the module, based on the `[Target]` in the repository's nasher.cfg mile, and provide feedback on all errors it's found.  NWNSC sometimes provides multiple errors stemming from a single issue.  If you see a lot of errors marked from lines near each other, it's best to fix the first error, then attempt the compile again to remove several errors.  Some example of that are below.
+    This will compile all of the scripts that will be going into the module, based on the `[Target]` in the repository's nasher.cfg file, and provide feedback on all errors it's found.  NWNSC sometimes provides multiple errors stemming from a single issue.  If you see a lot of errors marked from lines near each other, it's best to fix the first error, then attempt the compile again to remove several errors.  Some examples of that are below.
 
     * 
 
-3. Use the terminal (command line utility) to run git and nasher commands from within VS Code.  You can open the embedded terminal by navigating to View -> Terminal.  A terminal window will open at the bottom of the VS Code window.  Ensure you've navigated to the appropriate directory and you can run all of the command line commands referenced in any of the tutorials from there.  Additionally, the feedback will be formatted and color-coded in a much more user-friendly way compared to Git Bash, Powershell or other command line utilites I've seen.  Your mileage may vary.
+3. Use the terminal (command line utility) to run `git` and `nasher` commands from within VSCode.  You can open the embedded terminal by navigating to `View -> Terminal`.  A terminal window will open at the bottom of the VS Code window.  Ensure you've navigated to the appropriate directory and you can run all of the command line commands referenced in any of the tutorials from there.  Additionally, the feedback will be formatted and color-coded in a much more user-friendly way compared to Git Bash or other command line utilites I've seen.  Your mileage may vary.
 
 A successful install should provide the following feedback in your command line utility.
 
 ![terminal example](images/terminalexample.jpg)
 
-
+To Be Continued ...
 
 
 
