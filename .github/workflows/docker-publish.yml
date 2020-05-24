@@ -1,0 +1,30 @@
+name: build-production-server
+
+on:
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:
+      - master
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+env:
+  IMAGE_NAME: darksunserver
+
+jobs:
+  nasher:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker://squattingmonk/nasher-latest
+      - name: build_nasher
+      - run: nasher init --default --vcs:none
+      - run: nasher config --local --nssFlags:'-n /nwn/data -o'
+
+  build-module:
+    runs-on: ubuntu-latest
+    needs: nasher
+    steps:
+      - uses: actions/checkout@master
+      - name: build-module
+      - run: nasher pack ds --yes
