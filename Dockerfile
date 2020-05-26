@@ -1,49 +1,48 @@
-# build the module
-FROM squattingmonk/nasher:latest AS Module
-ADD ./NWServer/module/ /Build
-WORKDIR /Build
-RUN nasher config --nssFlags:'-n /nwn/data -o' && nasher pack
-# build the dotnet
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102 AS DotnetLibrary
-ADD ./NWServer/src/ /Build
-WORKDIR /Build
-RUN dotnet publish -c Release
-# final image
-FROM nwnxee/unified:build8193.12
-LABEL maintainer = "urothis@gmail.com"
-COPY --from=Module /Build/DungeonEternalX.mod /nwn/data/data/mod/DungeonEternalX.mod
-COPY --from=DotnetLibrary /Build/bin/Release/netcoreapp3.1/publish /nwn/data/data/
-RUN rm /nwn/data/data/mod/DockerDemo.mod \
-    && apt-get update && apt-get install -y apt-utils libgdiplus libc6-dev
-# dotNET
-ENV NWNX_DOTNET_SKIP=n
-ENV NWNX_DOTNET_ASSEMBLY=/nwn/data/data/NWN
-# often values
-ENV NWN_MODULE=DungeonEternalX
-ENV NWN_PUBLICSERVER=0
-ENV NWNX_CORE_LOG_LEVEL=6
-# private values | pulled from gitlab
-ARG NWNX_WEBHOOK_PRIVATE_CHANNEL
-ARG NWNX_WEBHOOK_PUBLIC_CHANNEL
-ARG NWN_DMPASSWORD
-ENV NWNX_WEBHOOK_PRIVATE_CHANNEL=${NWNX_WEBHOOK_PRIVATE_CHANNEL} NWNX_WEBHOOK_PUBLIC_CHANNEL=${NWNX_WEBHOOK_PUBLIC_CHANNEL} NWN_DMPASSWORD=${NWN_DMPASSWORD}
-# Redis, mostly used for pubsub for proper pubsub context
-ENV NWNX_REDIS_SKIP=n NWNX_REDIS_HOST=redis NWNX_REDIS_PUBSUB_SCRIPT=ps_main NWNX_REDIS_PUBSUB_CHANNELS=startup,discord
-# NWNX Plugins
-ENV NWNX_ADMINISTRATION_SKIP=n NWNX_APPEARANCE_SKIP=n NWNX_AREA_SKIP=n NWNX_CHAT_SKIP=n NWNX_COMBATMODES_SKIP=n NWNX_CREATURE_SKIP=n NWNX_DAMAGE_SKIP=n NWNX_DATA_SKIP=n
-ENV NWNX_DIALOG_SKIP=n NWNX_ELC_SKIP=n NWNX_ENCOUNTER_SKIP=n NWNX_EVENTS_SKIP=n NWNX_FEEDBACK_SKIP=n NWNX_ITEM_SKIP=n NWNX_OBJECT_SKIP=n NWNX_PLAYER_SKIP=n NWNX_RACE_SKIP=n
-ENV NWNX_UTIL_SKIP=n NWNX_VISIBILITY_SKIP=n NWNX_WEAPON_SKIP=n NWNX_WEBHOOK_SKIP=n NWNX_RENAME_SKIP=n NWNX_REVEAL_SKIP=n NWNX_TIME_SKIP=n NWNX_TWEAKS_SKIP=n
-ENV NWNX_SKILLRANKS_SKIP=n NWNX_ITEMPROPERTY_SKIP=n NWNX_EFFECT_SKIP=n NWNX_MAXLEVEL_SKIP=n NWNX_OPTIMIZATIONS_SKIP=n
-# Raw
-ENV NWNX_METRICS_RAW_SKIP=n NWNX_TRACKING_SKIP=n
-# tweaks
-ENV NWNX_TWEAKS_DISABLE_PAUSE=true NWNX_TWEAKS_DISABLE_QUICKSAVE=true NWNX_TWEAKS_PARRY_ALL_ATTACKS=true NWNX_TWEAKS_DISABLE_MONK_ABILITIES_WHEN_POLYMORPHED=true NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS=true NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG=true NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST=true
-# util
-ENV NWNX_UTIL_PRE_MODULE_START_SCRIPT=mod_preload
-# max level
-ENV NWNX_MAXLEVEL_MAX=60
-# optimizations
-ENV NWNX_OPTIMIZATIONS_ASYNC_LOG_FLUSH=true NWNX_OPTIMIZATIONS_GAME_OBJECT_LOOKUP=true NWNX_OPTIMIZATIONS_OBJECT_TAG_LOOKUP=true
-# vanilla nwserver flags
-ENV NWN_AUTOSAVEINTERVAL=0 NWN_DIFFICULTY=3 NWN_ELC=1 NWN_GAMETYPE=0 NWN_ILR=1 NWN_MAXCLIENTS=255 NWN_MINLEVEL=1 NWN_MAXLEVEL=60
-ENV NWN_ONEPARTY=0 NWN_PAUSEANDPLAY=0 NWN_PORT=5121 NWN_PVP=2 NWN_RELOADWHENEMPTY=0 NWN_SERVERVAULT=1
+#MODULE_NAME - name of the module as input into
+#   the nasher.cfg [Target].  To allow changes
+#   without modifying addition files, the module
+#   will always be built as "ds.mod".  Can be passed
+#   as an argument from docker-compose
+ARG MODULE_NAME=ds-development
+
+#UNIFIED_BUILD - the build to use for nwserver.
+#   Can be passed as an argument from docker-compose, 
+#   so if there are issues with an update, switch back 
+#   to a previous build.
+ARG UNIFIED_BUILD=build8193.12
+
+#NASHER_TARGET - the [Target] name from the repo's
+#   nasher.cfg file.  This allows a build without having
+#   to flatten the directory structure and keeps the
+#   docker build efficient.  Can be pass as an argument
+#   from docker-compose.
+ARG NASHER_TARGET=ds
+
+#Build the module from the git repository.
+#   The repository's .dockerignore file is respected in the 
+#   ADD command and greatly reduces the scope and context of
+#   the docker build, so keep it updated!
+FROM squattingmonk/nasher:latest AS module
+ARG NASHER_TARGET
+ADD . /nasher
+RUN nasher pack ${NASHER_TARGET} --yes
+
+#Get the nwserver running
+ARG UNIFIED_BUILD
+FROM nwnxee/unified:${UNIFIED_BUILD}
+ARG MODULE_NAME
+COPY --from=module /nasher/${MODULE_NAME}.mod /nwn/data/data/mod/ds.mod
+RUN rm /nwn/data/data/mod/DockerDemo.mod 
+    #&& apt-get update && apt-get install -y apt-utils libgdiplus libc6-dev
+
+#The following environmental variables are set by nwnxee/unified
+#ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
+#ENV NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so"
+#ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
+#    NWN_TAIL_LOGS=n \
+#    NWNX_CORE_LOG_LEVEL=6 \
+#    NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
+#ENV NWNX_CORE_SKIP_ALL=y
+
+#The remaining environmental variables are set in ../../config/nwserver.env
+#to keep the build efficient.

@@ -4,6 +4,6 @@
 *.mod
 
 .git
-.github
 plugins/working
 plugins/dmfi
+dive.exe

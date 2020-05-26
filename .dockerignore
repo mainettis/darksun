@@ -1,0 +1,16 @@
+.git
+.github
+nwnsc.exe
+README.md
+.*
+docs
+framework/docs
+framework/src/demo
+framework/src/core/core_c_config.nss
+framework/.git
+framework/nasher.cfg 
+framework/README.md
+framework/.gitignore
+plugins/working
+plugins/dmfi
+dive.exe

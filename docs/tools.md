@@ -88,7 +88,7 @@ In order to efficiently contribute to the Dark Sun project, you need a git clien
 
     If you also forked the resources repository, you'll need to clone that repository also.  ***WARNING: This will take a long time as there are thousands of files in this repository.***  Only do this if you forked the resources repository:
     ```
-    git clone https://github.com/<your-user-name>/darksun.git ds-r
+    git clone https://github.com/<your-user-name>/darksun-resources.git ds-r
     ```
 
 6. Add an upstream to your forked repository so you can retrieve updates from the primary module repository.  Since you are not working on the primary repository, any updates to the primary repository will not automatically update to the fork you're working on.  If you want to retrieve updates from the primary repository to ensure you always have the most recent data, you need to add an upstream to your local repository.  On the command line, type the following: 
