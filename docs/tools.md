@@ -51,7 +51,11 @@ In order to clone, fork and contribute to this project, you will need a GitHub a
 
     *Note:  If you want to receive updates for changes, issues, etc., on the primary repository, you can click on the `watch` button and `star` button.*
 
-6. Copy the web address of your newly forked repository.  The value you need for the next steps will be `https://github.com/<your_user_name>/darksun.git`  You can copy the url from the top of your browser, click on the green clone/download button and copy the value you find there, or just write it down.  You will replace `<your_user_name>` with your GitHub username when you type it in below.
+6. Dark Sun maintains a second repository for custom content (hak files).  If you expect to work on custom content, repeat steps 4 and 5, but forking the [Dark Sun Resources repository](https://github.com/tinygiant98/darksun-resources) instead.  You can also use this repository to obtain and build the hak files locally on your computer.
+
+7. Copy the web address of your newly forked repository.  The value you need for the next steps will be `https://github.com/<your_user_name>/darksun.git`  You can copy the url from the top of your browser, click on the green clone/download button and copy the value you find there, or just write it down.  You will replace `<your_user_name>` with your GitHub username when you type it in below.
+
+8. If you also forked the resources repository, repeat step 7, but use `https://github.com/<your_user_name>/darksun-resources.git`.
 
     ![Stuff](https://help.github.com/assets/images/help/repository/clone-repo-clone-url-button.png)
 
@@ -80,13 +84,23 @@ In order to efficiently contribute to the Dark Sun project, you need a git clien
     ```
     git clone https://github.com/<your_user_name>/darksun.git ds --recurse-submodules
     ``` 
-    and press enter.  If you correctly entered the repository address, you should see some activity and reports showing copied files.  These files are being copied from your forked repository to your computer.  
+    and press enter.  If you correctly entered the repository address, you should see some activity and reports showing copied files.  These files are being copied from your forked repository to your computer.
+
+    If you also forked the resources repository, you'll need to clone that repository also.  ***WARNING: This will take a long time as there are thousands of files in this repository.***  Only do this if you forked the resources repository:
+    ```
+    git clone https://github.com/<your-user-name>/darksun.git ds-r
+    ```
 
 6. Add an upstream to your forked repository so you can retrieve updates from the primary module repository.  Since you are not working on the primary repository, any updates to the primary repository will not automatically update to the fork you're working on.  If you want to retrieve updates from the primary repository to ensure you always have the most recent data, you need to add an upstream to your local repository.  On the command line, type the following: 
     ```
     git remote add upstream https://github.com/tinygiant98/darksun.git
     ``` 
     and press enter.  You are using the primary repository (`tinygiant98/darksun`) as your upstream, not your forked repository, so type the command exactly as you see above.  Adding this upstream does not automatically keep your forked repository updated with the primary repository's content.  I'll show you how to do that later.
+
+    If you forked the resources repository, repeat the previous step, but with the following command:
+    ```
+    git remote add upstream https://github.com/tinygiant98/darksun-resources.git
+    ```
 
 Ok, that's it for Git. Let's work on the rest.
 
@@ -123,7 +137,7 @@ Since we've already installed Nimble, installing neverwinter.nim is extremely ea
 
 Nasher is a module maintenance tool written and maintained by Michael Sinclair (squattingmonk).  Using Nasher will greatly reduce your workload and shorten your workflow when deploying content to the Dark Sun module.
 
-*Note:  most of the steps below assume you've navigated to the `ds` folder, which was created when you cloned your forked repository.  If you're using Git Bash, go into file explorer, find your `ds` folder (`C:\Users\<username>\Desktop\Git_Repositories\ds`), right click on the `ds` folder and select `Git Bash here...` from the context menu.  If on the command line, us `cd` to move to the appropriate folder.*
+*Note:  most of the steps below assume you've navigated to the `ds` or `ds-r` folders, which were created when you cloned your forked repository.  If you're using Git Bash, go into file explorer, find your `ds` folder (`C:\Users\<username>\Desktop\Git_Repositories\ds`), right click on the `ds` folder and select `Git Bash Here` from the context menu.  If on the command line, us `cd` to move to the appropriate folder.*
 
 Since we already have the nimble programming language installed via choosenim, installing Nasher is easy. 
 
@@ -137,6 +151,8 @@ Since we already have the nimble programming language installed via choosenim, i
     nasher init --default
     ```
     
+    If you forked the resources repository, repeat this step, but in your `ds-r` folder.
+
 3. Configure NWNSC.  NWNSC is an external script compiler for Neverwinter Nights created by glorwinger (sorry, I don't know his real name).  He created this tool so that module developers like yourselves could compile scripts without having to use the toolset.  NWNSC provides much better feedback and can be used with almost any development environment (including [VScode](vscode.md)) to test script compilation without opening the toolset.  The file `nwnsc.exe` is included in the base folder of the primary repository, so it will be included in your forked repository.  The following command uses the path where your NWNEE game files are installed, not the path to the user content that is normally in your documents directory.  To configure your installation path, type ***one*** of the two following commands into your command line utility (read both before, then choose your own adventure):
 
     If your folder names do not have spaces in them (good job!):
