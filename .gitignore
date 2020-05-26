@@ -3,10 +3,7 @@
 *.hak
 *.mod
 
-# Ignore the nasher directory
-.git/
-.nasher/
-_scriptdump/
-Test/
+.git
+.github
 plugins/working
-docker/
+plugins/dmfi
