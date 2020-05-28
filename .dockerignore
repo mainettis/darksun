@@ -1,5 +1,4 @@
 .git
-.github
 nwnsc.exe
 README.md
 .*
@@ -14,3 +13,5 @@ framework/.gitignore
 plugins/working
 plugins/dmfi
 dive.exe
+*.mod
+*.exe
