@@ -37,6 +37,8 @@ Generally, we have two types of users go through this document.  Experienced use
 
 If you see a note (*Note: blah blah blah*), these generally denote helpful examples or other information, but are not instructions.  Instructive steps are numbered.
 
+If you have been granted direct contribution access to either of Dark Sun's repositories (you'll know if you have), *these instructions will not apply to the repository for which you've been granted higher access*.  So, for example, if you've been given direct access to the `darksun-resources` repository, you'll follow these instructions for the `darksun` repository, but reference the `workflow-questions` channel on our Discord for how to implement the `darksun-resources` repository.  Either way, you'll need to establish a GitHub account and install git, nimble, neverwinter and nasher.
+
 ## GitHub Account
 
 In order to clone, fork and contribute to this project, you will need a GitHub account.
@@ -91,7 +93,7 @@ In order to efficiently contribute to the Dark Sun project, you need a git clien
     git clone https://github.com/<your-user-name>/darksun-resources.git ds-r
     ```
 
-6. Add an upstream to your forked repository so you can retrieve updates from the primary module repository.  Since you are not working on the primary repository, any updates to the primary repository will not automatically update to the fork you're working on.  If you want to retrieve updates from the primary repository to ensure you always have the most recent data, you need to add an upstream to your local repository.  On the command line, type the following: 
+6. Add an upstream to your forked repository so you can retrieve updates from the primary module repository.  Since you are not working on the primary repository, any updates to the primary repository will not automatically update to the fork you're working on.  If you want to retrieve updates from the primary repository to ensure you always have the most recent data, you need to add an upstream to your local repository.  Change directories to your `ds` folder, then, on the command line, type the following: 
     ```
     git remote add upstream https://github.com/tinygiant98/darksun.git
     ``` 
@@ -111,13 +113,13 @@ Nimble is a programming language.  Although you will probably only directly use 
 
 1. Install choosenim to make installing nimble exceptionally easy.  Go to the [choosenim releases page](https://github.com/dom96/choosenim/releases) and download the appropriate release for your operating system.  If you selected a zipped file, unzip the files to your preferred location (they cannot be run directly from the zip file) and run the `runme.bat` batch file.  This will install choosenim and add the nimble directory to your system PATH variable.  Follow any prompts on you screen.
 
-    *Note:  If you receive an error in the next section that says nimble is not a known command (or something similar), it is because the path to nimble wasn't added to your system's path variable.  TO resolves this, assuming you installed nimble in its default location, type the following in your command line (for windows):*
+    *Note:  If you receive an error in the next section that says nimble is not a known command (or something similar), it is because the path to nimble wasn't added to your system's path variable.  To resolve this, assuming you installed nimble in its default location, type the following in your command line (for windows):*
     ```
-    setx "%path%;C:\Users\<user_name>\.nimble\bin"
+    setx PATH "%path%;C:\Users\<user_name>\.nimble\bin"
     ```
 
 #### Neverwinter
-Neverwinter.nim is a set of tools that can convert the various file formats used by Neverwinter Nights into .json and other formats, which are text files readable by most text readers and easily handled by source control systems, such as Git.  Without these conversion tools, we would not be able to track file changes nor have the convenience of build tools such as Nasher.
+Neverwinter.nim is a set of tools that can convert the various file formats used by Neverwinter Nights into `.json` and other formats, which are text files readable by most text readers and easily handled by source control systems such as Git.  Without these conversion tools, we would not be able to track file changes nor have the convenience of build tools such as Nasher.
 
 Since we've already installed Nimble, installing neverwinter.nim is extremely easy.
 
