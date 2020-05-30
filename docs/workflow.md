@@ -269,16 +269,14 @@ Click on the `New Pull Request` button.  The next screen will show you all of th
 
 ![base pull request](images/PRMaster.jpg)
 
-But, you're working on a fork, so you don't want to compare the master branches because they're the same anyway.  To select the branch you're working on, click on `compare across forks`.  Once you do that, you will see the options change to something like this:
+But you're working on a fork, so you don't want to compare the master branches because they're the same anyway.  To select the branch you're working on, click on `compare across forks`.  Once you do that, you will see the options change to something like this:
 
 ![fork pull request](images/PRdevelopment.jpg)
 
-We do most of our work on the `development` branch.  The master branch is reserved for the deployed module.  So all of your pull requests should be to the master branch.
-
 1. In the `base repository` drop-down, select `tinygiant98/darksun`.
-2. In the `base` drop-down, select `development`.
+2. In the `base` drop-down, select `master`.
 3. In the `head repository` drop-down, select `<your_user_name>/darksun`.
-4. In the `compare` drop-down, select the branch you want to pull from `<branch_name>`.
+4. In the `compare` drop-down, select the branch you want to pull from `<branch_name>`.  This will likely be `master` unless you've created another branch.
 
 Give your pull request a title and add some commentary on what you did and why you did it.  The team member that ends up reviewing the pull request should not have to contact you about what you've done because, hopefully, it's all well explained in this commentary section.  Finally, submit your request!
 

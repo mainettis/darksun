@@ -84,7 +84,7 @@ In order to efficiently contribute to the Dark Sun project, you need a git clien
 
 5. Clone the forked repository you created when you were making your GitHub account.  To do this, type the following into your command line:  
     ```
-    git clone https://github.com/<your_user_name>/darksun.git ds --recurse-submodules --depth 1
+    git clone https://github.com/<your_user_name>/darksun.git ds --recurse-submodules
     ``` 
     and press enter.  If you correctly entered the repository address, you should see some activity and reports showing copied files.  These files are being copied from your forked repository to your computer.
 
