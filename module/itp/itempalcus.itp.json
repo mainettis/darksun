@@ -14,6 +14,77 @@
                 "type": "byte",
                 "value": 5
               },
+              "LIST": {
+                "type": "list",
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "cloth023"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "cloth025"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "cloth026"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "cloth028"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "cloth027"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "cloth030"
+                    }
+                  }
+                ]
+              },
               "STRREF": {
                 "type": "dword",
                 "value": 186
@@ -46,6 +117,22 @@
               "ID": {
                 "type": "byte",
                 "value": 6
+              },
+              "LIST": {
+                "type": "list",
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "aarcl003"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 12836
+                    }
+                  }
+                ]
               },
               "STRREF": {
                 "type": "dword",
@@ -137,6 +224,33 @@
                 "type": "byte",
                 "value": 55
               },
+              "LIST": {
+                "type": "list",
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Bite2d8"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_crewps025"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Bite2d8"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_crewps027"
+                    }
+                  }
+                ]
+              },
               "STRREF": {
                 "type": "dword",
                 "value": 6810
@@ -147,6 +261,55 @@
               "ID": {
                 "type": "byte",
                 "value": 13
+              },
+              "LIST": {
+                "type": "list",
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Claw1d8"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_crewpsp013"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Claw1d8"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_crewpsp014"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Claw1d8"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_crewpsp016"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Claw1d8"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_crewpsp017"
+                    }
+                  }
+                ]
               },
               "STRREF": {
                 "type": "dword",
@@ -360,6 +523,44 @@
                 "type": "byte",
                 "value": 23
               },
+              "LIST": {
+                "type": "list",
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Torch"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_torch003"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Torch"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_torch004"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Torch"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_torch006"
+                    }
+                  }
+                ]
+              },
               "STRREF": {
                 "type": "dword",
                 "value": 6699
@@ -370,6 +571,77 @@
               "ID": {
                 "type": "byte",
                 "value": 24
+              },
+              "LIST": {
+                "type": "list",
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Potion of Cure Light Wounds"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_mpotion025"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Potion of Cure Light Wounds"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_mpotion026"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Potion of Cure Light Wounds"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_mpotion027"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Potion of Cure Light Wounds"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_mpotion029"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Potion of Cure Light Wounds"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_mpotion030"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Potion of Cure Light Wounds"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "it_mpotion031"
+                    }
+                  }
+                ]
               },
               "STRREF": {
                 "type": "dword",
@@ -1169,6 +1441,44 @@
                       "type": "byte",
                       "value": 30
                     },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Bone Handaxe"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "waxhn002"
+                          }
+                        },
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Bone Waraxe"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wdwraxe003"
+                          }
+                        },
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Dwarven Waraxe"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wdwraxe002"
+                          }
+                        }
+                      ]
+                    },
                     "STRREF": {
                       "type": "dword",
                       "value": 6760
@@ -1214,6 +1524,22 @@
                       "type": "byte",
                       "value": 34
                     },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Bone Dagger"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wswdg002"
+                          }
+                        }
+                      ]
+                    },
                     "STRREF": {
                       "type": "dword",
                       "value": 6765
@@ -1236,6 +1562,22 @@
                       "type": "byte",
                       "value": 36
                     },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Bone Longsword"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wswls002"
+                          }
+                        }
+                      ]
+                    },
                     "STRREF": {
                       "type": "dword",
                       "value": 6767
@@ -1257,6 +1599,44 @@
                     "ID": {
                       "type": "byte",
                       "value": 38
+                    },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Bone Short Sword"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wswss002"
+                          }
+                        },
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Short Sword"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wswss003"
+                          }
+                        },
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Short Sword"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wswss005"
+                          }
+                        }
+                      ]
                     },
                     "STRREF": {
                       "type": "dword",
@@ -1281,6 +1661,22 @@
                       "type": "byte",
                       "value": 39
                     },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Bone Club"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wblcl002"
+                          }
+                        }
+                      ]
+                    },
                     "STRREF": {
                       "type": "dword",
                       "value": 6769
@@ -1303,6 +1699,22 @@
                       "type": "byte",
                       "value": 41
                     },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Stone Warhammer"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wblhw002"
+                          }
+                        }
+                      ]
+                    },
                     "STRREF": {
                       "type": "dword",
                       "value": 6771
@@ -1313,6 +1725,22 @@
                     "ID": {
                       "type": "byte",
                       "value": 42
+                    },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Mace"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wblml002"
+                          }
+                        }
+                      ]
                     },
                     "STRREF": {
                       "type": "dword",
@@ -1437,6 +1865,22 @@
                       "type": "byte",
                       "value": 44
                     },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Longbow"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wbwln002"
+                          }
+                        }
+                      ]
+                    },
                     "STRREF": {
                       "type": "dword",
                       "value": 6819
@@ -1447,6 +1891,22 @@
                     "ID": {
                       "type": "byte",
                       "value": 45
+                    },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Shortbow"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "wbwsh002"
+                          }
+                        }
+                      ]
                     },
                     "STRREF": {
                       "type": "dword",

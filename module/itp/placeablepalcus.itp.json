@@ -156,13 +156,13 @@
           "value": [
             {
               "__struct_id": 0,
-              "NAME": {
-                "type": "cexostring",
-                "value": "Palm Tree"
-              },
               "RESREF": {
                 "type": "resref",
                 "value": "plc_palm002"
+              },
+              "STRREF": {
+                "type": "dword",
+                "value": 68941
               }
             }
           ]
