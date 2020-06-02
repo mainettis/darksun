@@ -30,49 +30,6 @@
                       "type": "byte",
                       "value": 5
                     },
-                    "LIST": {
-                      "type": "list",
-                      "value": [
-                        {
-                          "__struct_id": 0,
-                          "CR": {
-                            "type": "float",
-                            "value": 6.0
-                          },
-                          "FACTION": {
-                            "type": "cexostring",
-                            "value": "Commoner"
-                          },
-                          "NAME": {
-                            "type": "cexostring",
-                            "value": "Crodlu"
-                          },
-                          "RESREF": {
-                            "type": "resref",
-                            "value": "bearkodiak001"
-                          }
-                        },
-                        {
-                          "__struct_id": 0,
-                          "CR": {
-                            "type": "float",
-                            "value": 6.0
-                          },
-                          "FACTION": {
-                            "type": "cexostring",
-                            "value": "Commoner"
-                          },
-                          "NAME": {
-                            "type": "cexostring",
-                            "value": "Kank"
-                          },
-                          "RESREF": {
-                            "type": "resref",
-                            "value": "bearkodiak003"
-                          }
-                        }
-                      ]
-                    },
                     "STRREF": {
                       "type": "dword",
                       "value": 6695
@@ -116,6 +73,49 @@
                     "ID": {
                       "type": "byte",
                       "value": 9
+                    },
+                    "LIST": {
+                      "type": "list",
+                      "value": [
+                        {
+                          "__struct_id": 0,
+                          "CR": {
+                            "type": "float",
+                            "value": 6.0
+                          },
+                          "FACTION": {
+                            "type": "cexostring",
+                            "value": "Commoner"
+                          },
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Crodlu"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "bearkodiak001"
+                          }
+                        },
+                        {
+                          "__struct_id": 0,
+                          "CR": {
+                            "type": "float",
+                            "value": 6.0
+                          },
+                          "FACTION": {
+                            "type": "cexostring",
+                            "value": "Commoner"
+                          },
+                          "NAME": {
+                            "type": "cexostring",
+                            "value": "Kank"
+                          },
+                          "RESREF": {
+                            "type": "resref",
+                            "value": "bearkodiak003"
+                          }
+                        }
+                      ]
                     },
                     "STRREF": {
                       "type": "dword",
@@ -779,6 +779,63 @@
               "LIST": {
                 "type": "list",
                 "value": [
+                  {
+                    "__struct_id": 0,
+                    "CR": {
+                      "type": "float",
+                      "value": 0.25
+                    },
+                    "FACTION": {
+                      "type": "cexostring",
+                      "value": "Commoner"
+                    },
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "commoner001"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "CR": {
+                      "type": "float",
+                      "value": 0.25
+                    },
+                    "FACTION": {
+                      "type": "cexostring",
+                      "value": "Commoner"
+                    },
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "commoner002"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "CR": {
+                      "type": "float",
+                      "value": 0.5
+                    },
+                    "FACTION": {
+                      "type": "cexostring",
+                      "value": "Commoner"
+                    },
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Guard"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "guard001"
+                    }
+                  },
                   {
                     "__struct_id": 0,
                     "CR": {

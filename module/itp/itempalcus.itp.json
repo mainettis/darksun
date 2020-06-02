@@ -19,68 +19,68 @@
                 "value": [
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Commoner's Outfit"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "cloth023"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 12923
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Commoner's Outfit"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "cloth025"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 12923
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Commoner's Outfit"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "cloth026"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 12923
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Commoner's Outfit"
-                    },
-                    "RESREF": {
-                      "type": "resref",
-                      "value": "cloth028"
-                    }
-                  },
-                  {
-                    "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Commoner's Outfit"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "cloth027"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 12923
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Commoner's Outfit"
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "cloth028"
                     },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 12923
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
                     "RESREF": {
                       "type": "resref",
                       "value": "cloth030"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 12923
                     }
                   }
                 ]
@@ -229,24 +229,24 @@
                 "value": [
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Bite2d8"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_crewps025"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13249
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Bite2d8"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_crewps027"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13249
                     }
                   }
                 ]
@@ -267,46 +267,46 @@
                 "value": [
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Claw1d8"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_crewpsp013"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13270
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Claw1d8"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_crewpsp014"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13270
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Claw1d8"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_crewpsp016"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13270
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Claw1d8"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_crewpsp017"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13270
                     }
                   }
                 ]
@@ -528,35 +528,35 @@
                 "value": [
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Torch"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_torch003"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 180
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Torch"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_torch004"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 180
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Torch"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_torch006"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 180
                     }
                   }
                 ]
@@ -577,68 +577,68 @@
                 "value": [
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Potion of Cure Light Wounds"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_mpotion025"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13411
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Potion of Cure Light Wounds"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_mpotion026"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13411
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Potion of Cure Light Wounds"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_mpotion027"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13411
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Potion of Cure Light Wounds"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_mpotion029"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13411
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Potion of Cure Light Wounds"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_mpotion030"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13411
                     }
                   },
                   {
                     "__struct_id": 0,
-                    "NAME": {
-                      "type": "cexostring",
-                      "value": "Potion of Cure Light Wounds"
-                    },
                     "RESREF": {
                       "type": "resref",
                       "value": "it_mpotion031"
+                    },
+                    "STRREF": {
+                      "type": "dword",
+                      "value": 13411
                     }
                   }
                 ]
@@ -1468,13 +1468,13 @@
                         },
                         {
                           "__struct_id": 0,
-                          "NAME": {
-                            "type": "cexostring",
-                            "value": "Dwarven Waraxe"
-                          },
                           "RESREF": {
                             "type": "resref",
                             "value": "wdwraxe002"
+                          },
+                          "STRREF": {
+                            "type": "dword",
+                            "value": 83310
                           }
                         }
                       ]
@@ -1616,24 +1616,24 @@
                         },
                         {
                           "__struct_id": 0,
-                          "NAME": {
-                            "type": "cexostring",
-                            "value": "Short Sword"
-                          },
                           "RESREF": {
                             "type": "resref",
                             "value": "wswss003"
+                          },
+                          "STRREF": {
+                            "type": "dword",
+                            "value": 106
                           }
                         },
                         {
                           "__struct_id": 0,
-                          "NAME": {
-                            "type": "cexostring",
-                            "value": "Short Sword"
-                          },
                           "RESREF": {
                             "type": "resref",
                             "value": "wswss005"
+                          },
+                          "STRREF": {
+                            "type": "dword",
+                            "value": 106
                           }
                         }
                       ]
@@ -1731,13 +1731,13 @@
                       "value": [
                         {
                           "__struct_id": 0,
-                          "NAME": {
-                            "type": "cexostring",
-                            "value": "Mace"
-                          },
                           "RESREF": {
                             "type": "resref",
                             "value": "wblml002"
+                          },
+                          "STRREF": {
+                            "type": "dword",
+                            "value": 177
                           }
                         }
                       ]
@@ -1870,13 +1870,13 @@
                       "value": [
                         {
                           "__struct_id": 0,
-                          "NAME": {
-                            "type": "cexostring",
-                            "value": "Longbow"
-                          },
                           "RESREF": {
                             "type": "resref",
                             "value": "wbwln002"
+                          },
+                          "STRREF": {
+                            "type": "dword",
+                            "value": 170
                           }
                         }
                       ]
@@ -1897,13 +1897,13 @@
                       "value": [
                         {
                           "__struct_id": 0,
-                          "NAME": {
-                            "type": "cexostring",
-                            "value": "Shortbow"
-                          },
                           "RESREF": {
                             "type": "resref",
                             "value": "wbwsh002"
+                          },
+                          "STRREF": {
+                            "type": "dword",
+                            "value": 171
                           }
                         }
                       ]
