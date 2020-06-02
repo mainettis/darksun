@@ -1,20 +1,96 @@
 {
   "__data_type": "UTC ",
+  "Appearance_Head": {
+    "type": "byte",
+    "value": 1
+  },
   "Appearance_Type": {
     "type": "word",
-    "value": 858
+    "value": 6
+  },
+  "ArmorPart_RFoot": {
+    "type": "byte",
+    "value": 1
   },
   "BodyBag": {
     "type": "byte",
     "value": 0
   },
+  "BodyPart_Belt": {
+    "type": "byte",
+    "value": 0
+  },
+  "BodyPart_LBicep": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_LFArm": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_LFoot": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_LHand": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_LShin": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_LShoul": {
+    "type": "byte",
+    "value": 0
+  },
+  "BodyPart_LThigh": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_Neck": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_Pelvis": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_RBicep": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_RFArm": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_RHand": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_RShin": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_RShoul": {
+    "type": "byte",
+    "value": 0
+  },
+  "BodyPart_RThigh": {
+    "type": "byte",
+    "value": 1
+  },
+  "BodyPart_Torso": {
+    "type": "byte",
+    "value": 1
+  },
   "Cha": {
     "type": "byte",
-    "value": 6
+    "value": 8
   },
   "ChallengeRating": {
     "type": "float",
-    "value": 6.0
+    "value": 0.25
   },
   "ClassList": {
     "type": "list",
@@ -23,14 +99,30 @@
         "__struct_id": 2,
         "Class": {
           "type": "int",
-          "value": 12
+          "value": 20
         },
         "ClassLevel": {
           "type": "short",
-          "value": 8
+          "value": 1
         }
       }
     ]
+  },
+  "Color_Hair": {
+    "type": "byte",
+    "value": 1
+  },
+  "Color_Skin": {
+    "type": "byte",
+    "value": 1
+  },
+  "Color_Tattoo1": {
+    "type": "byte",
+    "value": 1
+  },
+  "Color_Tattoo2": {
+    "type": "byte",
+    "value": 1
   },
   "Comment": {
     "type": "cexostring",
@@ -38,11 +130,11 @@
   },
   "Con": {
     "type": "byte",
-    "value": 19
+    "value": 10
   },
   "Conversation": {
     "type": "resref",
-    "value": ""
+    "value": "commoner"
   },
   "CRAdjust": {
     "type": "int",
@@ -50,7 +142,7 @@
   },
   "CurrentHitPoints": {
     "type": "short",
-    "value": 44
+    "value": 2
   },
   "DecayTime": {
     "type": "dword",
@@ -61,42 +153,25 @@
     "value": ""
   },
   "Description": {
-    "id": 66931,
     "type": "cexolocstring",
-    "value": {
-      "0": "Kanks are docile insects that form hives. The kank soldier can be trained for riding and war. Easily domesticated, they are valued for the nectar they produce, which can be fermented to make Broy, a cheap and nasty alcohol."
-    }
+    "value": {}
   },
   "Dex": {
     "type": "byte",
-    "value": 13
+    "value": 8
   },
   "Disarmable": {
     "type": "byte",
-    "value": 0
+    "value": 1
   },
   "Equip_ItemList": {
     "type": "list",
     "value": [
       {
-        "__struct_id": 16384,
+        "__struct_id": 2,
         "EquippedRes": {
           "type": "resref",
-          "value": "it_crewpsp016"
-        }
-      },
-      {
-        "__struct_id": 32768,
-        "EquippedRes": {
-          "type": "resref",
-          "value": "it_crewpsp017"
-        }
-      },
-      {
-        "__struct_id": 65536,
-        "EquippedRes": {
-          "type": "resref",
-          "value": "it_crewps027"
+          "value": "nw_cloth022"
         }
       }
     ]
@@ -112,23 +187,23 @@
         "__struct_id": 1,
         "Feat": {
           "type": "word",
-          "value": 28
+          "value": 258
         }
       },
       {
         "__struct_id": 1,
         "Feat": {
           "type": "word",
-          "value": 289
+          "value": 40
         }
       }
     ]
   },
   "FirstName": {
-    "id": 12387,
+    "id": 12423,
     "type": "cexolocstring",
     "value": {
-      "0": "Kank"
+      "0": "Commoner"
     }
   },
   "fortbonus": {
@@ -137,7 +212,7 @@
   },
   "Gender": {
     "type": "byte",
-    "value": 0
+    "value": 1
   },
   "GoodEvil": {
     "type": "byte",
@@ -145,11 +220,11 @@
   },
   "HitPoints": {
     "type": "short",
-    "value": 44
+    "value": 2
   },
   "Int": {
     "type": "byte",
-    "value": 3
+    "value": 8
   },
   "Interruptable": {
     "type": "byte",
@@ -177,11 +252,11 @@
   },
   "MaxHitPoints": {
     "type": "short",
-    "value": 76
+    "value": 3
   },
   "NaturalAC": {
     "type": "byte",
-    "value": 5
+    "value": 0
   },
   "NoPermDeath": {
     "type": "byte",
@@ -189,7 +264,7 @@
   },
   "PaletteID": {
     "type": "byte",
-    "value": 9
+    "value": 44
   },
   "PerceptionRange": {
     "type": "byte",
@@ -205,11 +280,11 @@
   },
   "PortraitId": {
     "type": "word",
-    "value": 309
+    "value": 129
   },
   "Race": {
     "type": "byte",
-    "value": 12
+    "value": 6
   },
   "refbonus": {
     "type": "short",
@@ -229,7 +304,7 @@
   },
   "ScriptDialogue": {
     "type": "resref",
-    "value": "nw_c2_default4"
+    "value": "conv_commoner"
   },
   "ScriptDisturbed": {
     "type": "resref",
@@ -316,7 +391,14 @@
         "__struct_id": 0,
         "Rank": {
           "type": "byte",
-          "value": 4
+          "value": 0
+        }
+      },
+      {
+        "__struct_id": 0,
+        "Rank": {
+          "type": "byte",
+          "value": 2
         }
       },
       {
@@ -393,14 +475,7 @@
         "__struct_id": 0,
         "Rank": {
           "type": "byte",
-          "value": 7
-        }
-      },
-      {
-        "__struct_id": 0,
-        "Rank": {
-          "type": "byte",
-          "value": 0
+          "value": 2
         }
       },
       {
@@ -470,7 +545,7 @@
   },
   "SoundSetFile": {
     "type": "word",
-    "value": 6
+    "value": 184
   },
   "SpecAbilityList": {
     "type": "list",
@@ -482,7 +557,7 @@
   },
   "Str": {
     "type": "byte",
-    "value": 27
+    "value": 10
   },
   "Subrace": {
     "type": "cexostring",
@@ -490,11 +565,11 @@
   },
   "Tag": {
     "type": "cexostring",
-    "value": "NW_Kank001"
+    "value": "Commoner002"
   },
   "Tail_New": {
     "type": "dword",
-    "value": 534
+    "value": 0
   },
   "TemplateList": {
     "type": "list",
@@ -502,7 +577,7 @@
   },
   "TemplateResRef": {
     "type": "resref",
-    "value": "bearkodiak003"
+    "value": "commoner002"
   },
   "WalkRate": {
     "type": "int",
@@ -514,10 +589,10 @@
   },
   "Wings_New": {
     "type": "dword",
-    "value": 205
+    "value": 0
   },
   "Wis": {
     "type": "byte",
-    "value": 12
+    "value": 10
   }
 }

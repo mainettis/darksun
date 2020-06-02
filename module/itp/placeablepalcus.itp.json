@@ -20,6 +20,22 @@
           "type": "byte",
           "value": 22
         },
+        "LIST": {
+          "type": "list",
+          "value": [
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Awning"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "plc_balc013"
+              }
+            }
+          ]
+        },
         "STRREF": {
           "type": "dword",
           "value": 111663
@@ -154,6 +170,17 @@
         "LIST": {
           "type": "list",
           "value": [
+            {
+              "__struct_id": 0,
+              "NAME": {
+                "type": "cexostring",
+                "value": "Grass002"
+              },
+              "RESREF": {
+                "type": "resref",
+                "value": "plc_grass002a"
+              }
+            },
             {
               "__struct_id": 0,
               "RESREF": {
