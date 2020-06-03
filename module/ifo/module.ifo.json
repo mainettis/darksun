@@ -32,20 +32,6 @@
         "__struct_id": 6,
         "Area_Name": {
           "type": "resref",
-          "value": "desert_enc1"
-        }
-      },
-      {
-        "__struct_id": 6,
-        "Area_Name": {
-          "type": "resref",
-          "value": "overlandmap"
-        }
-      },
-      {
-        "__struct_id": 6,
-        "Area_Name": {
-          "type": "resref",
           "value": "kled"
         }
       }

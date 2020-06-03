@@ -54,6 +54,7 @@ void merchant_StartDialog(int bGhost = FALSE)
 
 const string MERCHANT_MASTER_DIALOG = "MerchantDialog";
 const string MERCHANT_PAGE_MAIN     = "MERCHANTMAIN";
+const string MERCHANT_PAGE_NOSTORE  = "MERCHANTNOSTORE";
 
 //TODO, implement "knowing" the merchant for return players.
 //  Probably need a database entry.
@@ -66,7 +67,11 @@ void merchantDialog_Init()
     AddDialogPage(MERCHANT_PAGE_MAIN, "Hello, my <lord/lady>.  I am the proud owner " +
         "of this shop and would love to do business with you.  Would you like to see " +
         "my wares?");
-    SetDialogLabel(DLG_NODE_END, "No thanks, sorry to bother you.");
+    SetDialogLabel(DLG_NODE_END, "No thanks, sorry to bother you.", MERCHANT_PAGE_MAIN);
+    AddDialogPage(MERCHANT_PAGE_NOSTORE, "Hello, my <lord/lady>.  I am sorry to waste " +
+        "your time, but we are not quite ready to open our store to the public.  Please, " +
+        "I beg of you, come back soon and we will be happy to serve you.");
+    SetDialogLabel(DLG_NODE_END, "Ok, I will.  Have a good day.", MERCHANT_PAGE_NOSTORE);
 }
 
 void merchantDialog_Page()
@@ -85,11 +90,7 @@ void merchantDialog_Page()
         if (GetIsObjectValid(oStore))
             sStore = GetTag(oStore);
         else
-            //no waypoint and no store variable
-        {
-            
-        }
-
+            SetDialogPage(MERCHANT_PAGE_NOSTORE);
     }
 
     if (sPage == MERCHANT_PAGE_MAIN)
