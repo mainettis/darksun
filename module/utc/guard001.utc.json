@@ -42,7 +42,7 @@
   },
   "Conversation": {
     "type": "resref",
-    "value": "guard"
+    "value": ""
   },
   "CRAdjust": {
     "type": "int",

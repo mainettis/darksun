@@ -21,7 +21,7 @@ As a volunteer project, we fully expect that any person that works on this proje
 
     Yep, there's nothing there.  That's bad.  Here's an example of good prototyping and documentation.  This is a simple procedures, so not much is required.  For more complicated procedures, you either need more documentation, or you need to break the procedure up.
 
-    ```c
+    ``` cpp
     // ---< ActivatePlugin >---
     // ---< core_i_framework >---
     // Runs oPlugin's OnPluginActivate script and sets its status to ON. Returns
@@ -32,17 +32,17 @@ As a volunteer project, we fully expect that any person that works on this proje
 
 * All functions will contain debugging and logging messages, as required, to aid in future changes/debugging and to inform the module ownership, DMs and players (as appropriate) what is going on.  We have several tools to accomplish this easily.  See [debug messaging](#debug-messaging) and [module communication](#module-communication).  Here's an example of the debug messaging available in the module:
 
-    ``` c
+    ``` cpp
     Debug("Successfully created encounter with ID " + sEncounterID);
     ```
 
-    ``` c
+    ``` cpp
     Warning("Cannot activate plugin '" + sPlugin + "': denied");
     ```
 
     This message will be sent to all destinations as opted in `core_c_config`.  You are not necessarily limited to basic data message, though.  Here's an example of a more complicated Debug message that will help everyone determine exactly what is happening within a system:
 
-    ``` c
+    ``` cpp
     Debug("Checking " + sEvent + " script " + IntToString(i + 1) + sCount +
         "\n    Script: " + sScript +
         "\n    Priority: " + PriorityToString(fPriority) +
@@ -65,7 +65,7 @@ Here are the basic functions it provides:
 * `_GetIsDM()` - a replacement for nwscript's `GetIsDM()`.  Our version determines whether the passes character object is a DM or a DM possessing an NPC.
 * `_GetIsPartyMember()` - will return whether the first passed object is a party member of the second passed object.
 
-* `[_Get, _Set, _Delete]Local*` - module-specific replacements for `[get,set,delete]Local*`.  For now, these are just wrappers, however, they will be used later for object/variable inheritance and other functions, so best to start using them now.  To set a variable on the module, the object `MODULE` should be passed:  `_SetLocalInt(MODULE, sVarName, nValue)`.  Also allows us to delete the HCR2 methodology of using separate functions to set module variables and player-persistent variables.  Just call our version and it'll figure it our for you.  If none of the special conditions are met (i.e. for PCs, inheritance, GetModule(), etc.) it just processes the variable on the passed object as the normal Bioware function would.
+* `[_Get|_Set|_Delete]Local*` - module-specific replacements for `[Get|Set|Delete]Local*`.  For now, these are just wrappers, however, they will be used later for object/variable inheritance and other functions, so best to start using them now.  To set a variable on the module, the object `MODULE` should be passed:  `_SetLocalInt(MODULE, sVarName, nValue)`.  These functions also allows us to replace the HCR2 methodology of using separate functions to set module variables and player-persistent variables.  Just call our version and it'll figure it out for you.  If none of the special conditions are met (i.e. for PCs, inheritance, GetModule(), etc.), it just processes the variable on the passed object as the normal Bioware function would.
 
 To learn more and understand exactly how the functions work, open up [`dsutil_i_data`](../utilities/dsutil_i_data.nss) and take a look!
 
@@ -80,7 +80,6 @@ The entire module rests on the core framework developed, maintained and continuo
 * [Math](#math-functions)
     * [DS Math](#ds-math-functions)
 * [Lists](#list-functions)
-    * [DS Lists](#ds-list-functions)
 * [Datapoints](#datapoint-functions)
 * [Debugging](#debug-functions)
 * [Color](#coloring-functions)
@@ -100,10 +99,6 @@ The entire module rests on the core framework developed, maintained and continuo
 The framework provides access to two types of lists:  comma separated values (CSVs) and array-like lists (varlists).  There is not extensive documentation here because the author has provided his own [list documentation](../framework/docs/lists.md).  In addition to the functions and ideas found there, there is another script file called `util_i_lists` which contains functions to swap from one list type to the other.  These lists are extensively used throughout the module.
 
 An example of the power of these lists is the way in which languages are added into the DMFI language system.  When initiated, the language system searches for all items in a CSV, which are references to game objects (items) that contain the appropriate variables to allow language translation.  As each object is found, it is added to an object varlist on the DMFI data point.  Simultaneously, a CSV is created with the names of each of the languages.  This allows a quick way to create an index of languages.  The CSV is searched by language name to determine its index, then the object list is refernced by index to get the required object and its variables.  In this way, new languages can be added to the module without any scripting at all.  A new language initializer items simply needs to be created with the appropriate variables and the expected tag.
-
-###### DS List Functions
-
-[`dsutil_i_varlist`](../utilities/dsutil_i_varlist) is a supplement to the framework's `util_i_varlists` and provides the ability to manipulate pseudo-vector variables.
 
 #### Datapoint Functions
 
@@ -127,7 +122,7 @@ Here are some notes from our implementation of the library system:
 * All scripts associated with a library, if written correctly, become part of one large script at compile time.  This is the primary reason each our libraries has only six different scripts in them (configuration, text, constants, events, main, and plugin/library).
 * Bioware override scripts can be housed in any library and don't need to have the same name as the script they're overriding, only the event name passed through the library does.  Here's an example of a library exposure that override Bioware's nw_s2_animalcom:
 
-    ``` c
+    ``` cpp
     void OnLibraryLoad()
     {
         RegisterLibraryScript("nw_s2_animalcom", 1);
@@ -143,9 +138,9 @@ Here are some notes from our implementation of the library system:
     }
     ```
 
-* The same can be done with item-based scripting.  For both cases, separate, specially named scripts are not required, just expose your function to the library system with the correct name and you can run any function or script that you want.  Here's an example of tag-based scripting from HCR2's torch subsystem.  This isn't the entire script, it just shows the portion necessary to understand tag-based scripting.  The actual name of the items are carried inside constants (H2_LANTERN and H2_OILFLASK, in this case), so you can change the tag of the item and not have the system break.  When any player uses an item tagged as a lantern (`h2_lantern`), the system looks for a script with that item name, which matches the constant we passed (`H2_LANTERN = "h2_lantern"`).  Once found, it looks into the library for the nEntry that matches the one we assigned (`2` in this case).  
+* The same can be done with item-based scripting.  For both cases, separate, specially named scripts are not required, just expose your functions to the library system with the correct name and you can run any function or script that you want.  Here's an example of tag-based scripting from HCR2's torch subsystem.  This isn't the entire script, it just shows the portion necessary to understand tag-based scripting.  The actual name of the items are carried inside constants (H2_LANTERN and H2_OILFLASK, in this case), so you can change the tag of the item and not have the system break.  When any player uses an item tagged as a lantern (`h2_lantern`), the system looks for a script with that item name, which matches the constant we passed (`H2_LANTERN = "h2_lantern"`).  Once found, it looks into the library for the nEntry that matches the one we assigned (`2` in this case).  
 
-    ``` c
+    ``` cpp
     void OnLibraryLoad()
     {
         ...
@@ -174,7 +169,7 @@ Here are some notes from our implementation of the library system:
 
     It then runs the script associated with that entry (`torch_lantern()`), which contains all the scripting you would normally keep in its own .nss, without having to maintain another file.
 
-    ``` c
+    ``` cpp
     void torch_lantern()
     {
         int nEvent = GetUserDefinedItemEventNumber();
@@ -208,8 +203,6 @@ Here are some notes from our implementation of the library system:
 
 
 
-## Dialog/Conversation System
-
 
 ## Quest Management System
 
@@ -242,6 +235,12 @@ The travel encounter system is easily expandable and requires no scripting knowl
     *Note: no triggers or other objects in the encounter area require specific variables for this system to function.*
 
 That's it!  If all of the above conditions are satisfied, the encounters will happen automatically.
+
+## Conversations and Dialogs
+
+We are using a zz-dialog based system modified for use under the framework by Michael Sinclair (squattingmonk).  The system works very much like the event management system, except the events are various events that happen during conversations, such as a PC selecting a node or a new page being displayed.  Currently, there are only two conversations in the module: `dlg_convzoom` and `dlg_conv`.  All conversations will be set to one or the other.  `dlg_convzoom` zooms in on the NPC the PC is having the conversation with, `dlg_conv` does not.  The scripted conversation to be used is set as a variable on the object.  The string variable's name is `*Dialog` and should be set to the name of the conversation.
+
+To Be Continued...
 
 ## Dungeon Master Friendly Initiative
 
