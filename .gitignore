@@ -8,3 +8,7 @@ plugins/working
 plugins/dmfi
 dive.exe
 .nasher
+
+# ignore binary
+/nwnsc
+/nwnsc.exe
