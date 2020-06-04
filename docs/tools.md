@@ -117,6 +117,9 @@ Nimble is a programming language.  Although you will probably only directly use 
     ```
     setx PATH "%path%;C:\Users\<user_name>\.nimble\bin"
     ```
+    For linux, please look into modifying your `.profile` or `.bashrc`(if using bash).
+
+    > :warning: **If you choose an alternate method of installation for nimble**, please make sure you get the exact version or greater of nim required by the [Neverwinter](https://nimble.directory/pkg/neverwinter) and [Nasher](https://nimble.directory/pkg/nasher) nim packages.
 
 #### Neverwinter
 Neverwinter.nim is a set of tools that can convert the various file formats used by Neverwinter Nights into `.json` and other formats, which are text files readable by most text readers and easily handled by source control systems such as Git.  Without these conversion tools, we would not be able to track file changes nor have the convenience of build tools such as Nasher.
@@ -148,14 +151,14 @@ Since we already have the nimble programming language installed via choosenim, i
     nimble install nasher
     ```
 
-2. Initialize Nasher.  Much like Git, Nasher creates a cache of your repository files in order to compare file versions.  This allows Nasher to skip certain steps in the build process and saves time, especially in a large module.  In your command line utility, ensure you're in your `ds` folder and type the following:
+2. After installation, you can verify by type the following:
     ```
-    nasher init --default
+    nasher -v
     ```
+    *Note: If you get an unkonw command, make sure to check system environmental path variable as before.  Since you're using nimble, the nimble path entry should be sufficient.*
     
-    If you forked the resources repository, repeat this step, but in your `ds-r` folder.
 
-3. Configure NWNSC.  NWNSC is an external script compiler for Neverwinter Nights created by glorwinger (sorry, I don't know his real name).  He created this tool so that module developers like yourselves could compile scripts without having to use the toolset.  NWNSC provides much better feedback and can be used with almost any development environment (including [VScode](vscode.md)) to test script compilation without opening the toolset.  The file `nwnsc.exe` is included in the base folder of the primary repository, so it will be included in your forked repository.  The following command uses the path where your NWNEE game files are installed, not the path to the user content that is normally in your documents directory.  To configure your installation path, type ***one*** of the two following commands into your command line utility (read both before, then choose your own adventure):
+3. Configure NWNSC.  NWNSC is an external script compiler for Neverwinter Nights created by glorwinger (sorry, I don't know his real name).  He created this tool so that module developers like yourselves could compile scripts without having to use the toolset.  NWNSC provides much better feedback and can be used with almost any development environment (including [VScode](vscode.md)) to test script compilation without opening the toolset.  A zip containing the file can be downloaded from [nwneetools nwnsc](https://github.com/nwneetools/nwnsc/releases).  Extract the file to the base folder of the primary repository, or to another preferred location recognized by your system's path variable.  The following command uses the path where your NWNEE game files are installed, not the path to the user content that is normally in your documents directory.  To configure your installation path, type ***one*** of the two following commands into your command line utility (read both before, then choose your own adventure):
 
     If your folder names do not have spaces in them (good job!):
     ```
@@ -168,7 +171,7 @@ Since we already have the nimble programming language installed via choosenim, i
     nasher config --local --nssFlags:"-n \"C:/<path>/<to>/Neverwinter Nights\" -owkey"
     ```
 
-    Finally, even though nwnsc.exe is included in the base directory, some situations may require an explicit reference to its location.  The first time you try to build the module in the [workflow](workflow.md), if you receive an error stating that `\nwnsc.exe\ cannot be found`, you must run the following command.  **Replace the folder names with your folder structure to your local git repository.**  The double backslashes are important.
+    Finally, even when nwnsc.exe -- or binary-- is included in the base directory, some situations may require an explicit reference to its location.  The first time you try to build the module in the [workflow](workflow.md), if you receive an error stating that `\nwnsc.exe\ cannot be found`, you must run the following command.  **Replace the folder names with your folder structure to your local git repository.**  The double backslashes are important.
     ```
     nasher config --local --nssCompiler:"C:\\Users\\<username>\\Desktop\\Git_Repositories\\ds\\nwnsc.exe"
     ```
