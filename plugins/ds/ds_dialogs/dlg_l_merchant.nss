@@ -46,19 +46,22 @@ void merchant_StartDialog(int bGhost = FALSE)
 }
 
 // -----------------------------------------------------------------------------
-//                             DMFI System Dialog
+//                             Merchant Master Dialog
 // -----------------------------------------------------------------------------
-// This dialog allows users to use DMFI wand/widget functions, view DM/player
-//  manuals, set custom settings, etc.
+// This dialog is the base conversation for all basic merchants in the module.
+//  individual conditions can be created for specific merchants.  Specific stores
+//  can be assigned using the DLG_MERCHANT_STORE variable.  If this variable is
+//  not assigned on the merchant, the script will search for a merchant/store
+//  waypoint near the NPC.  If not found, a failure conversation will be
+//  initiated.
 // -----------------------------------------------------------------------------
+
+const string DLG_MERCHANT_STORE     = "*Store";
 
 const string MERCHANT_MASTER_DIALOG = "MerchantDialog";
 const string MERCHANT_PAGE_MAIN     = "MERCHANTMAIN";
 const string MERCHANT_NOSTORE       = "MERCHANTNOSTORE";
 const string MERCHANT_CONDITION     = "MERCHANTCONDITION";
-
-//TODO, implement "knowing" the merchant for return players.
-//  Probably need a database entry.
 
 void merchantDialog_Init()
 {
@@ -86,8 +89,9 @@ void merchantDialog_Page()
     object oMerchant = OBJECT_SELF;
     string sNodeText, sStore, sPage = GetDialogPage();
 
-    sStore = _GetLocalString(oMerchant, "*Store");
+    sStore = _GetLocalString(oMerchant, DLG_MERCHANT_STORE);
 
+    // This is here as an example only and not best practice for setting up conditional conversations
     if (GetTag(oMerchant) == "ds_condshop" && GetGender(oPC) != GENDER_MALE)
     {
         SetDialogPage(MERCHANT_CONDITION);
@@ -133,17 +137,6 @@ void merchantDialog_Node()
 
 void OnLibraryLoad()
 {
-    // Plugin setup
-    if (!GetIfPluginExists("ds_l_conv"))
-    {
-        object oPlugin = GetPlugin("ds_l_conv", TRUE);
-        SetName(oPlugin, "[Plugin] Dark Sun Base Conversation System");
-        SetDescription(oPlugin,
-            "This dialog provides basic conversations for most NPCs which provide " +
-            " simple interaction with PCs on a continuing basis, such as opening " +
-            " stores.");
-    }
-
     // Event scripts
     RegisterLibraryScript(MERCHANT_MASTER_DIALOG, 0x0100+0x01);
     RegisterLibraryScript("MerchantDialogGhost",  0x0100+0x02);

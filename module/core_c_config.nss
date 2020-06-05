@@ -107,12 +107,12 @@ const int PERCEPTION_DEBUG_LEVEL = DEBUG_LEVEL_ERROR;
 // This is a comma-separated list of libraries that should be loaded
 // OnModuleLoad. These libraries are loaded before plugins are installed, so
 // they can programatically generate plugins to be installed.
-const string INSTALLED_LIBRARIES = "pqj_l_plugin, dlg_l_plugin, demo_l_plugin, dmfi_l_dialogs, tr_l_plugin, ds_d_merchants";
+const string INSTALLED_LIBRARIES = "pqj_l_plugin, dlg_l_plugin, demo_l_plugin, tr_l_plugin";
 
 // This is a comma-separated list of plugins that should be loaded OnModuleLoad.
 // Plugins can define libraries to install. If the IDs for those libraries are
 // in this list, they will be loaded.
-const string INSTALLED_PLUGINS = "bw_defaultevents, dlg, pqj, dlg_dmfi, tr";
+const string INSTALLED_PLUGINS = "bw_defaultevents, pqj, dlg, tr";
 
 // -----------------------------------------------------------------------------
 //                               Event Management
