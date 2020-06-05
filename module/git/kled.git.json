@@ -12694,7 +12694,7 @@
         },
         "Bearing": {
           "type": "float",
-          "value": -3.1416
+          "value": 3.1416
         },
         "CloseLockDC": {
           "type": "byte",
@@ -12910,7 +12910,7 @@
         },
         "Bearing": {
           "type": "float",
-          "value": -3.1416
+          "value": 3.1416
         },
         "CloseLockDC": {
           "type": "byte",
@@ -13366,7 +13366,7 @@
         },
         "Bearing": {
           "type": "float",
-          "value": -3.1416
+          "value": 3.1416
         },
         "BodyBag": {
           "type": "byte",
@@ -14491,7 +14491,7 @@
         },
         "Bearing": {
           "type": "float",
-          "value": -3.1416
+          "value": 3.1416
         },
         "BodyBag": {
           "type": "byte",
@@ -29349,7 +29349,7 @@
         },
         "Bearing": {
           "type": "float",
-          "value": -3.1416
+          "value": 3.1416
         },
         "BodyBag": {
           "type": "byte",
@@ -32049,7 +32049,7 @@
         },
         "Bearing": {
           "type": "float",
-          "value": -3.1416
+          "value": 3.1416
         },
         "BodyBag": {
           "type": "byte",
@@ -34074,7 +34074,7 @@
         },
         "Bearing": {
           "type": "float",
-          "value": -3.1416
+          "value": 3.1416
         },
         "BodyBag": {
           "type": "byte",
@@ -34299,7 +34299,7 @@
         },
         "Bearing": {
           "type": "float",
-          "value": -3.1416
+          "value": 3.1416
         },
         "BodyBag": {
           "type": "byte",
@@ -48170,11 +48170,11 @@
         },
         "LinkedTo": {
           "type": "cexostring",
-          "value": "WP_Start_to_Kled"
+          "value": "fromKled"
         },
         "LinkedToFlags": {
           "type": "byte",
-          "value": 2
+          "value": 1
         },
         "LoadScreenID": {
           "type": "word",
@@ -48608,242 +48608,6 @@
         "ZPosition": {
           "type": "float",
           "value": 3.0
-        }
-      },
-      {
-        "__struct_id": 5,
-        "Appearance": {
-          "type": "byte",
-          "value": 1
-        },
-        "Description": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "HasMapNote": {
-          "type": "byte",
-          "value": 0
-        },
-        "LinkedTo": {
-          "type": "cexostring",
-          "value": ""
-        },
-        "LocalizedName": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "MapNote": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "MapNoteEnabled": {
-          "type": "byte",
-          "value": 0
-        },
-        "Tag": {
-          "type": "cexostring",
-          "value": "WP_Kled_to_Overland"
-        },
-        "TemplateResRef": {
-          "type": "resref",
-          "value": ""
-        },
-        "XOrientation": {
-          "type": "float",
-          "value": 0.0
-        },
-        "XPosition": {
-          "type": "float",
-          "value": 94.9311
-        },
-        "YOrientation": {
-          "type": "float",
-          "value": 1.0
-        },
-        "YPosition": {
-          "type": "float",
-          "value": 3.8351
-        },
-        "ZPosition": {
-          "type": "float",
-          "value": 2.8333
-        }
-      },
-      {
-        "__struct_id": 5,
-        "Appearance": {
-          "type": "byte",
-          "value": 1
-        },
-        "Description": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "HasMapNote": {
-          "type": "byte",
-          "value": 0
-        },
-        "LinkedTo": {
-          "type": "cexostring",
-          "value": ""
-        },
-        "LocalizedName": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "MapNote": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "MapNoteEnabled": {
-          "type": "byte",
-          "value": 0
-        },
-        "Tag": {
-          "type": "cexostring",
-          "value": "WP_Kled_to_Overland"
-        },
-        "TemplateResRef": {
-          "type": "resref",
-          "value": ""
-        },
-        "XOrientation": {
-          "type": "float",
-          "value": 0.0
-        },
-        "XPosition": {
-          "type": "float",
-          "value": 95.1875
-        },
-        "YOrientation": {
-          "type": "float",
-          "value": 1.0
-        },
-        "YPosition": {
-          "type": "float",
-          "value": 5.6453
-        },
-        "ZPosition": {
-          "type": "float",
-          "value": 3.0
-        }
-      },
-      {
-        "__struct_id": 5,
-        "Appearance": {
-          "type": "byte",
-          "value": 1
-        },
-        "Description": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "HasMapNote": {
-          "type": "byte",
-          "value": 0
-        },
-        "LinkedTo": {
-          "type": "cexostring",
-          "value": ""
-        },
-        "LocalizedName": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "MapNote": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "MapNoteEnabled": {
-          "type": "byte",
-          "value": 0
-        },
-        "Tag": {
-          "type": "cexostring",
-          "value": "WP_Kled_to_start"
-        },
-        "TemplateResRef": {
-          "type": "resref",
-          "value": ""
-        },
-        "XOrientation": {
-          "type": "float",
-          "value": 0.1224
-        },
-        "XPosition": {
-          "type": "float",
-          "value": 135.4142
-        },
-        "YOrientation": {
-          "type": "float",
-          "value": -0.9925000000000001
-        },
-        "YPosition": {
-          "type": "float",
-          "value": 194.0442
-        },
-        "ZPosition": {
-          "type": "float",
-          "value": 3.0
-        }
-      },
-      {
-        "__struct_id": 5,
-        "Appearance": {
-          "type": "byte",
-          "value": 1
-        },
-        "Description": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "HasMapNote": {
-          "type": "byte",
-          "value": 0
-        },
-        "LinkedTo": {
-          "type": "cexostring",
-          "value": ""
-        },
-        "LocalizedName": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "MapNote": {
-          "type": "cexolocstring",
-          "value": {}
-        },
-        "MapNoteEnabled": {
-          "type": "byte",
-          "value": 0
-        },
-        "Tag": {
-          "type": "cexostring",
-          "value": "WP_Kled_to_start"
-        },
-        "TemplateResRef": {
-          "type": "resref",
-          "value": ""
-        },
-        "XOrientation": {
-          "type": "float",
-          "value": -0.0
-        },
-        "XPosition": {
-          "type": "float",
-          "value": 135.44
-        },
-        "YOrientation": {
-          "type": "float",
-          "value": -1.0
-        },
-        "YPosition": {
-          "type": "float",
-          "value": 194.8721
-        },
-        "ZPosition": {
-          "type": "float",
-          "value": 3.025
         }
       },
       {
@@ -49505,6 +49269,124 @@
         "ZPosition": {
           "type": "float",
           "value": 3.0
+        }
+      },
+      {
+        "__struct_id": 5,
+        "Appearance": {
+          "type": "byte",
+          "value": 1
+        },
+        "Description": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "HasMapNote": {
+          "type": "byte",
+          "value": 0
+        },
+        "LinkedTo": {
+          "type": "cexostring",
+          "value": ""
+        },
+        "LocalizedName": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "MapNote": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "MapNoteEnabled": {
+          "type": "byte",
+          "value": 0
+        },
+        "Tag": {
+          "type": "cexostring",
+          "value": "WP_Kled_to_start"
+        },
+        "TemplateResRef": {
+          "type": "resref",
+          "value": ""
+        },
+        "XOrientation": {
+          "type": "float",
+          "value": 0.0736
+        },
+        "XPosition": {
+          "type": "float",
+          "value": 134.6191
+        },
+        "YOrientation": {
+          "type": "float",
+          "value": -0.9973
+        },
+        "YPosition": {
+          "type": "float",
+          "value": 194.8986
+        },
+        "ZPosition": {
+          "type": "float",
+          "value": 3.01
+        }
+      },
+      {
+        "__struct_id": 5,
+        "Appearance": {
+          "type": "byte",
+          "value": 1
+        },
+        "Description": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "HasMapNote": {
+          "type": "byte",
+          "value": 0
+        },
+        "LinkedTo": {
+          "type": "cexostring",
+          "value": ""
+        },
+        "LocalizedName": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "MapNote": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "MapNoteEnabled": {
+          "type": "byte",
+          "value": 0
+        },
+        "Tag": {
+          "type": "cexostring",
+          "value": "WP_Kled_to_Overland"
+        },
+        "TemplateResRef": {
+          "type": "resref",
+          "value": ""
+        },
+        "XOrientation": {
+          "type": "float",
+          "value": 0.0
+        },
+        "XPosition": {
+          "type": "float",
+          "value": 94.72839999999999
+        },
+        "YOrientation": {
+          "type": "float",
+          "value": 1.0
+        },
+        "YPosition": {
+          "type": "float",
+          "value": 3.8814
+        },
+        "ZPosition": {
+          "type": "float",
+          "value": 2.837
         }
       }
     ]

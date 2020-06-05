@@ -11,13 +11,6 @@
         "__struct_id": 6,
         "Area_Name": {
           "type": "resref",
-          "value": "startingarea"
-        }
-      },
-      {
-        "__struct_id": 6,
-        "Area_Name": {
-          "type": "resref",
           "value": "h2_fugueplane"
         }
       },
@@ -47,6 +40,13 @@
         "Area_Name": {
           "type": "resref",
           "value": "kled"
+        }
+      },
+      {
+        "__struct_id": 6,
+        "Area_Name": {
+          "type": "resref",
+          "value": "area"
         }
       }
     ]
@@ -83,23 +83,23 @@
   },
   "Mod_Entry_Area": {
     "type": "resref",
-    "value": "startingarea"
+    "value": "area"
   },
   "Mod_Entry_Dir_X": {
     "type": "float",
-    "value": -0.9997
+    "value": 0.535
   },
   "Mod_Entry_Dir_Y": {
     "type": "float",
-    "value": -0.0245
+    "value": 0.8449
   },
   "Mod_Entry_X": {
     "type": "float",
-    "value": 11.2998
+    "value": 16.3665
   },
   "Mod_Entry_Y": {
     "type": "float",
-    "value": 8.32
+    "value": 17.4104
   },
   "Mod_Entry_Z": {
     "type": "float",

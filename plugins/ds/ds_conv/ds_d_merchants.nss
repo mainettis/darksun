@@ -54,6 +54,8 @@ void merchant_StartDialog(int bGhost = FALSE)
 
 const string MERCHANT_MASTER_DIALOG = "MerchantDialog";
 const string MERCHANT_PAGE_MAIN     = "MERCHANTMAIN";
+const string MERCHANT_NOSTORE       = "MERCHANTNOSTORE";
+const string MERCHANT_CONDITION     = "MERCHANTCONDITION";
 
 //TODO, implement "knowing" the merchant for return players.
 //  Probably need a database entry.
@@ -66,7 +68,16 @@ void merchantDialog_Init()
     AddDialogPage(MERCHANT_PAGE_MAIN, "Hello, my <lord/lady>.  I am the proud owner " +
         "of this shop and would love to do business with you.  Would you like to see " +
         "my wares?");
-    SetDialogLabel(DLG_NODE_END, "No thanks, sorry to bother you.");
+    SetDialogLabel(DLG_NODE_END, "No thanks, sorry to bother you.", MERCHANT_PAGE_MAIN);    
+    
+    AddDialogPage(MERCHANT_NOSTORE, "I'm sorry, my <lord/lady>.  I would love to do " +
+        "business with you today, but, as you can see, we're not quite ready to open " +
+        "yet.  Please, I beg of you, return soon and we will be ready.");
+    SetDialogLabel(DLG_NODE_END, "Oh, sorry to bother you.  I'll return another time.", MERCHANT_NOSTORE);
+
+    AddDialogPage(MERCHANT_CONDITION, "Now look here, I don't do business with the likes " +
+        "of you.  Go get your keeper and I'll talk to him.  Go! Get!");
+    SetDialogLabel(DLG_NODE_END, "You won't be seeing any of my coin any time soon!", MERCHANT_CONDITION);
 }
 
 void merchantDialog_Page()
@@ -77,6 +88,12 @@ void merchantDialog_Page()
 
     sStore = _GetLocalString(oMerchant, "*Store");
 
+    if (GetTag(oMerchant) == "ds_condshop" && GetGender(oPC) != GENDER_MALE)
+    {
+        SetDialogPage(MERCHANT_CONDITION);
+        return;
+    }
+
     if (sStore == "")
     {
         location lMerchant = GetLocation(oMerchant);
@@ -85,11 +102,10 @@ void merchantDialog_Page()
         if (GetIsObjectValid(oStore))
             sStore = GetTag(oStore);
         else
-            //no waypoint and no store variable
         {
-            
+            SetDialogPage(MERCHANT_NOSTORE);
+            return;
         }
-
     }
 
     if (sPage == MERCHANT_PAGE_MAIN)
