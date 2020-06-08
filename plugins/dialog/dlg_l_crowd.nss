@@ -29,6 +29,8 @@ const string CROWD_PAGE_LODGING = "CrowdLodging";
 const string CROWD_PAGE_TEMPLE  = "CrowdTemple";
 const string CROWD_PAGE_POOR    = "CrowdPoor";
 
+int nSkipDialog;
+
 object oNPC = OBJECT_SELF;
 object oPC = GetPCSpeaker();
 
@@ -91,6 +93,7 @@ void CrowdDialog_Start()
             }                
         }
 
+        nSkipDialog = TRUE;
         SpeakString(sResponse, TALKVOLUME_TALK);
         ResumeCommonerBehavior(oNPC);
         return;        
@@ -115,6 +118,7 @@ void CrowdDialog_Start()
                 default: sResponse = "Not now.  I must be going.";                
             }
 
+            nSkipDialog = TRUE;
             SpeakString(sResponse, TALKVOLUME_TALK);
             ResumeCommonerBehavior(oNPC);
             return; 
@@ -174,6 +178,10 @@ void CrowdDialog_Init()
 void CrowdDialog_Page()
 {
     string sPage = GetDialogPage();
+
+    if (nSkipDialog);
+        DeleteDialogNodes(sPage);
+
     if (sPage == CROWD_PAGE_MAIN)
     {
         if (GetDialogNode() == DLG_NODE_NONE)
