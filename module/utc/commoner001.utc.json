@@ -304,7 +304,7 @@
   },
   "ScriptDialogue": {
     "type": "resref",
-    "value": "hook_creature03"
+    "value": ""
   },
   "ScriptDisturbed": {
     "type": "resref",

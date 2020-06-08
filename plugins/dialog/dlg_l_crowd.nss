@@ -21,6 +21,7 @@
 const string CROWD_DIALOG       = "CrowdDialog";
 const string CROWD_DIALOG_INIT  = "CrowdDialog_Init";
 const string CROWD_DIALOG_PAGE  = "CrowdDialog_Page";
+const string CROWD_DIALOG_NODE  = "CrowdDialog_Node";
 const string CROWD_DIALOG_END   = "CrowdDialog_End";
 
 const string CROWD_PAGE_MAIN    = "CrowdMain";
@@ -29,15 +30,26 @@ const string CROWD_PAGE_LODGING = "CrowdLodging";
 const string CROWD_PAGE_TEMPLE  = "CrowdTemple";
 const string CROWD_PAGE_POOR    = "CrowdPoor";
 
-int nSkipDialog;
-
 object oNPC = OBJECT_SELF;
 object oPC = GetPCSpeaker();
 
-void CrowdDialog_Start()
+void SpeakOneLiner(string sResponse)
+{
+    Warning("sResponse = " + sResponse);
+    ClearAllActions();
+    ActionDoCommand(SetFacingPoint(GetPosition(oPC)));
+    SpeakString(sResponse, TALKVOLUME_TALK);
+    ActionWait(1.5f);
+}
+
+int CrowdDialog_Start()
 {
     int nResponse = Random(10) + 1;
     string sResponse;
+
+    Warning("Figuring out what to do. nResponse = " + IntToString(nResponse));
+    if (nResponse >= 8)
+        return FALSE;
 
     if (GetIsDusk() || GetIsNight())
     {
@@ -75,36 +87,34 @@ void CrowdDialog_Start()
                 default: sResponse = "Not now, ma'am.  I must be going.";
             }                
         }
-        else if (!GetGender(oNPC) && !GetGender(oPC))
+        else
         {
             switch (nResponse)
             {
-                case 1:  sResponse = "Good evening sir.  I hope you like our town.  It can be quite dangerous at night, so get moving along.";                          break;
-                case 2:  sResponse = "Hello, sir.  You might be new here.  Roaming around at night alone here can be bad for your health.";                             break;
-                case 3:  sResponse = "I'm sorry, sir, we prefer to meet our strangers during the day.  You might want to find a place to stay for the night.";          break;
+                case 1:  sResponse = "Good evening.  I hope you like our town.  It can be quite dangerous at night, so get moving along.";                              break;
+                case 2:  sResponse = "Hello.  You might be new here.  Roaming around at night alone here can be bad for your health.";                                  break;
+                case 3:  sResponse = "I'm sorry, but we prefer to meet our strangers during the day.  You might want to find a place to stay for the night.";           break;
                 case 4:  sResponse = "Best not be walking around armed here at night.  And stay away from our women!";                                                  break;
                 case 5:  sResponse = "Please, I mean no harm.  Where's the guard.  Guard!  I must be going.";                                                           break;
                 case 6:  sResponse = "It's much too late for a conversation, I must get home.  Good night.";                                                            break;
                 case 7:  sResponse = "It's not a good idea to be skulking about at night.  Please move along before I call the guards.";                                break;
-                case 8:  sResponse = "Sir, night time is not the right time.  Good evening.";                                                                           break;
+                case 8:  sResponse = "Night time is not the right time.  Good evening.";                                                                                break;
                 case 9:  sResponse = "Not now, the guards will be along soon.  You best be gone by the time they get here.";                                            break;
                 case 10: sResponse = "Best be seeking some shelter for the night, if you know what's good for you.";                                                    break;
-                default: sResponse = "Not now, sir.  I must be going.";
+                default: sResponse = "Not now.  I must be going.";
             }                
         }
 
-        nSkipDialog = TRUE;
-        SpeakString(sResponse, TALKVOLUME_TALK);
-        ResumeCommonerBehavior(oNPC);
-        return;        
+        Warning("sReponse (1)");
+        SpeakOneLiner(sResponse);
+        return TRUE;        
     }
     else
     {
         if (nResponse < 8)
         {
-            switch (nResponse)
+            switch (Random(10) + 1)
             {
-                //TODO, cut this down to 7 or roll a new random number
                 case 1:  sResponse = "It's a lovely day here!  I hope I get off work early today.";                                                                     break;
                 case 2:  sResponse = "These guards can be quite nasty.  Keep your wits about you.";                                                                     break;
                 case 3:  sResponse = "We don't see too many strangers around these parts.  People here aren't very trusting, best keep your wits about you.";           break;
@@ -118,17 +128,17 @@ void CrowdDialog_Start()
                 default: sResponse = "Not now.  I must be going.";                
             }
 
-            nSkipDialog = TRUE;
-            SpeakString(sResponse, TALKVOLUME_TALK);
-            ResumeCommonerBehavior(oNPC);
-            return; 
+            Warning("sResponse (2)");
+            SpeakOneLiner(sResponse);
+            return TRUE; 
         }
 
-        string sDialog  = GetLocalString(OBJECT_SELF, DLG_DIALOG);
+        /*string sDialog  = GetLocalString(OBJECT_SELF, DLG_DIALOG);
         int    bPrivate = GetLocalInt   (OBJECT_SELF, DLG_PRIVATE);
         int    bNoHello = GetLocalInt   (OBJECT_SELF, DLG_NO_HELLO);
 
-        StartDialog(oPC, oNPC, sDialog, bPrivate, TRUE, TRUE);
+        StartDialog(oPC, oNPC, sDialog, bPrivate, TRUE, TRUE);*/
+        return FALSE;
     }
 }
 
@@ -136,6 +146,8 @@ void CrowdDialog_Init()
 {
     if (GetDialogEvent() != DLG_EVENT_INIT)
         return;
+
+    Warning("Initializing crowd conversation.");
 
     SetDialogPage(CROWD_PAGE_MAIN);
     AddDialogPage(CROWD_PAGE_MAIN, "Hello <sir/madam>!  Welcome to our small town.  We don't get to see strangers much " +
@@ -167,7 +179,7 @@ void CrowdDialog_Init()
 
     AddDialogPage(CROWD_PAGE_POOR, "Well, you'll likely find many beggars and street performers here.  Please support them " +
         "with whatever you can.  Their families will really appreciate it.  Also, if you have any work you can provide to " +
-        "our men, they would be most appreciative.  We are quite poor, but many here are skilled in smithing and have had " +
+        "our men, they would be most appreciative.\n\nWe are quite poor, but many here are skilled in smithing and have had " +
         "military experience.  I'm sure they would love to accompany you on your adventures if you pay well enough to make it " +
         "worth their while.");
     SetDialogNodes(CROWD_PAGE_POOR, CROWD_PAGE_MAIN);
@@ -179,8 +191,14 @@ void CrowdDialog_Page()
 {
     string sPage = GetDialogPage();
 
-    if (nSkipDialog);
+    if (CrowdDialog_Start())
+    {
+        Warning("Speaking one-liner, deleting dialog nodes.");
         DeleteDialogNodes(sPage);
+        //DisableDialogNode(DLG_NODE_END, sPage);
+        DoDialogNode(0);
+        return;
+    }
 
     if (sPage == CROWD_PAGE_MAIN)
     {
@@ -189,6 +207,11 @@ void CrowdDialog_Page()
     }
 
     ClearDialogHistory();
+}
+
+void CrowdDialog_Node()
+{
+
 }
 
 void CrowdDialog_End()
@@ -216,12 +239,14 @@ void NobleDialog()
 void OnLibraryLoad()
 {
     RegisterLibraryScript(CROWD_DIALOG);
-    //RegisterLibraryScript(CROWD_DIALOG_INIT);
-    //RegisterLibraryScript(CROWD_DIALOG_PAGE);
-    //RegisterLibraryScript(CROWD_DIALOG_END);
+    RegisterLibraryScript(CROWD_DIALOG_INIT);
+    RegisterLibraryScript(CROWD_DIALOG_PAGE);
+    RegisterLibraryScript(CROWD_DIALOG_NODE);
+    RegisterLibraryScript(CROWD_DIALOG_END);
 
     RegisterDialogScript(CROWD_DIALOG, CROWD_DIALOG_INIT, DLG_EVENT_INIT);
     RegisterDialogScript(CROWD_DIALOG, CROWD_DIALOG_PAGE, DLG_EVENT_PAGE);
+    RegisterDialogScript(CROWD_DIALOG, CROWD_DIALOG_NODE, DLG_EVENT_NODE);
     RegisterDialogScript(CROWD_DIALOG, CROWD_DIALOG_END,  DLG_EVENT_END | DLG_EVENT_ABORT);
 
     RegisterLibraryScript(GUARD_DIALOG);

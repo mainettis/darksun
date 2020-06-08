@@ -631,15 +631,15 @@
         },
         "ScriptAttacked": {
           "type": "resref",
-          "value": "hook_creature09"
+          "value": ""
         },
         "ScriptDamaged": {
           "type": "resref",
-          "value": "hook_creature04"
+          "value": ""
         },
         "ScriptDeath": {
           "type": "resref",
-          "value": "hook_creature05"
+          "value": ""
         },
         "ScriptDialogue": {
           "type": "resref",
@@ -647,39 +647,39 @@
         },
         "ScriptDisturbed": {
           "type": "resref",
-          "value": "hook_creature06"
+          "value": ""
         },
         "ScriptEndRound": {
           "type": "resref",
-          "value": "hook_creature02"
+          "value": ""
         },
         "ScriptHeartbeat": {
           "type": "resref",
-          "value": "hook_creature07"
+          "value": ""
         },
         "ScriptOnBlocked": {
           "type": "resref",
-          "value": "hook_creature01"
+          "value": ""
         },
         "ScriptOnNotice": {
           "type": "resref",
-          "value": "hook_creature08"
+          "value": ""
         },
         "ScriptRested": {
           "type": "resref",
-          "value": "hook_creature10"
+          "value": ""
         },
         "ScriptSpawn": {
           "type": "resref",
-          "value": "hook_creature11"
+          "value": ""
         },
         "ScriptSpellAt": {
           "type": "resref",
-          "value": "hook_creature12"
+          "value": ""
         },
         "ScriptUserDefine": {
           "type": "resref",
-          "value": "hook_creature13"
+          "value": ""
         },
         "SkillList": {
           "type": "list",
@@ -1161,15 +1161,15 @@
         },
         "ScriptAttacked": {
           "type": "resref",
-          "value": "hook_creature09"
+          "value": ""
         },
         "ScriptDamaged": {
           "type": "resref",
-          "value": "hook_creature04"
+          "value": ""
         },
         "ScriptDeath": {
           "type": "resref",
-          "value": "hook_creature05"
+          "value": ""
         },
         "ScriptDialogue": {
           "type": "resref",
@@ -1177,39 +1177,39 @@
         },
         "ScriptDisturbed": {
           "type": "resref",
-          "value": "hook_creature06"
+          "value": ""
         },
         "ScriptEndRound": {
           "type": "resref",
-          "value": "hook_creature02"
+          "value": ""
         },
         "ScriptHeartbeat": {
           "type": "resref",
-          "value": "hook_creature07"
+          "value": ""
         },
         "ScriptOnBlocked": {
           "type": "resref",
-          "value": "hook_creature01"
+          "value": ""
         },
         "ScriptOnNotice": {
           "type": "resref",
-          "value": "hook_creature08"
+          "value": ""
         },
         "ScriptRested": {
           "type": "resref",
-          "value": "hook_creature10"
+          "value": ""
         },
         "ScriptSpawn": {
           "type": "resref",
-          "value": "hook_creature11"
+          "value": ""
         },
         "ScriptSpellAt": {
           "type": "resref",
-          "value": "hook_creature12"
+          "value": ""
         },
         "ScriptUserDefine": {
           "type": "resref",
-          "value": "hook_creature13"
+          "value": ""
         },
         "SkillList": {
           "type": "list",
@@ -1698,27 +1698,27 @@
         },
         "ScriptAttacked": {
           "type": "resref",
-          "value": "hook_creature09"
+          "value": ""
         },
         "ScriptDamaged": {
           "type": "resref",
-          "value": "hook_creature04"
+          "value": ""
         },
         "ScriptDeath": {
           "type": "resref",
-          "value": "hook_creature05"
+          "value": ""
         },
         "ScriptDialogue": {
           "type": "resref",
-          "value": "hook_creature03"
+          "value": ""
         },
         "ScriptDisturbed": {
           "type": "resref",
-          "value": "hook_creature06"
+          "value": ""
         },
         "ScriptEndRound": {
           "type": "resref",
-          "value": "hook_creature02"
+          "value": ""
         },
         "ScriptHeartbeat": {
           "type": "resref",
@@ -1726,27 +1726,27 @@
         },
         "ScriptOnBlocked": {
           "type": "resref",
-          "value": "hook_creature01"
+          "value": ""
         },
         "ScriptOnNotice": {
           "type": "resref",
-          "value": "hook_creature08"
+          "value": ""
         },
         "ScriptRested": {
           "type": "resref",
-          "value": "hook_creature10"
+          "value": ""
         },
         "ScriptSpawn": {
           "type": "resref",
-          "value": "hook_creature11"
+          "value": ""
         },
         "ScriptSpellAt": {
           "type": "resref",
-          "value": "hook_creature12"
+          "value": ""
         },
         "ScriptUserDefine": {
           "type": "resref",
-          "value": "hook_creature13"
+          "value": ""
         },
         "SkillList": {
           "type": "list",
@@ -2830,27 +2830,27 @@
         },
         "ScriptAttacked": {
           "type": "resref",
-          "value": "hook_creature09"
+          "value": ""
         },
         "ScriptDamaged": {
           "type": "resref",
-          "value": "hook_creature04"
+          "value": ""
         },
         "ScriptDeath": {
           "type": "resref",
-          "value": "hook_creature05"
+          "value": ""
         },
         "ScriptDialogue": {
           "type": "resref",
-          "value": "hook_creature03"
+          "value": ""
         },
         "ScriptDisturbed": {
           "type": "resref",
-          "value": "hook_creature06"
+          "value": ""
         },
         "ScriptEndRound": {
           "type": "resref",
-          "value": "hook_creature02"
+          "value": ""
         },
         "ScriptHeartbeat": {
           "type": "resref",
@@ -2858,27 +2858,27 @@
         },
         "ScriptOnBlocked": {
           "type": "resref",
-          "value": "hook_creature01"
+          "value": ""
         },
         "ScriptOnNotice": {
           "type": "resref",
-          "value": "hook_creature08"
+          "value": ""
         },
         "ScriptRested": {
           "type": "resref",
-          "value": "hook_creature10"
+          "value": ""
         },
         "ScriptSpawn": {
           "type": "resref",
-          "value": "hook_creature11"
+          "value": ""
         },
         "ScriptSpellAt": {
           "type": "resref",
-          "value": "hook_creature12"
+          "value": ""
         },
         "ScriptUserDefine": {
           "type": "resref",
-          "value": "hook_creature13"
+          "value": ""
         },
         "SkillList": {
           "type": "list",
@@ -3564,27 +3564,27 @@
         },
         "ScriptAttacked": {
           "type": "resref",
-          "value": "hook_creature09"
+          "value": ""
         },
         "ScriptDamaged": {
           "type": "resref",
-          "value": "hook_creature04"
+          "value": ""
         },
         "ScriptDeath": {
           "type": "resref",
-          "value": "hook_creature05"
+          "value": ""
         },
         "ScriptDialogue": {
           "type": "resref",
-          "value": "hook_creature03"
+          "value": ""
         },
         "ScriptDisturbed": {
           "type": "resref",
-          "value": "hook_creature06"
+          "value": ""
         },
         "ScriptEndRound": {
           "type": "resref",
-          "value": "hook_creature02"
+          "value": ""
         },
         "ScriptHeartbeat": {
           "type": "resref",
@@ -3592,27 +3592,27 @@
         },
         "ScriptOnBlocked": {
           "type": "resref",
-          "value": "hook_creature01"
+          "value": ""
         },
         "ScriptOnNotice": {
           "type": "resref",
-          "value": "hook_creature08"
+          "value": ""
         },
         "ScriptRested": {
           "type": "resref",
-          "value": "hook_creature10"
+          "value": ""
         },
         "ScriptSpawn": {
           "type": "resref",
-          "value": "hook_creature11"
+          "value": ""
         },
         "ScriptSpellAt": {
           "type": "resref",
-          "value": "hook_creature12"
+          "value": ""
         },
         "ScriptUserDefine": {
           "type": "resref",
-          "value": "hook_creature13"
+          "value": ""
         },
         "SkillList": {
           "type": "list",
@@ -4135,55 +4135,55 @@
         },
         "ScriptAttacked": {
           "type": "resref",
-          "value": "nw_c2_default5"
+          "value": ""
         },
         "ScriptDamaged": {
           "type": "resref",
-          "value": "nw_c2_default6"
+          "value": ""
         },
         "ScriptDeath": {
           "type": "resref",
-          "value": "nw_c2_default7"
+          "value": ""
         },
         "ScriptDialogue": {
           "type": "resref",
-          "value": "nw_c2_default4"
+          "value": ""
         },
         "ScriptDisturbed": {
           "type": "resref",
-          "value": "nw_c2_default8"
+          "value": ""
         },
         "ScriptEndRound": {
           "type": "resref",
-          "value": "nw_c2_default3"
+          "value": ""
         },
         "ScriptHeartbeat": {
           "type": "resref",
-          "value": "nw_c2_default1"
+          "value": ""
         },
         "ScriptOnBlocked": {
           "type": "resref",
-          "value": "nw_c2_defaulte"
+          "value": ""
         },
         "ScriptOnNotice": {
           "type": "resref",
-          "value": "nw_c2_default2"
+          "value": ""
         },
         "ScriptRested": {
           "type": "resref",
-          "value": "nw_c2_defaulta"
+          "value": ""
         },
         "ScriptSpawn": {
           "type": "resref",
-          "value": "nw_c2_default9"
+          "value": ""
         },
         "ScriptSpellAt": {
           "type": "resref",
-          "value": "nw_c2_defaultb"
+          "value": ""
         },
         "ScriptUserDefine": {
           "type": "resref",
-          "value": "nw_c2_defaultd"
+          "value": ""
         },
         "SkillList": {
           "type": "list",
@@ -13823,7 +13823,7 @@
           "id": 14717,
           "type": "cexolocstring",
           "value": {
-            "0": "You may notice some random, half-naked NPCs running arund this area, seemingly appearing out of nowhere, walking around for a bit and then disappearing.  This is the module's crowd system at work.  It's designed to make the cities and other areas where it's assigned to look more alive and bustline with activity as any city would.\n\nIt can be used by accomplishing these tasks (in addition to creating the NPCs that will be walking around the clothing they will wear):\n1 . Create a \"crowd initializer item\" by editing a COPY of the \"crowd_template\" item listed under Special -> Custom 2.  Your new items must start with \"crowd_\".  Upon creation of the new item, on the \"General Tab\", rename the Item Name, Tag and Blueprint ResRef to the new name of your item.  So if you're creating a crowd to handle Kleg Town Guards, all three values should be changed to \"crowd_kregguard\".  There is a 16 character limit for these names.\n\n2. On the \"Description\" tab, click on \"Variables\" and set the variables to the values you wish to use for your crowd. Areas can have multiple crowds with different settings.  If you want to use default (safe) settings, you can even delete variables from this list, but it is not a best-practice to do so.  The variables are generally self-explanatory.\n\n3. Drop waypoints where you want the crowd members to spawn and walk to.  Use normal, boring waypoints. The tag of the waypoint must match the Waypoint_Tag you set in the variables list.  Each crown will use their designated waypoints, so you can set up a different \"patrol route\" for each crowd.\n\n4. Set a string variable called \"*Crowds\" on the area where the crowd is to be created.  Set this variable to the name of your crowd initializer item without the \"crowd_\" prefix.  So if you are creating an crowd based on \"crowd_KregGuard\", This variable shold be set to \"KregGuard\".  If you have multiple crowds based on multiple items, the variable can be a string-delimited list.  If you are creating citizens in Kreg and a Guard in Kreg, you must create two different initializer items, but the area variable \"*Crowds\" will be set to \"KregGuard,KregCitizens\" or something similar."
+            "0": "You may notice some random, half-naked NPCs running arund this area, seemingly appearing out of nowhere, walking around for a bit and then disappearing.  This is the module's crowd system at work.  It's designed to make the cities and other areas where it's assigned to look more alive and bustling with activity as any city would.\n\nIt can be used by accomplishing these tasks (in addition to creating the NPCs that will be walking around the clothing they will wear):\n1 . Create a \"crowd initializer item\" by editing a COPY of the \"crowd_template\" item listed under Special -> Custom 2.  Your new items must start with \"crowd_\".  Upon creation of the new item, on the \"General Tab\", rename the Item Name, Tag and Blueprint ResRef to the new name of your item.  So if you're creating a crowd to handle Kleg Town Guards, all three values should be changed to \"crowd_kregguard\".  There is a 16 character limit for these names.\n\n2. On the \"Description\" tab, click on \"Variables\" and set the variables to the values you wish to use for your crowd. Areas can have multiple crowds with different settings.  If you want to use default (safe) settings, you can even delete variables from this list, but it is not a best-practice to do so.  The variables are generally self-explanatory.\n\n3. Drop waypoints where you want the crowd members to spawn and walk to.  Use normal, boring waypoints. The tag of the waypoint must match the Waypoint_Tag you set in the variables list.  Each crown will use their designated waypoints, so you can set up a different \"patrol route\" for each crowd.\n\n4. Set a string variable called \"*Crowds\" on the area where the crowd is to be created.  Set this variable to the name of your crowd initializer item without the \"crowd_\" prefix.  So if you are creating an crowd based on \"crowd_KregGuard\", This variable shold be set to \"KregGuard\".  If you have multiple crowds based on multiple items, the variable can be a string-delimited list.  If you are creating citizens in Kreg and a Guard in Kreg, you must create two different initializer items, but the area variable \"*Crowds\" will be set to \"KregGuard,KregCitizens\" or something similar."
           }
         },
         "DisarmDC": {
