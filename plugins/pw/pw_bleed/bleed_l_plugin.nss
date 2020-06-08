@@ -29,22 +29,15 @@
 
 void OnLibraryLoad()
 {
-    //Need to check for pw plugin and this is a sub-plugin
-    if (!GetIfPluginExists("pw_bleed"))
-    {
-        object oPlugin = GetPlugin("pw_bleed", TRUE);
-        SetName(oPlugin, "[Plugin] HCR2 :: Bleed");
-        SetDescription(oPlugin,
-            "This plugin controls the Bleed Persistent World Subsystem.");
+    object oPlugin = GetPlugin("pw");
 
-        // ----- Module Events -----
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER,        "bleed_OnClientEnter",       4.0);
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DYING,        "bleed_OnPlayerDying",       4.0);
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_STARTED, "bleed_OnPlayerRestStarted", 4.0);
+    // ----- Module Events -----
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER,        "bleed_OnClientEnter",       4.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DYING,        "bleed_OnPlayerDying",       4.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_STARTED, "bleed_OnPlayerRestStarted", 4.0);
 
-        // ----- Timer Events -----
-        RegisterEventScripts(oPlugin, BLEED_EVENT_ON_TIMER_EXPIRE,         BLEED_ON_TIMER_EXPIRE,       4.0);
-    }
+    // ----- Timer Events -----
+    RegisterEventScripts(oPlugin, BLEED_EVENT_ON_TIMER_EXPIRE,         BLEED_ON_TIMER_EXPIRE,       4.0);
 
     // --- Module Events ---
     RegisterLibraryScript("bleed_OnClientEnter",       1);

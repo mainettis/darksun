@@ -131,7 +131,9 @@
   "LocalizedName": {
     "id": 12923,
     "type": "cexolocstring",
-    "value": {}
+    "value": {
+      "0": "Commoner's Outfit"
+    }
   },
   "Metal1Color": {
     "type": "byte",
@@ -163,10 +165,10 @@
   },
   "Tag": {
     "type": "cexostring",
-    "value": "NW_CLOTH022"
+    "value": "clothing001"
   },
   "TemplateResRef": {
     "type": "resref",
-    "value": "cloth027"
+    "value": "clothing001"
   }
 }

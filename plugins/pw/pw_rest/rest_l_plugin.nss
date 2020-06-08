@@ -29,25 +29,18 @@
 
 void OnLibraryLoad()
 {
-    //Need to check for pw plugin and this is a sub-plugin
-    if (!GetIfPluginExists("pw_rest"))
+    object oPlugin = GetPlugin("pw");
+
+    // ----- Module Events -----
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_CANCELLED, "rest_OnPlayerRestCancelled", 4.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED,  "rest_OnPlayerRestFinished",  4.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_STARTED,   "rest_OnPlayerRestStarted",   4.0);
+
+    // ----- Custom Events -----
+    if (H2_REQUIRE_REST_TRIGGER_OR_CAMPFIRE)
     {
-        object oPlugin = GetPlugin("pw_rest", TRUE);
-        SetName(oPlugin, "[Plugin] HCR2 :: Rest");
-        SetDescription(oPlugin,
-            "This plugin controls the HCR2 Rest Persistent World Subsystem.");
-
-        // ----- Module Events -----
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_CANCELLED, "rest_OnPlayerRestCancelled", 4.0);
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED,  "rest_OnPlayerRestFinished",  4.0);
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_STARTED,   "rest_OnPlayerRestStarted",   4.0);
-
-        // ----- Custom Events -----
-        if (H2_REQUIRE_REST_TRIGGER_OR_CAMPFIRE)
-        {
-            RegisterEventScripts(oPlugin, REST_EVENT_ON_TRIGGER_ENTER,       "rest_OnTriggerEnter",        9.0);
-            RegisterEventScripts(oPlugin, REST_EVENT_ON_TRIGGER_EXIT,        "rest_OnTriggerExit",         9.0);
-        }
+        RegisterEventScripts(oPlugin, REST_EVENT_ON_TRIGGER_ENTER,       "rest_OnTriggerEnter",        9.0);
+        RegisterEventScripts(oPlugin, REST_EVENT_ON_TRIGGER_EXIT,        "rest_OnTriggerExit",         9.0);
     }
 
     // ----- Module Events -----

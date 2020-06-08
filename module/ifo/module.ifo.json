@@ -11,6 +11,13 @@
         "__struct_id": 6,
         "Area_Name": {
           "type": "resref",
+          "value": "startingarea"
+        }
+      },
+      {
+        "__struct_id": 6,
+        "Area_Name": {
+          "type": "resref",
           "value": "h2_fugueplane"
         }
       },
@@ -46,7 +53,14 @@
         "__struct_id": 6,
         "Area_Name": {
           "type": "resref",
-          "value": "area"
+          "value": "hiddenvillage001"
+        }
+      },
+      {
+        "__struct_id": 6,
+        "Area_Name": {
+          "type": "resref",
+          "value": "fortiron"
         }
       }
     ]
@@ -87,23 +101,23 @@
   },
   "Mod_Entry_Dir_X": {
     "type": "float",
-    "value": 0.535
+    "value": -0.99969881772995
   },
   "Mod_Entry_Dir_Y": {
     "type": "float",
-    "value": 0.8449
+    "value": -0.02454122342169285
   },
   "Mod_Entry_X": {
     "type": "float",
-    "value": 16.3665
+    "value": 11.29983425140381
   },
   "Mod_Entry_Y": {
     "type": "float",
-    "value": 17.4104
+    "value": 8.320025444030762
   },
   "Mod_Entry_Z": {
     "type": "float",
-    "value": -0.0
+    "value": -4.536743176686287e-007
   },
   "Mod_Expan_List": {
     "type": "list",

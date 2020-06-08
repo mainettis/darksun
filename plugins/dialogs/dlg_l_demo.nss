@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-//    File: demo_l_dialogs.nss
+//    File: dlg_l_demo.nss
 //  System: Dynamic Dialogs (library script)
 //     URL: https://github.com/squattingmonk/nwn-core-framework
 // Authors: Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
@@ -10,7 +10,6 @@
 
 #include "dlg_i_dialogs"
 #include "util_i_library"
-#include "dsutil_i_data"
 
 // -----------------------------------------------------------------------------
 //                                  Poet Dialog
@@ -269,7 +268,7 @@ void AnvilDialog()
             {
                 int nNode = GetDialogNode();
                 string sData = GetDialogData(ANVIL_PAGE_ITEM, nNode);
-                object oItem = _GetLocalObject(DLG_SELF, ANVIL_ITEM);
+                object oItem = GetLocalObject(DLG_SELF, ANVIL_ITEM);
                 CacheDialogToken("Action", sData);
 
                 if (sData == "Copy")

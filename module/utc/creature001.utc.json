@@ -168,13 +168,6 @@
     "type": "list",
     "value": [
       {
-        "__struct_id": 2,
-        "EquippedRes": {
-          "type": "resref",
-          "value": "cloth023"
-        }
-      },
-      {
         "__struct_id": 16,
         "EquippedRes": {
           "type": "resref",

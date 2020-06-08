@@ -22,7 +22,7 @@
   },
   "DayNightCycle": {
     "type": "byte",
-    "value": 1
+    "value": 0
   },
   "Expansion_List": {
     "type": "list",
@@ -34,7 +34,7 @@
   },
   "FogClipDist": {
     "type": "float",
-    "value": 45.0
+    "value": 70.0
   },
   "Height": {
     "type": "int",
@@ -96,11 +96,11 @@
   },
   "OnEnter": {
     "type": "resref",
-    "value": ""
+    "value": "hook_area01"
   },
   "OnExit": {
     "type": "resref",
-    "value": ""
+    "value": "hook_area02"
   },
   "OnHeartbeat": {
     "type": "resref",
@@ -108,7 +108,7 @@
   },
   "OnUserDefined": {
     "type": "resref",
-    "value": ""
+    "value": "hook_area04"
   },
   "PlayerVsPlayer": {
     "type": "byte",

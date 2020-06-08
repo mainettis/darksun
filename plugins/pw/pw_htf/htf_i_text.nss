@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------------
-//    File: x_i_const.nss
-//  System: x (text/language)
+//    File: htf_i_text.nss
+//  System: Hunger, Thirst, Fatigue (text/language)
 //     URL: 
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------
 // Description:
-//  Constants for PW Subsystem.
+//  Text/Language Constants for PW Subsystem
 // -----------------------------------------------------------------------------
 // Builder Use:
 //  You can translate text literals into various languages in this file, or use

@@ -28,19 +28,13 @@
 
 void OnLibraryLoad()
 {
-    if (!GetIfPluginExists("pw_torch"))
-    {
-        object oPlugin = GetPlugin("pw_torch", TRUE);
-        SetName(oPlugin, "[Plugin] HCR2 :: Torch and Lantern");
-        SetDescription(oPlugin,
-            "This plugin controls the HCR2 Torch and Lantern Subsystem.");
+    object oPlugin = GetPlugin("pw");
 
-        // ----- Module Events -----
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_SPELLHOOK,   "torch_OnSpellHook",   4.0);
+    // ----- Module Events -----
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_SPELLHOOK,   "torch_OnSpellHook",   4.0);
 
-        // ----- Timer Events -----
-        RegisterEventScripts(oPlugin, TORCH_EVENT_ON_TIMER_EXPIRE, "torch_OnTimerExpire", 4.0);
-    }
+    // ----- Timer Events -----
+    RegisterEventScripts(oPlugin, TORCH_EVENT_ON_TIMER_EXPIRE, "torch_OnTimerExpire", 4.0);
 
     // ----- Module Events -----
     RegisterLibraryScript("torch_OnSpellHook",   1);

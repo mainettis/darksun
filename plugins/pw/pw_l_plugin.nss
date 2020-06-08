@@ -28,13 +28,15 @@
 
 void OnLibraryLoad()
 {
-    //Need to check for pw plugin and this is a sub-plugin
     if (!GetIfPluginExists("pw"))
     {
         object oPlugin = GetPlugin("pw", TRUE);
         SetName(oPlugin, "[Plugin] HCR2 :: Core");
         SetDescription(oPlugin,
-            "This plugin controls basic functions of the HCR2-base persistent world system.");
+            "This plugin controls basic functions of the HCR2-base persistent world system and " +
+            "loads all pw subsystems.");
+        SetPluginLibraries(oPlugin, "pw_l_plugin, crowd_l_plugin, bleed_l_plugin, corpse_l_plugin, diety_l_plugin, " +
+            "fugue_l_plugin, htf_l_plugin, loot_l_plugin, rest_l_plugin, torch_l_plugin, unid_l_plugin");
 
         // ----- Module Events -----
         RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER,     "pw_OnClientEnter",        4.0);

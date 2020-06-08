@@ -28,18 +28,11 @@
 
 void OnLibraryLoad()
 {
-    //Need to check for pw plugin and this is a sub-plugin
-    if (!GetIfPluginExists("pw_loot"))
-    {
-        object oPlugin = GetPlugin("pw_loot", TRUE);
-        SetName(oPlugin, "[Plugin] HCR2:: PC Corpse Loot");
-        SetDescription(oPlugin,
-            "This plugin controls the HCR 2 PC Corpse Loot Subsystem.");
+    object oPlugin = GetPlugin("pw");
 
-        // ----- Module Events -----
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DYING, "loot_OnPlayerDying", 4.0);
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DEATH, "loot_OnPlayerDeath", 4.0);
-    }
+    // ----- Module Events -----
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DYING, "loot_OnPlayerDying", 4.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DEATH, "loot_OnPlayerDeath", 4.0);
 
     // ----- Module Events -----
     RegisterLibraryScript("loot_OnPlayerDying", 1);

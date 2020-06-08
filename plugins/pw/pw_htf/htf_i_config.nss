@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
-//    File: x_i_config.nss
-//  System: x (configuration)
+//    File: htf_i_config.nss
+//  System: Hunger, Thirst, Fatigue (configuration)
 //     URL: 
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------

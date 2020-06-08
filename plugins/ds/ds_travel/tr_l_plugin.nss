@@ -28,18 +28,12 @@
 
 void OnLibraryLoad()
 {
-    if (!GetIfPluginExists("ds_tr"))
-    {
-        object oPlugin = GetPlugin("ds_tr", TRUE);
-        SetName(oPlugin, "[Plugin] Travel System");
-        SetDescription(oPlugin,
-            "This plugin controls the Dark Sun Overland Travel System.");
+    object oPlugin = GetPlugin("ds");
 
-        // ----- Module Events -----
-        RegisterEventScripts(oPlugin, AREA_EVENT_ON_ENTER,              "tr_OnAreaEnter");
-        RegisterEventScripts(oPlugin, AREA_EVENT_ON_EXIT,               "tr_OnAreaExit");
-        RegisterEventScripts(oPlugin, TRAVEL_ENCOUNTER_ON_TIMER_EXPIRE, "tr_encounter_OnTimerExpire");
-    }
+    // ----- Module Events -----
+    RegisterEventScripts(oPlugin, AREA_EVENT_ON_ENTER,              "tr_OnAreaEnter");
+    RegisterEventScripts(oPlugin, AREA_EVENT_ON_EXIT,               "tr_OnAreaExit");
+    RegisterEventScripts(oPlugin, TRAVEL_ENCOUNTER_ON_TIMER_EXPIRE, "tr_encounter_OnTimerExpire");
 
     // ----- Module Events -----
     RegisterLibraryScript("tr_encounter_OnTimerExpire", 1);

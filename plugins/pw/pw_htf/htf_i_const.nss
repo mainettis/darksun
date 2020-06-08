@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
-//    File: x_i_const.nss
-//  System: x (constants)
+//    File: htf_i_const.nss
+//  System: Hunger, Thirst, Fatigue (constants)
 //     URL: 
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------

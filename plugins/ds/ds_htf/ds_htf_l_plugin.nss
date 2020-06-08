@@ -30,24 +30,18 @@
 
 void OnLibraryLoad()
 {
-    if (!GetIfPluginExists("ds_htf"))
+    object oPlugin = GetPlugin("ds");
+
+    // ----- Local Events -----
+    if (H2_USE_HUNGERTHIRST_SYSTEM || H2_USE_FATIGUE_SYSTEM)
     {
-        object oPlugin = GetPlugin("ds_htf", TRUE);
-        SetName(oPlugin, "[Plugin] DS :: Hunger Thirst Fatigue");
-        SetDescription(oPlugin,
-            "This plugin controls the HCR2 Hunger Thirst Fatigue (Dark Sun) Subsystem.");
-
-        // ----- Local Events -----
-        if (H2_USE_HUNGERTHIRST_SYSTEM || H2_USE_FATIGUE_SYSTEM)
-        {
-            RegisterEventScripts(oPlugin, AREA_EVENT_ON_ENTER, "ds_htf_OnAreaEnter",                9.0);
-            RegisterEventScripts(oPlugin, AREA_EVENT_ON_EXIT, "ds_htf_OnAreaExit",                  9.0);
-        }
-
-        // ----- Timer Events -----
-        if (H2_USE_HUNGERTHIRST_SYSTEM || H2_USE_FATIGUE_SYSTEM)
-            RegisterEventScripts(oPlugin, DS_HTF_AREA_ON_TIMER_EXPIRE, "ds_htf_area_OnTimerExpire", 9.0);
+        RegisterEventScripts(oPlugin, AREA_EVENT_ON_ENTER, "ds_htf_OnAreaEnter",                9.0);
+        RegisterEventScripts(oPlugin, AREA_EVENT_ON_EXIT,  "ds_htf_OnAreaExit",                 9.0);
     }
+
+    // ----- Timer Events -----
+    if (H2_USE_HUNGERTHIRST_SYSTEM || H2_USE_FATIGUE_SYSTEM)
+        RegisterEventScripts(oPlugin, DS_HTF_AREA_ON_TIMER_EXPIRE, "ds_htf_area_OnTimerExpire", 9.0);
 
     // ----- Local Events -----
     if (H2_USE_HUNGERTHIRST_SYSTEM || H2_USE_FATIGUE_SYSTEM)

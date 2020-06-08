@@ -29,36 +29,30 @@
 
 void OnLibraryLoad()
 {
+    object oPlugin = GetPlugin("pw");
+
     if (!H2_USE_HUNGERTHIRST_SYSTEM && !H2_USE_FATIGUE_SYSTEM) 
         return;
 
-    if (!GetIfPluginExists("pw_htf"))
+    if (H2_USE_HUNGERTHIRST_SYSTEM)
     {
-        object oPlugin = GetPlugin("pw_htf", TRUE);
-        SetName(oPlugin, "[Plugin] HCR2 :: Hunger Thirst Fatigue");
-        SetDescription(oPlugin,
-            "This plugin controls the HCR2 Hunger Thirst Fatigue Subsystem.");
+        // ----- Module Events -----
+        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER,         "hungerthirst_OnClientEnter",        4.0);
+        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DEATH,         "hungerthirst_OnPlayerDeath",        4.0);
+        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED, "hungerthirst_OnPlayerRestFinished", 4.0);
+        
+        // ----- Timer Events -----
+        RegisterEventScripts(oPlugin, H2_HT_ON_TIMER_EXPIRE,                "htf_ht_OnTimerExpire",              4.0);
+    }
 
-        if (H2_USE_HUNGERTHIRST_SYSTEM)
-        {
-            // ----- Module Events -----
-            RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER,         "hungerthirst_OnClientEnter",        4.0);
-            RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DEATH,         "hungerthirst_OnPlayerDeath",        4.0);
-            RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED, "hungerthirst_OnPlayerRestFinished", 4.0);
-            
-            // ----- Timer Events -----
-            RegisterEventScripts(oPlugin, H2_HT_ON_TIMER_EXPIRE,                "htf_ht_OnTimerExpire",              4.0);
-        }
-
-        if (H2_USE_FATIGUE_SYSTEM)
-        {
-            // ----- Module Events -----
-            RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER,         "fatigue_OnClientEnter",             4.0);
-            RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED, "fatigue_OnPlayerRestFinished",      4.0);
-            
-            // ----- Timer Events -----
-            RegisterEventScripts(oPlugin, H2_FATIGUE_ON_TIMER_EXPIRE,           "htf_f_OnTimerExpire",               4.0);
-        }
+    if (H2_USE_FATIGUE_SYSTEM)
+    {
+        // ----- Module Events -----
+        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER,         "fatigue_OnClientEnter",             4.0);
+        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED, "fatigue_OnPlayerRestFinished",      4.0);
+        
+        // ----- Timer Events -----
+        RegisterEventScripts(oPlugin, H2_FATIGUE_ON_TIMER_EXPIRE,           "htf_f_OnTimerExpire",               4.0);
     }
 
     if (H2_USE_HUNGERTHIRST_SYSTEM)

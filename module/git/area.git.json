@@ -1015,7 +1015,7 @@
         },
         "Conversation": {
           "type": "resref",
-          "value": "dlg_convzoom"
+          "value": "dlg_convnozoom"
         },
         "CRAdjust": {
           "type": "int",
@@ -2082,7 +2082,7 @@
         },
         "Conversation": {
           "type": "resref",
-          "value": "dlg_convzoom"
+          "value": "dlg_convnozoom"
         },
         "CRAdjust": {
           "type": "int",
@@ -9416,11 +9416,11 @@
         },
         "X": {
           "type": "float",
-          "value": 50.0353
+          "value": 50.0479
         },
         "Y": {
           "type": "float",
-          "value": 9.9739
+          "value": 9.963699999999999
         },
         "Z": {
           "type": "float",
@@ -12896,6 +12896,235 @@
         "Y": {
           "type": "float",
           "value": 40.1582
+        },
+        "Z": {
+          "type": "float",
+          "value": -0.0
+        }
+      },
+      {
+        "__struct_id": 9,
+        "AnimationState": {
+          "type": "byte",
+          "value": 0
+        },
+        "Appearance": {
+          "type": "dword",
+          "value": 89
+        },
+        "AutoRemoveKey": {
+          "type": "byte",
+          "value": 0
+        },
+        "Bearing": {
+          "type": "float",
+          "value": -0.8345
+        },
+        "BodyBag": {
+          "type": "byte",
+          "value": 0
+        },
+        "CloseLockDC": {
+          "type": "byte",
+          "value": 0
+        },
+        "Conversation": {
+          "type": "resref",
+          "value": ""
+        },
+        "CurrentHP": {
+          "type": "short",
+          "value": 15
+        },
+        "Description": {
+          "id": 14717,
+          "type": "cexolocstring",
+          "value": {
+            "0": "You may notice some random, half-naked NPCs running arund this area, seemingly appearing out of nowhere, walking around for a bit and then disappearing.  This is the module's crowd system at work.  It's designed to make the cities and other areas where it's assigned to look more alive and bustline with activity as any city would.\n\nIt can be used by accomplishing these tasks (in addition to creating the NPCs that will be walking around the clothing they will wear):\n1 . Create a \"crowd initializer item\" by editing a COPY of the \"crowd_template\" item listed under Special -> Custom 2.  Your new items must start with \"crowd_\".  Upon creation of the new item, on the \"General Tab\", rename the Item Name, Tag and Blueprint ResRef to the new name of your item.  So if you're creating a crowd to handle Kleg Town Guards, all three values should be changed to \"crowd_kregguard\".  There is a 16 character limit for these names.\n\n2. On the \"Description\" tab, click on \"Variables\" and set the variables to the values you wish to use for your crowd. Areas can have multiple crowds with different settings.  If you want to use default (safe) settings, you can even delete variables from this list, but it is not a best-practice to do so.  The variables are generally self-explanatory.\n\n3. Drop waypoints where you want the crowd members to spawn and walk to.  Use normal, boring waypoints. The tag of the waypoint must match the Waypoint_Tag you set in the variables list.  Each crown will use their designated waypoints, so you can set up a different \"patrol route\" for each crowd.\n\n4. Set a string variable called \"*Crowds\" on the area where the crowd is to be created.  Set this variable to the name of your crowd initializer item without the \"crowd_\" prefix.  So if you are creating an crowd based on \"crowd_KregGuard\", This variable shold be set to \"KregGuard\".  If you have multiple crowds based on multiple items, the variable can be a string-delimited list.  If you are creating citizens in Kreg and a Guard in Kreg, you must create two different initializer items, but the area variable \"*Crowds\" will be set to \"KregGuard,KregCitizens\" or something similar."
+          }
+        },
+        "DisarmDC": {
+          "type": "byte",
+          "value": 0
+        },
+        "Faction": {
+          "type": "dword",
+          "value": 1
+        },
+        "Fort": {
+          "type": "byte",
+          "value": 16
+        },
+        "Hardness": {
+          "type": "byte",
+          "value": 5
+        },
+        "HasInventory": {
+          "type": "byte",
+          "value": 0
+        },
+        "HP": {
+          "type": "short",
+          "value": 15
+        },
+        "Interruptable": {
+          "type": "byte",
+          "value": 1
+        },
+        "KeyName": {
+          "type": "cexostring",
+          "value": ""
+        },
+        "KeyRequired": {
+          "type": "byte",
+          "value": 0
+        },
+        "Lockable": {
+          "type": "byte",
+          "value": 1
+        },
+        "Locked": {
+          "type": "byte",
+          "value": 0
+        },
+        "LocName": {
+          "id": 5732,
+          "type": "cexolocstring",
+          "value": {
+            "0": "Information about Crowds"
+          }
+        },
+        "OnClick": {
+          "type": "resref",
+          "value": "hook_placeable01"
+        },
+        "OnClosed": {
+          "type": "resref",
+          "value": "hook_placeable02"
+        },
+        "OnDamaged": {
+          "type": "resref",
+          "value": "hook_placeable03"
+        },
+        "OnDeath": {
+          "type": "resref",
+          "value": "hook_placeable04"
+        },
+        "OnDisarm": {
+          "type": "resref",
+          "value": ""
+        },
+        "OnHeartbeat": {
+          "type": "resref",
+          "value": ""
+        },
+        "OnInvDisturbed": {
+          "type": "resref",
+          "value": "hook_placeable06"
+        },
+        "OnLock": {
+          "type": "resref",
+          "value": "hook_placeable07"
+        },
+        "OnMeleeAttacked": {
+          "type": "resref",
+          "value": "hook_placeable08"
+        },
+        "OnOpen": {
+          "type": "resref",
+          "value": "hook_placeable09"
+        },
+        "OnSpellCastAt": {
+          "type": "resref",
+          "value": "hook_placeable10"
+        },
+        "OnTrapTriggered": {
+          "type": "resref",
+          "value": ""
+        },
+        "OnUnlock": {
+          "type": "resref",
+          "value": "hook_placeable11"
+        },
+        "OnUsed": {
+          "type": "resref",
+          "value": "hook_placeable12"
+        },
+        "OnUserDefined": {
+          "type": "resref",
+          "value": "hook_placeable13"
+        },
+        "OpenLockDC": {
+          "type": "byte",
+          "value": 0
+        },
+        "Plot": {
+          "type": "byte",
+          "value": 0
+        },
+        "PortraitId": {
+          "type": "word",
+          "value": 447
+        },
+        "Ref": {
+          "type": "byte",
+          "value": 0
+        },
+        "Static": {
+          "type": "byte",
+          "value": 0
+        },
+        "Tag": {
+          "type": "cexostring",
+          "value": "Signpost3"
+        },
+        "TemplateResRef": {
+          "type": "resref",
+          "value": "plc_signpost3"
+        },
+        "TrapDetectable": {
+          "type": "byte",
+          "value": 1
+        },
+        "TrapDetectDC": {
+          "type": "byte",
+          "value": 0
+        },
+        "TrapDisarmable": {
+          "type": "byte",
+          "value": 1
+        },
+        "TrapFlag": {
+          "type": "byte",
+          "value": 0
+        },
+        "TrapOneShot": {
+          "type": "byte",
+          "value": 1
+        },
+        "TrapType": {
+          "type": "byte",
+          "value": 1
+        },
+        "Type": {
+          "type": "byte",
+          "value": 0
+        },
+        "Useable": {
+          "type": "byte",
+          "value": 1
+        },
+        "Will": {
+          "type": "byte",
+          "value": 0
+        },
+        "X": {
+          "type": "float",
+          "value": 21.2142
+        },
+        "Y": {
+          "type": "float",
+          "value": 21.7428
         },
         "Z": {
           "type": "float",
@@ -56742,6 +56971,26 @@
     "type": "list",
     "value": []
   },
+  "VarTable": {
+    "type": "list",
+    "value": [
+      {
+        "__struct_id": 0,
+        "Name": {
+          "type": "cexostring",
+          "value": "*Crowds"
+        },
+        "Type": {
+          "type": "dword",
+          "value": 3
+        },
+        "Value": {
+          "type": "cexostring",
+          "value": "start"
+        }
+      }
+    ]
+  },
   "WaypointList": {
     "type": "list",
     "value": [
@@ -56799,6 +57048,250 @@
         "YPosition": {
           "type": "float",
           "value": 17.9611
+        },
+        "ZPosition": {
+          "type": "float",
+          "value": 0.01
+        }
+      },
+      {
+        "__struct_id": 5,
+        "Appearance": {
+          "type": "byte",
+          "value": 1
+        },
+        "Description": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "HasMapNote": {
+          "type": "byte",
+          "value": 0
+        },
+        "LinkedTo": {
+          "type": "cexostring",
+          "value": ""
+        },
+        "LocalizedName": {
+          "type": "cexolocstring",
+          "value": {
+            "0": "Commoner Waypoint"
+          }
+        },
+        "MapNote": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "MapNoteEnabled": {
+          "type": "byte",
+          "value": 0
+        },
+        "Tag": {
+          "type": "cexostring",
+          "value": "wp_crowd"
+        },
+        "TemplateResRef": {
+          "type": "resref",
+          "value": "wp_commoner"
+        },
+        "XOrientation": {
+          "type": "float",
+          "value": 0.0736
+        },
+        "XPosition": {
+          "type": "float",
+          "value": 14.3606
+        },
+        "YOrientation": {
+          "type": "float",
+          "value": -0.9973
+        },
+        "YPosition": {
+          "type": "float",
+          "value": 72.0765
+        },
+        "ZPosition": {
+          "type": "float",
+          "value": 0.01
+        }
+      },
+      {
+        "__struct_id": 5,
+        "Appearance": {
+          "type": "byte",
+          "value": 1
+        },
+        "Description": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "HasMapNote": {
+          "type": "byte",
+          "value": 0
+        },
+        "LinkedTo": {
+          "type": "cexostring",
+          "value": ""
+        },
+        "LocalizedName": {
+          "type": "cexolocstring",
+          "value": {
+            "0": "Commoner Waypoint"
+          }
+        },
+        "MapNote": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "MapNoteEnabled": {
+          "type": "byte",
+          "value": 0
+        },
+        "Tag": {
+          "type": "cexostring",
+          "value": "wp_crowd"
+        },
+        "TemplateResRef": {
+          "type": "resref",
+          "value": "wp_commoner"
+        },
+        "XOrientation": {
+          "type": "float",
+          "value": 0.0736
+        },
+        "XPosition": {
+          "type": "float",
+          "value": 44.624
+        },
+        "YOrientation": {
+          "type": "float",
+          "value": -0.9973
+        },
+        "YPosition": {
+          "type": "float",
+          "value": 72.7131
+        },
+        "ZPosition": {
+          "type": "float",
+          "value": 0.01
+        }
+      },
+      {
+        "__struct_id": 5,
+        "Appearance": {
+          "type": "byte",
+          "value": 1
+        },
+        "Description": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "HasMapNote": {
+          "type": "byte",
+          "value": 0
+        },
+        "LinkedTo": {
+          "type": "cexostring",
+          "value": ""
+        },
+        "LocalizedName": {
+          "type": "cexolocstring",
+          "value": {
+            "0": "Commoner Waypoint"
+          }
+        },
+        "MapNote": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "MapNoteEnabled": {
+          "type": "byte",
+          "value": 0
+        },
+        "Tag": {
+          "type": "cexostring",
+          "value": "wp_crowd"
+        },
+        "TemplateResRef": {
+          "type": "resref",
+          "value": "wp_commoner"
+        },
+        "XOrientation": {
+          "type": "float",
+          "value": -1.0
+        },
+        "XPosition": {
+          "type": "float",
+          "value": 111.1974
+        },
+        "YOrientation": {
+          "type": "float",
+          "value": 0.0
+        },
+        "YPosition": {
+          "type": "float",
+          "value": 35.8833
+        },
+        "ZPosition": {
+          "type": "float",
+          "value": 0.0275
+        }
+      },
+      {
+        "__struct_id": 5,
+        "Appearance": {
+          "type": "byte",
+          "value": 1
+        },
+        "Description": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "HasMapNote": {
+          "type": "byte",
+          "value": 0
+        },
+        "LinkedTo": {
+          "type": "cexostring",
+          "value": ""
+        },
+        "LocalizedName": {
+          "type": "cexolocstring",
+          "value": {
+            "0": "Commoner Waypoint"
+          }
+        },
+        "MapNote": {
+          "type": "cexolocstring",
+          "value": {}
+        },
+        "MapNoteEnabled": {
+          "type": "byte",
+          "value": 0
+        },
+        "Tag": {
+          "type": "cexostring",
+          "value": "wp_crowd"
+        },
+        "TemplateResRef": {
+          "type": "resref",
+          "value": "wp_commoner"
+        },
+        "XOrientation": {
+          "type": "float",
+          "value": 0.0
+        },
+        "XPosition": {
+          "type": "float",
+          "value": 15.1302
+        },
+        "YOrientation": {
+          "type": "float",
+          "value": 1.0
+        },
+        "YPosition": {
+          "type": "float",
+          "value": 23.0697
         },
         "ZPosition": {
           "type": "float",

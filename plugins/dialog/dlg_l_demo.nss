@@ -413,7 +413,6 @@ void TokenDialog()
     SetDialogTarget("Main Page", sPage, DLG_NODE_BACK);
 }
 
-
 void OnLibraryLoad()
 {
     RegisterLibraryScript(POET_DIALOG_INIT);

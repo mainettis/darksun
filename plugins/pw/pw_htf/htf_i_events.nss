@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
-//    File: x_i_events.nss
-//  System: x (events)
+//    File: htf_i_events.nss
+//  System: Hunger, Thirst, Fatigue (events)
 //     URL: 
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------

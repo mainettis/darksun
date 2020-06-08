@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------------
 //    File: corpse_i_items.nss
-//  System: PC Corpse (tag-based scripting)
+//  System: PC Corpse (core)
 //     URL: 
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------
 // Description:
-//  Tag-based scripting functions for PW Subsystem.
+//  Primary functions for PW Subsystem.
 // -----------------------------------------------------------------------------
 // Builder Use:
 //  Nothing!  Leave me alone.

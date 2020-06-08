@@ -30,17 +30,10 @@
 
 void OnLibraryLoad()
 {
-    //Need to check for pw plugin and this is a sub-plugin
-    if (!GetIfPluginExists("pw_deity"))
-    {
-        object oPlugin = GetPlugin("pw_deity", TRUE);
-        SetName(oPlugin, "[Plugin] HCR2 :: Deity Resurrection");
-        SetDescription(oPlugin,
-            "This plugin controls the HCR2 Deity Resurrection Subsystem.");
+    object oPlugin = GetPlugin("pw");
 
-        // ----- Module Events -----
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DEATH, "deity_OnPlayerDeath", 4.0);
-    }
+    // ----- Module Events -----
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_DEATH, "deity_OnPlayerDeath", 4.0);
 
     // ----- Module Events -----
     RegisterLibraryScript("deity_OnPlayerDeath", 1);

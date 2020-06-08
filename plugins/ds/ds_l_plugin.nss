@@ -37,6 +37,7 @@ void OnLibraryLoad()
         SetName(oPlugin, "[Plugin] DS :: Core");
         SetDescription(oPlugin,
             "This plugin controls the UnID Item on Drop Persistent World Subsystem.");
+        SetPluginLibraries(oPlugin, "tr_l_plugin, ds_htf_l_plugin");
 
         //Add module level events
         RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER, "ds_OnClientEnter", 4.0);

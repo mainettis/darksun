@@ -5,7 +5,7 @@
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------
 // Description:
-//  Constants for PW Subsystem.
+//  Text/Language constants for PW Subsystem
 // -----------------------------------------------------------------------------
 // Builder Use:
 //  You can translate text literals into various languages in this file, or use

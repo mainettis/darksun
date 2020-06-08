@@ -5,7 +5,7 @@
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------
 // Description:
-//  Timer functions for PW Subsystem
+//  Event functions for PW Subsystem
 // -----------------------------------------------------------------------------
 // Builder Use:
 //  None!  Leave me alone.

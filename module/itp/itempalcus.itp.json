@@ -19,68 +19,35 @@
                 "value": [
                   {
                     "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
                     "RESREF": {
                       "type": "resref",
-                      "value": "cloth023"
-                    },
-                    "STRREF": {
-                      "type": "dword",
-                      "value": 12923
+                      "value": "clothing001"
                     }
                   },
                   {
                     "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
                     "RESREF": {
                       "type": "resref",
-                      "value": "cloth025"
-                    },
-                    "STRREF": {
-                      "type": "dword",
-                      "value": 12923
+                      "value": "clothing002"
                     }
                   },
                   {
                     "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "Commoner's Outfit"
+                    },
                     "RESREF": {
                       "type": "resref",
-                      "value": "cloth026"
-                    },
-                    "STRREF": {
-                      "type": "dword",
-                      "value": 12923
-                    }
-                  },
-                  {
-                    "__struct_id": 0,
-                    "RESREF": {
-                      "type": "resref",
-                      "value": "cloth027"
-                    },
-                    "STRREF": {
-                      "type": "dword",
-                      "value": 12923
-                    }
-                  },
-                  {
-                    "__struct_id": 0,
-                    "RESREF": {
-                      "type": "resref",
-                      "value": "cloth028"
-                    },
-                    "STRREF": {
-                      "type": "dword",
-                      "value": 12923
-                    }
-                  },
-                  {
-                    "__struct_id": 0,
-                    "RESREF": {
-                      "type": "resref",
-                      "value": "cloth030"
-                    },
-                    "STRREF": {
-                      "type": "dword",
-                      "value": 12923
+                      "value": "clothing003"
                     }
                   }
                 ]
@@ -763,6 +730,55 @@
               "ID": {
                 "type": "byte",
                 "value": 1
+              },
+              "LIST": {
+                "type": "list",
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "crowd_kreg"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "crowd_kreg"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "crowd_kregguard"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "crowd_kregguard"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "crowd_start"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "crowd_start"
+                    }
+                  },
+                  {
+                    "__struct_id": 0,
+                    "NAME": {
+                      "type": "cexostring",
+                      "value": "crowd_template"
+                    },
+                    "RESREF": {
+                      "type": "resref",
+                      "value": "crowd_template"
+                    }
+                  }
+                ]
               },
               "STRREF": {
                 "type": "dword",

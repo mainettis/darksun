@@ -90,15 +90,15 @@
   },
   "Cloth1Color": {
     "type": "byte",
-    "value": 8
+    "value": 11
   },
   "Cloth2Color": {
     "type": "byte",
-    "value": 2
+    "value": 7
   },
   "Comment": {
     "type": "cexostring",
-    "value": "1"
+    "value": ""
   },
   "Cost": {
     "type": "dword",
@@ -122,16 +122,18 @@
   },
   "Leather1Color": {
     "type": "byte",
-    "value": 8
+    "value": 11
   },
   "Leather2Color": {
     "type": "byte",
-    "value": 0
+    "value": 14
   },
   "LocalizedName": {
     "id": 12923,
     "type": "cexolocstring",
-    "value": {}
+    "value": {
+      "0": "Commoner's Outfit"
+    }
   },
   "Metal1Color": {
     "type": "byte",
@@ -163,10 +165,10 @@
   },
   "Tag": {
     "type": "cexostring",
-    "value": "NW_CLOTH022"
+    "value": "clothing002"
   },
   "TemplateResRef": {
     "type": "resref",
-    "value": "cloth028"
+    "value": "clothing002"
   }
 }

@@ -98,7 +98,7 @@
   },
   "Comment": {
     "type": "cexostring",
-    "value": "1"
+    "value": ""
   },
   "Cost": {
     "type": "dword",
@@ -131,7 +131,9 @@
   "LocalizedName": {
     "id": 12923,
     "type": "cexolocstring",
-    "value": {}
+    "value": {
+      "0": "Commoner's Outfit"
+    }
   },
   "Metal1Color": {
     "type": "byte",
@@ -163,10 +165,10 @@
   },
   "Tag": {
     "type": "cexostring",
-    "value": "NW_CLOTH022"
+    "value": "clothing003"
   },
   "TemplateResRef": {
     "type": "resref",
-    "value": "cloth023"
+    "value": "clothing003"
   }
 }

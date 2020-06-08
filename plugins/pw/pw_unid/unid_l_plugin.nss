@@ -28,16 +28,10 @@
 
 void OnLibraryLoad()
 {
-    if (!GetIfPluginExists("pw_unid"))
-    {
-        object oPlugin = GetPlugin("pw_unid", TRUE);
-        SetName(oPlugin, "[Plugin] HCR2 :: UnID On Drop");
-        SetDescription(oPlugin,
-            "This plugin controls the HCR2 UnID Item on Drop Persistent World Subsystem.");
+    object oPlugin = GetPlugin("pw");
 
-        // ----- Module Events -----
-        RegisterEventScripts(oPlugin, MODULE_EVENT_ON_UNACQUIRE_ITEM, "unid_OnUnacquireItem");
-    }
+    // ----- Module Events -----
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_UNACQUIRE_ITEM, "unid_OnUnacquireItem");
 
     // ----- Module Events -----
     RegisterLibraryScript("unid_OnUnacquireItem", 1);
@@ -47,6 +41,7 @@ void OnLibraryScript(string sScript, int nEntry)
 {
     switch (nEntry)
     {
+        // ----- Module Events -----
         case 1:  unid_OnUnacquireItem(); break;
         default: CriticalError("Library function " + sScript + " not found");
     }

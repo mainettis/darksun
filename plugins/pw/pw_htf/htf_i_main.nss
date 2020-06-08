@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
-//    File: x_i_main.nss
-//  System: x Item on Drop (core)
+//    File: htf_i_main.nss
+//  System: Hunger, Thirst, Fatigue (core)
 //     URL: 
 // Authors: Edward A. Burke (tinygiant) <af.hog.pilot@gmail.com>
 // -----------------------------------------------------------------------------
